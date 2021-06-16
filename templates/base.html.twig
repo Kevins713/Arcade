@@ -28,12 +28,6 @@
                         <li class="nav-item">
                             <a class="nav-link{{ route == 'home' ? ' active' }}" href="{{ path('home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Forum</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Autre lien</a>
-                        </li>
                     </ul>
 
                     {# Boutons à droite #}
@@ -41,12 +35,12 @@
 
                         {# si l'utilisateur est connecté #}
                         {% if app.user %}
-                            <li>
+                            <li class="nav-item">
                                 <a class="dropdown-item" href="{{ path('logout') }}"><i class="fas fa-sign-out-alt me-1"></i>Déconnexion</a>
                             </li>
                         {% else %}  {# Boutons si l'utilisateur n'est pas connecté #}
                             <li class="nav-item">
-                                <a class="nav-link{{ route == 'app_register' ? ' active' }}" href="{{ path('app_register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
+                                <a class="nav-link{{ route == 'register' ? ' active' }}" href="{{ path('register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link{{ route == 'login' ? ' active' }}" href="{{ path('login') }}"><i class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
