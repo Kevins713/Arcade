@@ -1,0 +1,294 @@
+{% extends 'base.html.twig' %}
+
+{# Titre de la page #}
+{% block title %}Profil{% endblock %}
+
+{# contenu de la page profil #}
+{% block body %}
+
+<div class="container">
+    <div class="row gutters-sm mt-5">
+
+        <!-- Profil -> Photo, pseudo et role  -->
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar6.png"
+                            alt="avatar"
+                            class="rounded-circle"
+                            width="150">
+                        <div class="mt-3">
+                            <h4>Pseudo</h4>
+                            <p class="text-secondary mb-1">Roles</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- détail du profil -> pseudo, date d'inscription, role et nombre de messages + bouton edit  -->
+        <div class="col-md-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div>
+                            <h6 class="mb-0">Pseudo : {{ app.user.pseudonym }}</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div>
+                            <h6 class="mb-0">Date d'inscription : {{ app.user.registrationDate|date("d/m/Y à H\\hi") }}</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div>
+                            <h6 class="mb-0">Email : {{ app.user.email }} </h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Messages : {# {{ user.numberOfMessages }} #}</h6>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <a class="btn btn-info" href="#">Editer le profil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Affiche le nombre message#}
+    <div class="row">
+        <p class="col-12 text-center">Nombre total de message : 10</p>
+    </div>
+
+    <!-- Derniers message postés -->
+    <div class="row mt-5">
+        <div class="col-12 bg-white">
+            <h1>Messages postés :</h1>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                    alt="Admin"
+                                    class="rounded-circle profil-photo" 
+                                    width="100">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim
+                                fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p>Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,78 +1,121 @@
 {% set route = app.request.attributes.get('_route') %}
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {# #TODO Titre par défaut à changer #}
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {# Inclusion des fichiers CSS et CND #}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-        {% block css %}
-            {# Inclusion CSS individuels si besoin#}
-        {% endblock %}
-    </head>
 
-        {# Menu principal #}
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Logo du site</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link{{ route == 'home' ? ' active' }}" href="{{ path('home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Forum</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Autre lien</a>
-                        </li>
-                    </ul>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# #TODO Titre par défaut à changer #}
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {# Inclusion des fichiers CSS et CND #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    {% block css %}
+    {# Inclusion CSS individuels si besoin#}
+    {% endblock %}
+</head>
 
-                    {# Boutons à droite #}
-                    <ul  class="navbar-nav ms-auto me-3">
+<body>
+    {# Menu de navigation #}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Logo du site</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link{{ route == 'home' ? ' active' }}" href="{{ path('home') }}"><i
+                                class="fas fa-home mx-1"></i>Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Forum</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Autre lien</a>
+                    </li>
+                </ul>
 
-                        {# si l'utilisateur est connecté #}
-                        {% if app.user %}
-                            <li>
-                                <a class="dropdown-item" href="{{ path('logout') }}"><i class="fas fa-sign-out-alt me-1"></i>Déconnexion</a>
-                            </li>
-                        {% else %}  {# Boutons si l'utilisateur n'est pas connecté #}
-                            <li class="nav-item">
-                                <a class="nav-link{{ route == 'app_register' ? ' active' }}" href="{{ path('app_register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link{{ route == 'login' ? ' active' }}" href="{{ path('login') }}"><i class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
-                            </li>
-                        {% endif %}
+                {# Boutons à droite #}
+                <ul class="navbar-nav ms-auto me-3">
 
-                    </ul>
+                    {# si l'utilisateur est connecté #}
+                    {% if app.user %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-dark" href="#" id="profil-dropdown" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user mx-1"></i>Pseudo
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="profil-dropdown">
 
-                    <form class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Chercher dans le forum">
-                        <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                    </form>
+                            <a class="dropdown-item" href="{{ path('main_profil') }}"><i
+                                    class="fas fa-users-cog me-1"></i>Mon Profil</a>
+
+                            <a class="dropdown-item" href="{{ path('logout') }}"><i
+                                    class="fas fa-sign-out-alt me-1"></i>Déconnexion</a>
+                        </div>
+                    </li>
+                    {% else %} {# Boutons si l'utilisateur n'est pas connecté #}
+                    <li class="nav-item">
+                        <a class="nav-link{{ route == 'app_register' ? ' active' }}"
+                            href="{{ path('app_register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ route == 'login' ? ' active' }}" href="{{ path('login') }}"><i
+                                class="fas fa-sign-in-alt mx-1"></i>Connexion</a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Chercher dans le forum">
+                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    {% block body %}{% endblock %}
+
+    {# footer #}
+    <div class="container-fluid pb-0 px-0 mb-0 text-light ">
+        <footer class="bg-dark">
+            <div class="row mt-5 justify-content-center py-3 mx-0 ">
+                <div class="col-11">
+                    <div class="row ">
+                        <div class="col-xl-8 col-md-4 col-sm-4 col-12 my-auto mx-5">
+                            <h3 class="bold-text">Arcade.</h3>
+                        </div>
+                        <div class="col-xl-2 col-md-4 col-sm-4 col-12">
+                            <h6 class="mb-3 mb-lg-4 bold-text "><b>MENU</b></h6>
+                            <ul class="list-unstyled">
+                                <li><a class="page-footer" href="{{ path('home') }}">Page d'accueil</a></li>
+                                <li><a class="page-footer" href="#">Forum</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-xl-8">
+                            <small><span>&#174;</span> Arcade All Rights Reserved.</small>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </nav>
-
-
-    <body>
-        {% block body %}{% endblock %}
+        </footer>
+    </div>
 
     {# Inclusions des fichiers JS généraux du site #}
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
     {% block javascripts %}
-        {# Inclusion JS individuels si besoin#}
+    {# Inclusion JS individuels si besoin#}
     {% endblock %}
 
-    </body>
+</body>
+
 </html>
