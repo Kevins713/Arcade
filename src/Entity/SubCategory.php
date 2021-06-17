@@ -45,17 +45,6 @@ class SubCategory
         return $this;
     }
 
-    public function getCategoryId(): ?int
-    {
-        return $this->categoryId;
-    }
-
-    public function setCategoryId(int $categoryId): self
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
 
     public function getCategory(): ?Category
     {
