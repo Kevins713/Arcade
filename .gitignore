@@ -20,3 +20,6 @@
 ###< phpunit/phpunit ###
 
 /.idea
+
+# Ignorer les fichiers des migrations
+/migrations/*.php

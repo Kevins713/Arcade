@@ -28,6 +28,12 @@ class SubCategory
      */
     private $category;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Forum::class, inversedBy="subCategory")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $forum;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -54,6 +60,18 @@ class SubCategory
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getForum(): ?Forum
+    {
+        return $this->forum;
+    }
+
+    public function setForum(?Forum $forum): self
+    {
+        $this->forum = $forum;
 
         return $this;
     }
