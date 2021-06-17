@@ -29,6 +29,11 @@ class Category
      */
     private $subCategories;
 
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->subCategories = new ArrayCollection();
@@ -77,6 +82,18 @@ class Category
                 $subCategory->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
