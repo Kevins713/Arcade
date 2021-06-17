@@ -2,19 +2,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 
-        {# Menu principal #}
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Logo du site</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link{{ route == 'home' ? ' active' }}" href="{{ path('home') }}"><i class="fas fa-home mx-1"></i>Accueil</a>
-                        </li>
-                    </ul>
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -76,8 +64,8 @@
                     </li>
                     {% else %} {# Boutons si l'utilisateur n'est pas connecté #}
                     <li class="nav-item">
-                        <a class="nav-link{{ route == 'app_register' ? ' active' }}"
-                            href="{{ path('app_register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
+                        <a class="nav-link{{ route == 'register' ? ' active' }}"
+                            href="{{ path('register') }}"><i class="fas fa-user-plus mx-1"></i>Inscription</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link{{ route == 'login' ? ' active' }}" href="{{ path('login') }}"><i
