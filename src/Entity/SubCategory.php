@@ -23,11 +23,6 @@ class SubCategory
     private $title;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $categoryId;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="subCategories")
      * @ORM\JoinColumn(nullable=false)
      */
