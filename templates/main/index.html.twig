@@ -13,7 +13,7 @@
                 <h1 class="fw-bold">Forum Arcade</h1>
             </div>
         </div>
-        {# News Site #}
+        {# News Site Carousel #}
         <div class="row my-5">
             <article class="col-12 text-center h-50">
                 <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -22,6 +22,7 @@
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
+
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="card">
@@ -30,7 +31,7 @@
                                 </div>
                                 <div class="card-body p-0 carousel-height">
                                     <h2>Lorem ipsum dolor sit amet.</h2>
-                                    <blockquote class="blockquote mb-0 h-50">
+                                    <blockquote class="blockquote mb-0">
                                         <p>A well-known quote, contained in a blockquote element. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime repudiandae, fuga autem reprehenderit illum repellendus quam saepe natus rerum. Maiores quidem vero odio suscipit quo nam provident asperiores ducimus a.
                                             Deserunt repudiandae vitae laborum id exercitationem soluta </p>
                                     </blockquote>
@@ -77,63 +78,228 @@
         </div>
 
         {# Catégories principales #}
-        <div class="row pb-4 col-12 mb-4 justify-content-md-start">
-            <h2>Arcade</h2>
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>News</h3>
-                </div>
-            </div>
+        <div class="row">
+            <div class="col-5 col-md-9">
+                <h2>Catégories</h2>
+                <div class="row pb-4 mb-4 justify-content-md-start">
+                {% for category in categories %}
 
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Règles</h3>
+                    <div class="col-12 col-md-2 my-2">
+                        <a href="">
+                            <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
+                                <img src="{{ asset('images/categories/' ~ category.image ) }}" class="img-fluid" alt="...">
+                                <div class="category-title mt-1">
+                                    <h6 class="text-white fs-6 fs-md-3">{{ category.title }}</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    {% if is_granted('ROLE_MODERATOR') %}
+                        <div class="col-12 col-md-2 my-2 d-flex align-items-center">
+                            <a href="{{ path('category_new_category') }}"><button class="btn btn-darkblue">Ajouter une catégorie</button></a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
+            <div class="col-5 offset-2 col-md-3">
+                <!-- Aside -->
+                <aside class="col-12 ">
+                    <h2>Statistique</h2>
+                    <div class="row">
+                        <div class="col-12 p-2">
+                            <div class="aside-header bg-darkblue p-2 rounded-1">
+                                <h3 class="h6">Membres de l'équipe en ligne</h3>
+                            </div>
+                            <div class="aside-content">
+                                <p class="p-2 bg-light text-secondary">user user user user user user user user user user user user user user user user user
+                                    user user user user user user user user user user user user user user user user user user user user user user user user user user user user user user user
+                                </p>
+                            </div>
+                        </div>
 
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Bug et Suggestions</h3>
-                </div>
-            </div>
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Demande d'ajout de catégorie</h3>
-                </div>
+                        <div class="col-12 p-2">
+                            <div class="aside-header bg-darkblue p-2 rounded-1">
+                                <h3 class="h6">Membres en ligne</h3>
+                            </div>
+                            <div class="aside-content">
+                                <p class="p-2 bg-light text-secondary">user user user user user user user user user user user user user user user user user
+                                    user user user user user user user user user user user user user user user user user user user user user user user user user user user user user user user
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-12 p-2">
+                            <div class="aside-header bg-darkblue p-2 rounded-1">
+                                <h3 class="h6">Statistiques globales</h3>
+                            </div>
+                            <div class="aside-content">
+                                <p class="p-2 bg-light text-secondary">
+                                    Forums : <span>46</span><br>
+                                    Messages : <span>123045</span><br>
+                                    Membres : <span>450</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-12 p-2">
+                            <div class="aside-header bg-darkblue p-2 rounded-1">
+                                <h3 class="h6">Derniers messages publiés</h3>
+                            </div>
+                                <div class="aside-content">
+                                    <div class="row">
+                                        <div class="col-3 aside avatar d-flex align-items-center">
+                                            <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                        </div>
+                                        <div class="col-9 aside">
+                                            <h6>Titre de caractères 15</h6>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </aside>
             </div>
         </div>
+        <div class="row pb-4 mb-4 justify-content-md-start">
+            <h2>Arcade</h2>
+            <div class="col-4 col-md-2 my-2">
+                <a href="">
+                    <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
+                        <img src="{{ asset('images/actualite.png') }}" class="img-fluid" alt="...">
+                        <div class="category-title mt-1">
+                            <h6 class="text-white">Actualités</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
+            <div class="col-4 col-md-2 my-2">
+                <a href="">
+                    <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
+                        <img src="{{ asset('images/regle.png') }}" class="img-fluid" alt="...">
+                        <div class="category-title mt-1">
+                            <h6>Règles</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-4 col-md-2 my-2">
+                <a href="">
+                    <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue  p-1 rounded-3">
+                        <img src="{{ asset('images/suggestion.png') }}" class="img-fluid" alt="...">
+                        <div class="category-title mt-1">
+                            <h6>Bugs et Suggestions</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-4 col-md-2 my-2">
+                <a href="">
+                    <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
+                        <img src="{{ asset('images/demande.png') }}" class="img-fluid" alt="...">
+                        <div class="category-title mt-1">
+                            <h6>Demandes d'ajout de catégorie</h6>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
         <div class="row pb-4 col-12 mb-4 justify-content-md-start">
             <h2>Plateforme</h2>
             <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>PC</h3>
-                </div>
+                <a href="">
+                    <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue border border-dark p-1 rounded-3">
+                        <img src="{{ asset('images/pc.png') }}" class="img-fluid" alt="...">
+                        <div class="category-title mt1">
+                            <h6>PC</h6>
+                        </div>
+                    </div>
+                </a>
             </div>
 
             <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/playstation.png') }}" class="img-fluid" alt="...">
-                    <h3>Playstation</h3>
-                </div>
+                <a href="">
+                    <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue  p-1 rounded-3">
+                        <img src="{{ asset('images/playstation.png') }}" class="img-fluid" alt="...">
+                        <div class="category-title mt1">
+                            <h6>Playstation</h6>
+                        </div>
+                    </div>
+                </a>
             </div>
 
             <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Xbox</h3>
-                </div>
+                <a href="">
+                    <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue border border-dark p-1 rounded-3">
+                        <img src="{{ asset('images/xbox.png') }}" class="img-fluid" alt="...">
+                        <div class="category-title mt1">
+                            <h6>Xbox</h6>
+                        </div>
+                    </div>
+                </a>
             </div>
+
             <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Nintendo</h3>
-                </div>
+                <a href="">
+                    <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue border border-dark p-1 rounded-3">
+                        <img src="{{ asset('images/nintendo.png') }}" class="img-fluid" alt="...">
+                        <div class="category-title mt1">
+                            <h6>Nintendo</h6>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
 

@@ -1,3 +1,4 @@
+/* Carousel */
 @media (max-width: 991px) {
     .carousel-height{
         height: 400px;
@@ -9,11 +10,41 @@
         height: 200px;
     }
 }
-.card {
-    height: 131px;
-    width: 125px;
-}
+/* Categories */
 .card img {
     height: 131px;
     width: 125px;
+}
+a {
+    color: #eaeaea;
+    font-weight: bolder;
+}
+.category {
+    box-shadow: 0px 0px 10px 1px black;
+}
+a:hover {
+    color: #eaeaea;
+}
+
+.category:hover {
+    background-color: var(--forum-orange);
+}
+.category-title {
+    border-top: black 1px solid;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.aside {
+    height: 60px;
+}
+.aside p{
+    font-size: xx-small;
+}
+.btn.btn-darkblue {
+    background-color: var(--forum-darkblue);
+    color: #eaeaea;
+    border-radius: 5px;
+    border: 3px solid var(--forum-lightblue);
 }
