@@ -1,1 +1,43 @@
-/* css de la page base.html */
+/* Variables contenant les couleurs du thème du site */
+:root{
+    --forum-darkblue: #001730;
+    --forum-lightblue: #4AD7D1;
+    --forum-orange: #FE4A49;
+}
+
+/* Importation des polices */
+@font-face {
+    font-family: Roboto;
+    src: url('../fonts/Roboto-Light.ttf');
+}
+
+/* Global */
+body {
+    font-family: Roboto, sans-serif;
+}
+a{
+    text-decoration: none;
+}
+.bg-darkblue {
+    background-color: var(--forum-darkblue);
+    color: #eaeaea;
+}
+.bg-lightblue {
+    background-color: var(--forum-lightblue);
+}
+.bg-orange {
+    background-color: var(--forum-orange);
+}
+.color-darkblue{
+    color: var(--forum-darkblue);
+}
+/* Nécessaire à base.html.twig */
+.nav-link, .dropdown-item{
+    color: #eaeaea;
+}
+.nav-link:hover, .dropdown-item:hover{
+    color: var(--forum-lightblue);
+}
+.img-logo {
+    width: 50px;
+}

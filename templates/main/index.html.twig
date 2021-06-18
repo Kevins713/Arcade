@@ -1,20 +1,141 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MainController!{% endblock %}
+{% block title %}Accueil{% endblock %}
+{% block css %}
+    <link rel="stylesheet" href="{{ asset('css/indexstyle.css') }}">
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello </h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="fw-bold">Forum Arcade</h1>
+            </div>
+        </div>
+        {# News Site #}
+        <div class="row my-5">
+            <article class="col-12 text-center h-50">
+                <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <div class="card">
+                                <div class="card-header bg-darkblue">
+                                    Actualité
+                                </div>
+                                <div class="card-body p-0 carousel-height">
+                                    <h2>Lorem ipsum dolor sit amet.</h2>
+                                    <blockquote class="blockquote mb-0 h-50">
+                                        <p>A well-known quote, contained in a blockquote element. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime repudiandae, fuga autem reprehenderit illum repellendus quam saepe natus rerum. Maiores quidem vero odio suscipit quo nam provident asperiores ducimus a.
+                                            Deserunt repudiandae vitae laborum id exercitationem soluta </p>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card">
+                                <div class="card-header bg-darkblue">
+                                    Actualité
+                                </div>
+                                <div class="card-body p-0 carousel-height">
+                                    <blockquote class="blockquote mb-0 h-50">
+                                        <p>A well-known quote, contained in a blockquote element. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime repudiandae, fuga autem reprehenderit illum repellendus quam saepe natus rerum. Maiores quidem vero odio suscipit quo nam provident asperiores ducimus a.
+                                            Deserunt repudiandae vitae laborum id exercitationem soluta </p>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="card">
+                                <div class="card-header bg-darkblue">
+                                    Actualité
+                                </div>
+                                <div class="card-body p-0 carousel-height">
+                                    <blockquote class="blockquote mb-0 h-50">
+                                        <p>A well-known quote, contained in a blockquote element. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime repudiandae, fuga autem reprehenderit illum repellendus quam saepe natus rerum. Maiores quidem vero odio suscipit quo nam provident asperiores ducimus a.
+                                            Deserunt repudiandae vitae laborum id exercitationem soluta </p>
+                                    </blockquote>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </article>
+        </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/kevin/OneDrive/Bureau/Dev/WF3/Symfony/arcade/arcade/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/kevin/OneDrive/Bureau/Dev/WF3/Symfony/arcade/arcade/templates/main/index.html.twig'|file_link(0) }}">templates/main/index.html.twig</a></code></li>
-    </ul>
-</div>
+        {# Catégories principales #}
+        <div class="row pb-4 col-12 mb-4 justify-content-md-start">
+            <h2>Arcade</h2>
+            <div class="col-4 col-md-2">
+                <div class="category w-100 d-flex flex-column justify-content-center">
+                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
+                    <h3>News</h3>
+                </div>
+            </div>
+
+            <div class="col-4 col-md-2">
+                <div class="category w-100 d-flex flex-column justify-content-center">
+                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
+                    <h3>Règles</h3>
+                </div>
+            </div>
+
+            <div class="col-4 col-md-2">
+                <div class="category w-100 d-flex flex-column justify-content-center">
+                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
+                    <h3>Bug et Suggestions</h3>
+                </div>
+            </div>
+            <div class="col-4 col-md-2">
+                <div class="category w-100 d-flex flex-column justify-content-center">
+                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
+                    <h3>Demande d'ajout de catégorie</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pb-4 col-12 mb-4 justify-content-md-start">
+            <h2>Plateforme</h2>
+            <div class="col-4 col-md-2">
+                <div class="category w-100 d-flex flex-column justify-content-center">
+                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
+                    <h3>PC</h3>
+                </div>
+            </div>
+
+            <div class="col-4 col-md-2">
+                <div class="category w-100 d-flex flex-column justify-content-center">
+                    <img src="{{ asset('images/playstation.png') }}" class="img-fluid" alt="...">
+                    <h3>Playstation</h3>
+                </div>
+            </div>
+
+            <div class="col-4 col-md-2">
+                <div class="category w-100 d-flex flex-column justify-content-center">
+                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
+                    <h3>Xbox</h3>
+                </div>
+            </div>
+            <div class="col-4 col-md-2">
+                <div class="category w-100 d-flex flex-column justify-content-center">
+                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
+                    <h3>Nintendo</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
 {% endblock %}

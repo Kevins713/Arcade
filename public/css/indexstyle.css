@@ -1,0 +1,19 @@
+@media (max-width: 991px) {
+    .carousel-height{
+        height: 400px;
+    }
+
+}
+@media (min-width: 1440px) {
+    .carousel-height{
+        height: 200px;
+    }
+}
+.card {
+    height: 131px;
+    width: 125px;
+}
+.card img {
+    height: 131px;
+    width: 125px;
+}
