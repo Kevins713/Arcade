@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\CategoryFormType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use App\Entity\SubCategory;
+use App\Entity\Forum;
+use App\Entity\Comment;
+use \DateTime;
 
 /**
  * Contrôleurs de la page qui liste les categories du site
@@ -33,20 +38,20 @@ class ForumController extends AbstractController
         $form = $this->createForm(CategoryFormType::class, $newCategory);
         $form->handleRequest($request);
 
-        if($form->isSubmitted()&& $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $image = $form->get('image')->getData();
 
             $imageDirectory = $this->getParameter('app_category_image_directory');
 
             $connectedUser = $this->getUser();
-            do{
+            do {
 
                 $newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $image->guessExtension();
 
                 dump($newFileName);
 
-            } while( file_exists( $imageDirectory . $newFileName ) );
+            } while (file_exists($imageDirectory . $newFileName));
 
             // Mise à jour du nom de la photo de profil de l'utilisateur connecté dans la BDD
             $newCategory->setImage($newFileName);
@@ -69,7 +74,7 @@ class ForumController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('forum/newCategory.html.twig',  [
+        return $this->render('forum/newCategory.html.twig', [
             'form' => $form->createView(),
         ]);
     }
@@ -80,8 +85,27 @@ class ForumController extends AbstractController
     public function category(CategoryRepository $category, Request $request): Response
     {
 
-        return $this->render('main/index.html.twig',[
+        return $this->render('main/index.html.twig', [
             'categories' => $category->findAll(),
         ]);
     }
+
+    /**
+     * @Route("/sub-category/", name="sub_category")
+     */
+    public function sub_category(): Response
+    {
+        return $this->render('forum/subCategory.html.twig'
+        );
+    }
+
+    /**
+     * @Route("/sub-category/forum/", name="forum")
+     */
+    public function forum(): Response
+    {
+        return $this->render('forum/forum.html.twig');
+
+    }
+
 }
