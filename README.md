@@ -20,7 +20,7 @@ DATABASE_URL="mysql://user_db:password_db@127.0.0.1:3306/arcade?serverVersion=8.
 
 ### Déplacer le terminal dans le dossier cloné
 ```
-cd forum-arcade
+cd arcade
 ```
 
 ### Taper les commandes suivantes :
