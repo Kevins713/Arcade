@@ -69,6 +69,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $forums;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $lastVisit;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -265,6 +270,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $forum->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastVisit(): ?\DateTimeInterface
+    {
+        return $this->lastVisit;
+    }
+
+    public function setLastVisit(\DateTimeInterface $lastVisit): self
+    {
+        $this->lastVisit = $lastVisit;
 
         return $this;
     }

@@ -45,6 +45,9 @@ class ForumController extends AbstractController
             $imageDirectory = $this->getParameter('app_category_image_directory');
 
             $connectedUser = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newCategory);
+
             do {
 
                 $newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $image->guessExtension();
@@ -62,13 +65,6 @@ class ForumController extends AbstractController
                 $imageDirectory,
                 $newFileName
             );
-
-            // récupération du manager des entités et sauvegarde en BDD de $newCategory
-            $em = $this->getDoctrine()->getManager();
-
-            $em->persist($newCategory);
-
-            $em->flush();
 
             $this->addFlash('success', 'Catégorie créée avec succès !');
             return $this->redirectToRoute('home');

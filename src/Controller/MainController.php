@@ -12,13 +12,17 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class MainController extends AbstractController
 {
     /**
+     * Page d'accueil
      * @Route("/", name="home")
      */
     public function index(CategoryRepository $categories,Request $request): Response
     {
+        // Requête du flux RSS des actualités
+        $rss = simplexml_load_file('https://www.jeuxactu.com/rss/multi.rss');
 
         return $this->render('main/index.html.twig', [
-            'categories' => $categories->findAll()
+            'categories' => $categories->findAll(),
+            'rss' => $rss->channel->item
         ]);
     }
 

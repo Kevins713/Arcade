@@ -32,6 +32,15 @@ a{
 .color-darkblue{
     color: var(--forum-darkblue);
 }
+.btn.btn-darkblue {
+    background-color: var(--forum-darkblue);
+    color: #eaeaea;
+    border-radius: 30px;
+    border: 3px solid var(--forum-lightblue);
+}
+.btn.btn-darkblue:hover{
+    background-color: var(--forum-orange);
+}
 /* Nécessaire à base.html.twig */
 .nav-link, .dropdown-item{
     color: #eaeaea;

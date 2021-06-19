@@ -36,15 +36,35 @@ a:hover {
     justify-content: center;
     align-items: center;
 }
+/* Aside */
 .aside {
     height: 60px;
 }
 .aside p{
     font-size: xx-small;
 }
-.btn.btn-darkblue {
-    background-color: var(--forum-darkblue);
-    color: #eaeaea;
-    border-radius: 5px;
-    border: 3px solid var(--forum-lightblue);
+.users-connected span a{
+    color: var(--forum-darkblue);
 }
+
+/* Actualité (flux RSS) */
+.wrapper {
+    display: grid;
+}
+.wrapper .img {
+    grid-column: 1 / 1;
+    grid-row: 1;
+}
+.wrapper .text {
+    grid-column: 2 / 3;
+    grid-row: 1;
+}
+/*@media (max-width: 991px){*/
+/*    .rss-img img{*/
+/*        max-height: 300px;*/
+/*    }*/
+/*}@media (min-width: 992px){*/
+/*    .rss-img img{*/
+/*        max-height: 300px;*/
+/*    }*/
+/*}*/

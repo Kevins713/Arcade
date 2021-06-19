@@ -4,6 +4,10 @@
 {% block css %}
     <link rel="stylesheet" href="{{ asset('css/indexstyle.css') }}">
 {% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/index.js') }}"></script>
+{% endblock %}
 
 {% block body %}
 
@@ -77,35 +81,55 @@
             </article>
         </div>
 
-        {# Catégories principales #}
         <div class="row">
-            <div class="col-5 col-md-9">
+            {# Catégories principales #}
+            <div class="col-6 offset-3 offset-lg-0 col-lg-9">
                 <h2>Catégories</h2>
-                <div class="row pb-4 mb-4 justify-content-md-start">
+                <div class="row pb-4 mb-4 justify-content-lg-start">
                 {% for category in categories %}
 
-                    <div class="col-12 col-md-2 my-2">
+                    <div class="col-12 col-md-6 col-lg-2 my-2">
                         <a href="">
                             <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
                                 <img src="{{ asset('images/categories/' ~ category.image ) }}" class="img-fluid" alt="...">
                                 <div class="category-title mt-1">
-                                    <h6 class="text-white fs-6 fs-md-3">{{ category.title }}</h6>
+                                    <h6 class="text-white fs-6 fs-lg-3">{{ category.title|capitalize }}</h6>
                                 </div>
                             </div>
                         </a>
                     </div>
                     {% endfor %}
                     {% if is_granted('ROLE_MODERATOR') %}
-                        <div class="col-12 col-md-2 my-2 d-flex align-items-center">
+                        <div class="col-12 col-md-6 col-lg-2 my-2 d-flex align-items-center">
                             <a href="{{ path('category_new_category') }}"><button class="btn btn-darkblue">Ajouter une catégorie</button></a>
                         </div>
                     {% endif %}
                 </div>
             </div>
-            <div class="col-5 offset-2 col-md-3">
+
+
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                <h2>Actualités</h2>
+                {% for item in rss %}
+                    <div class="my-1 wrapper bg-darkblue">
+                        <div class="rss-img img my-auto">
+                            <img class="img-fluid" src="{{ item.enclosure.attributes.url }}" alt=""><br>
+                        </div>
+                        <div class="ms-2 text">
+                            <h6><a href="{{ item.link }}">{{ item.title }}</a></h6>
+                            <p>{{ item.description }}</p>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+            {# Aside Statistiques #}
+            <div class="col-12 col-lg-3">
                 <!-- Aside -->
                 <aside class="col-12">
-                    <h2>Statistique</h2>
+                    <h2>Statistiques</h2>
                     <div class="row">
                         <div class="col-12 p-2">
                             <div class="aside-header bg-darkblue p-2 rounded-1">
@@ -123,9 +147,7 @@
                                 <h3 class="h6">Membres en ligne</h3>
                             </div>
                             <div class="aside-content">
-                                <p class="p-2 bg-light text-secondary">user user user user user user user user user user user user user user user user user
-                                    user user user user user user user user user user user user user user user user user user user user user user user user user user user user user user user
-                                </p>
+                                <p class="p-2 users-connected bg-light text-secondary"></p>
                             </div>
                         </div>
 
@@ -146,17 +168,17 @@
                             <div class="aside-header bg-darkblue p-2 rounded-1">
                                 <h3 class="h6">Derniers messages publiés</h3>
                             </div>
-                                <div class="aside-content">
-                                    <div class="row">
-                                        <div class="col-3 aside avatar d-flex align-items-center">
-                                            <img src="{{ asset('images/logo.jpg') }}" alt="">
-                                        </div>
-                                        <div class="col-9 aside">
-                                            <h6>Titre de caractères 15</h6>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
-                                        </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
                                     </div>
                                 </div>
+                            </div>
                             <div class="aside-content">
                                 <div class="row">
                                     <div class="col-3 aside avatar d-flex align-items-center">
