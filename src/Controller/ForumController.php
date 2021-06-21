@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ForumRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,9 +43,11 @@ class ForumController extends AbstractController
     /**
      * @Route("/sub-category/forum/", name="forum")
      */
-    public function forum(): Response
+    public function forum(ForumRepository $forum, Request $request): Response
     {
-        return $this->render('forum/forum.html.twig');
+        return $this->render('forum/forum.html.twig',[
+            'forum'=>$forum->findAll(),
+    ]);
     }
 
 }

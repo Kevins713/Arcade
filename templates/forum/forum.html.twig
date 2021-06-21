@@ -1,19 +1,329 @@
 {% extends 'base.html.twig' %}
-{% block title %}Hello ForumController!{% endblock %}
+
+{% block title %} Forum {% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {# Fil d'Ariane #}
+    <div class="row my-5">
+        <div class="col-12 text-center bg-warning">
+            <h3>Fil d'ariane ?</h3>
+        </div>
+    </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/kevin/OneDrive/Bureau/Dev/WF3/Symfony/arcade/arcade/src/Controller/ForumController.php'|file_link(0) }}">src/Controller/ForumController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/kevin/OneDrive/Bureau/Dev/WF3/Symfony/arcade/arcade/templates/forum/index.html.twig'|file_link(0) }}">templates/forum/index.html.twig</a></code></li>
-    </ul>
-</div>
+
+
+    {# Titre de la discussion + autheur + date #}
+    <div class="row">
+        <div class="col-6 offset-3 text-center">
+            <h2>{ { forum.title } }</h2>
+            <div class="d-flex flex-column flex-lg-row justify-content-center">
+                <p class="text-secondary px-3"><span><i class="fas fa-user px-1"></i></span>
+                    <a href="#">{ { forum.author.pseudonym } } </a></p>
+                <p class="text-secondary"><span><i class="far fa-clock px-1"></i></span>{
+                    {forum.publication_date|date("d/m/Y à H\\hi"") } }</p>
+            </div>
+        </div>
+    </div>
+
+    {# Topic #}
+    <div class="row mt-5">
+
+        {# Affiche le nombre message + pagination #}
+        <div class="row">
+            <p class="col-12 text-center">Nombre total de message : 10</p>
+        </div>
+        <div class="row">
+            <div class="me-auto m-3 text-center d-flex justify-content-end ">
+                <div class=" btn btn-darkblue  offset-8 col-3">
+                    { { knp_pagination_render(comment) } }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="row">
+                <div class="bg-darkblue m-0 d-flex flex-column flex-lg-row">
+                    <p class="px-3 py-2">
+                        <a href="#">{ { category.title } }</a> >
+                        <a href="#">{ { sub-categoy.title } }</a> >
+                        <a href="#">{ { forum.title } }</a>
+                    </p>
+                </div>
+
+                <div class="row topic-forum bg-dark border border-dark border-3 p-0 g-0
+                            d-flex flex-column flex-lg-row">
+
+                    {# Profil de l'utilisateur (pseudo, rôle, photo de profil si il y'en as une, date d'inscription, nombre de messages) (bonne chance pour le
+                responsive) #}
+                    <div class=" col-12 col-lg-3 col-xl-2 d-flex ">
+                        <div class="col-12 d-flex bg-dark">
+
+
+                            {# détails profil #}
+                            <div class="card-profil-topic card rounded bg-dark text-white p-lg-3
+                            d-flex flex-grow-1     d-flex flex-row flex-lg-column">
+                                <a href="#"><img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                                 alt="avatar user" class="bg-darkblue rounded mb-3 mb-lg-5
+                     offset-2 col-8 mt-2     offset-lg-1 col-lg-10 mt-0 p-3"></a>
+
+                                <div class="mb-0 fs-6 card-title text-center">
+                                    <a href="#"><h6 class="mb-0 p-1 ">Pseudo : { { app.user.pseudonym } }</h6></a>
+                                    <h6 class="mb-0 p-1 ">Statut : { { app.user.roles[0] } } </h6>
+                                    {# todo: renomer les roles #}
+                                </div>
+                                <hr>
+                                <div class="card-body d-none d-lg-block">
+                                    <div class="card-text">
+                                        <h6 class="mb-3">Date d'inscription : { {
+                                            app.user.registrationDate|date("d/m/Y") } }</h6>
+                                    </div>
+                                    <div class="card-text">
+                                        <h6 class="mb-0">Messages : { { requetes nombre de messages postés } }</h6>
+                                    </div>
+
+
+                                </div> {# fin card-body #}
+
+                            </div> {# fin card #}
+
+
+                        </div>
+
+                    </div> {# fin col-2 profil #}
+
+                    {# content col-10 #}
+                    <div class="col-12 col-lg-9 col-xl-10 bg-light
+                                d-flex flex-column">
+                        <div class="d-flex  flex-grow-1 p-5">
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio quidem magni
+                                commodi quos, et, adipisci rem placeat earum fugiat sunt temporibus? Natus
+                                cupiditate non commodi libero numquam provident, corporis quas? Lorem ipsum dolor
+                                sit amet consectetur, adipisicing elit. Ullam iure sint ea est, cumque quasi porro
+                                recusandae numquam, hic vel provident quae, ipsa excepturi veritatis delectus
+                                deleniti ut cupiditate? Labore.
+
+                            </p>
+                        </div>
+
+                        <hr>
+                        <div class="d-flex justify-content-end me-2">
+                            <div class="p-2 "><a class=" btn btn-darkblue " href="#">Editer le contenu</a></div>
+                            <div class="p-2 "><a class=" btn btn-darkblue " href="#">Supprimer le message</a></div>
+                        </div>
+
+                    </div>{# fin col-10 contenu #}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {# premier modèle pour les réponses au topic #}
+    <div class="row mt-5">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="bg-darkblue m-0 d-flex flex-column flex-lg-row">
+                    <p class="px-3 py-2">Date de publication : { {forum.publication_date|date("d/m/Y à H\\hi"") } }</p>
+                    <p class="px-3 py-2">
+                        <a href="#">{ { category.title } }</a> >
+                        <a href="#">{ { sub-categoy.title } }</a> >
+                        <a href="#">{ { forum.title } }</a>
+                    </p>
+                </div>
+
+                <div class="row topic-forum bg-dark border border-dark border-3 p-0 g-0
+                            d-flex flex-column flex-lg-row">
+
+                    {# Profil de l'utilisateur (pseudo, rôle, photo de profil si il y'en as une, date d'inscription, nombre de messages) (bonne chance pour le
+responsive) #}
+                    <div class=" col-12 col-lg-3 col-xl-2 d-flex ">
+                        <div class="col-12 d-flex bg-dark">
+
+
+                            {# détails profil #}
+                            <div class="card-profil-topic card rounded bg-dark text-white p-lg-3
+                            d-flex flex-grow-1     d-flex flex-row flex-lg-column">
+                                <a href="#"><img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                                 alt="avatar user" class="bg-darkblue rounded mb-3 mb-lg-5
+                                offset-2 col-8 mt-2     offset-lg-1 col-lg-10 mt-0 p-3"></a>
+
+                                <div class="mb-0 fs-6 card-title text-center">
+                                    <a href="#"><h6 class="mb-0 p-1 ">Pseudo : {{ app.user.pseudonym }}</h6></a>
+                                    <h6 class="mb-0 p-1 ">Statut : {{ app.user.roles[0] }} </h6>
+                                    {# todo: renomer les roles #}
+                                </div>
+                                <hr>
+                                <div class="card-body d-none d-lg-block">
+                                    <div class="card-text">
+                                        <h6 class="mb-3">Date d'inscription
+                                            : {{ app.user.registrationDate|date("d/m/Y") }}</h6>
+                                    </div>
+                                    <div class="card-text">
+                                        <h6 class="mb-0">Messages : { { requetes nombre de messages postés } }</h6>
+                                    </div>
+
+
+                                </div><!-- fin card-body-->
+
+                            </div><!-- fin card-->
+
+                        </div>
+
+                    </div><!-- fin col-2 profil-->
+
+                    <!--  content col-10 -->
+                    <div class="col-12 col-lg-9 col-xl-10 bg-light
+                                d-flex flex-column">
+                        <div class="d-flex  flex-grow-1 p-5">
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio quidem magni
+                                commodi quos, et, adipisci rem placeat earum fugiat sunt temporibus? Natus
+                                cupiditate non commodi libero numquam provident, corporis quas? Lorem ipsum dolor
+                                sit amet consectetur, adipisicing elit. Ullam iure sint ea est, cumque quasi porro
+                                recusandae numquam, hic vel provident quae, ipsa excepturi veritatis delectus
+                                deleniti ut cupiditate? Labore.
+                                Qui impedit aliquid maxime inventore labore cum quibusdam nulla error ipsam rem
+                                autem alias dolorem, ipsa, hic deserunt nam illo, sunt provident fugit! Voluptatem
+                                accusantium dolores excepturi assumenda velit dicta?Lorem ipsum dolor sit, amet
+                                consectetur adipisicing elit. Earum, vero voluptate accusantium consectetur veniam
+                                temporibus. Quasi incidunt, commodi consequuntur alias error consectetur, laboriosam
+                                eaque excepturi aspernatur, vel beatae accusantium! Rem?
+                            </p>
+                        </div>
+
+                        <hr>
+                        <div class="d-flex justify-content-end me-2">
+                            <div class="p-2 "><a class=" btn btn-darkblue " href="#">Editer le contenu</a></div>
+                            <div class="p-2 "><a class=" btn btn-darkblue " href="#">Supprimer le message</a></div>
+                        </div>
+
+                    </div>
+                    <{# fin col-10 contenu #}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# premier modèle pour les réponses au topic #}
+    <div class="row mt-5">
+
+        <div class="col-12">
+            <div class="row">
+                <div class="bg-darkblue m-0 d-flex flex-column flex-lg-row">
+                    <p class="px-3 py-2">Date de publication : { {forum.publication_date|date("d/m/Y à H\\hi"") } }</p>
+                    <p class="px-3 py-2">
+                        <a href="#">{ { category.title } }</a> >
+                        <a href="#">{ { sub-categoy.title } }</a> >
+                        <a href="#">{ { forum.title } }</a>
+                    </p>
+                </div>
+
+                <div class="row topic-forum bg-dark border border-dark border-3 p-0 g-0
+                            d-flex flex-column flex-lg-row">
+
+                    {# Profil de l'utilisateur #}
+                    <div class=" col-12 col-lg-3 col-xl-2 d-flex ">
+                        <div class="col-12 d-flex bg-dark">
+
+
+                            {# détails profil #}
+                            <div class="card-profil-topic card rounded bg-dark text-white p-lg-3
+                            d-flex flex-grow-1     d-flex flex-row flex-lg-column">
+                                <a href="#"><img src="https://image.flaticon.com/icons/png/128/3237/3237472.png"
+                                                 alt="avatar user" class="bg-darkblue rounded mb-3 mb-lg-5
+                                offset-2 col-8 mt-2     offset-lg-1 col-lg-10 mt-0 p-3"></a>
+
+                                <div class="mb-0 fs-6 card-title text-center">
+                                    <a href="#"><h6 class="mb-0 p-1 ">Pseudo : {{ app.user.pseudonym }}</h6></a>
+                                    <h6 class="mb-0 p-1 ">Statut : {{ app.user.roles[0] }} </h6>
+                                    {# todo: renomer les roles #}
+                                </div>
+                                <hr>
+                                <div class="card-body d-none d-lg-block">
+                                    <div class="card-text">
+                                        <h6 class="mb-3">Date d'inscription
+                                            : {{ app.user.registrationDate|date("d/m/Y") }}</h6>
+                                    </div>
+                                    <div class="card-text">
+                                        <h6 class="mb-0">Messages : { { requetes nombre de messages postés } }</h6>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!--  content col-10 -->
+                    <div class="col-12 col-lg-9 col-xl-10 bg-light
+                                d-flex flex-column">
+                        <div class="d-flex  flex-grow-1 p-5">
+                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio quidem magni
+                                commodi quos, et, adipisci rem placeat earum fugiat sunt temporibus? Natus
+                                cupiditate non commodi libero numquam provident, corporis quas? Lorem ipsum dolor
+                                sit amet consectetur, adipisicing elit. Ullam iure sint ea est, cumque quasi porro
+                                recusandae numquam, hic vel provident quae, ipsa excepturi veritatis delectus
+                                deleniti ut cupiditate? Labore.
+                                Qui impedit aliquid maxime inventore labore cum quibusdam nulla error ipsam rem
+                                autem alias dolorem, ipsa, hic deserunt nam illo, sunt provident fugit! Voluptatem
+                                accusantium dolores excepturi assumenda velit dicta?Lorem ipsum dolor sit, amet
+                                consectetur adipisicing elit. Earum, vero voluptate accusantium consectetur veniam
+                                temporibus. Quasi incidunt, commodi consequuntur alias error consectetur, laboriosam
+                                eaque excepturi aspernatur, vel beatae accusantium! Rem?
+                            </p>
+                        </div>
+
+                        <hr>
+                        <div class="d-flex justify-content-end me-2">
+                            <div class="p-2 "><a class=" btn btn-darkblue " href="#">Editer le contenu</a></div>
+                            <div class="p-2 "><a class=" btn btn-darkblue " href="#">Supprimer le message</a></div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# pagination bottom #}
+    <div class="row">
+        <div class="me-auto m-3 text-center d-flex justify-content-end ">
+            <div class=" btn btn-darkblue  offset-8 col-3">
+                { { knp_pagination_render(comment) } }
+            </div>
+        </div>
+    </div>
+
+    {# Formulaire de réponses #}
+    <div class="row">
+        <div class="col-12 col-md-8 offset-md-2 mt-5 bg-blue p-5">
+            <form class="border border-secondary border-3 p-3 bg-grey " action="" method="GET">
+
+                <h2 class=" text-center mt-5 display-3">Formulaire de réponse</h2>
+
+                <div class="mb-3 display-9"> {# todo : form-floating ko #}
+                    {# message #}
+                    <label for="message-response"> Message :</label>
+                    <textarea class="form-control" placeholder=" Laisser un commentaire " id="message-response"
+                              rows="6"></textarea>
+                </div>
+
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    {# bouton de validation #}
+                    <input type="submit" class="btn btn-darkblue col-12" value="Publier la réponse">
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    </div> {# fin contener fluid #}
+
 {% endblock %}
