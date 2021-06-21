@@ -2,20 +2,26 @@
 
 namespace App\Controller;
 
-use App\Repository\ForumRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use App\Entity\Category;
-use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Knp\Component\Pager\PaginatorInterface;
-use App\Form\CategoryFormType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Knp\Component\Pager\PaginatorInterface;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\CategoryRepository;
+use App\Repository\ForumRepository;
+
+use App\Form\CreateCommentFormType;
+use App\Form\CategoryFormType;
+
+use App\Entity\Category;
 use App\Entity\SubCategory;
 use App\Entity\Forum;
 use App\Entity\Comment;
+use App\Entity\User;
+
 use \DateTime;
 
 /**
@@ -77,6 +83,9 @@ class ForumController extends AbstractController
         ]);
     }
 
+
+
+
     /**
      * @Route("/{slug}/", name="category_")
      */
@@ -88,6 +97,8 @@ class ForumController extends AbstractController
         ]);
     }
 
+
+
     /**
      * @Route("/sous-categorie/", name="sub_category")
      */
@@ -97,14 +108,61 @@ class ForumController extends AbstractController
         );
     }
 
+
+
     /**
-     * @Route("/sous-categorie/forum/", name="forum")
+     * @Route("/sous-categorie/{slug}/", name="forum")
      */
-    public function forum(ForumRepository $forum, Request $request): Response
+    public function forum(Forum $forum, Request $request): Response
     {
+        // Si l'utilisateur n'est pas connecté, on appel directement la vue sans traiter le formulaire en dessous
+        if(!$this->getUser()){
+            return $this->render('forum\forum.html.twig', [
+                'forum' => $forum,
+            ]);
+        }
+
+        // Création d'un nouveau Comment
+        $newComment = new Comment();
+
+        // Création d'un nouveau formulaire
+        $form = $this->createForm(CreateCommentFormType::class, $newComment);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            // Récupération de la personne connectée
+            $connectedUser = $this->getUser();
+
+            // Hydratation du comment avec la date et l'auteur
+            $newComment
+                ->setPublicationDate( new DateTime() )
+                ->setAuthor($connectedUser)
+                ->setForum($forum)
+            ;
+
+            // Récupération du manager général pour sauvegarder l'article en BDD
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($newComment);
+
+            $em->flush();
+
+            // Message flash de succès
+
+            // supression des deux variables
+            unset($newComment);
+            unset($form);
+
+            $newComment = new Comment();
+            $form = $this->createForm(CreateCommentFormType::class, $newComment);
+        }
+
         return $this->render('forum/forum.html.twig',[
-            'forum'=>$forum->findAll(),
-    ]);
+            'forum'=>$forum,
+            'form' =>$form->createView(),
+        ]);
     }
 
 }
