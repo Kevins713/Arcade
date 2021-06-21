@@ -89,7 +89,7 @@ class ForumController extends AbstractController
     }
 
     /**
-     * @Route("/sub-category/", name="sub_category")
+     * @Route("/sous-categorie/", name="sub_category")
      */
     public function sub_category(): Response
     {
@@ -98,7 +98,7 @@ class ForumController extends AbstractController
     }
 
     /**
-     * @Route("/sub-category/forum/", name="forum")
+     * @Route("/sous-categorie/forum/", name="forum")
      */
     public function forum(ForumRepository $forum, Request $request): Response
     {
