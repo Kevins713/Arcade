@@ -6,32 +6,88 @@ use App\Repository\ForumRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Form\CategoryFormType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use App\Entity\SubCategory;
-use App\Entity\Category;
 use App\Entity\Forum;
 use App\Entity\Comment;
-
 use \DateTime;
 
 /**
- * @Route("/category", name="category")
+ * Contrôleurs de la page qui liste les categories du site
+ *
+ * @Route("/categorie", name="category_")
  */
 class ForumController extends AbstractController
 {
+
     /**
-     * @Route("/", name="category")
+     * Contrôleur de la page permettant de créer une nouvelle sous categorie
+     *
+     * @Route("/nouvelle-categorie/", name="new_category")
+     * @Security("is_granted('ROLE_ADMIN','ROLE_MODERATOR')")
      */
-    public function category(): Response
+    public function newCategory(Request $request): Response
     {
-        return $this->render('forum/category.html.twig'
-        );
+
+
+        $newCategory = new Category();
+        $form = $this->createForm(CategoryFormType::class, $newCategory);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $image = $form->get('image')->getData();
+
+            $imageDirectory = $this->getParameter('app_category_image_directory');
+
+            $connectedUser = $this->getUser();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newCategory);
+
+            do {
+
+                $newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $image->guessExtension();
+
+                dump($newFileName);
+
+            } while (file_exists($imageDirectory . $newFileName));
+
+            // Mise à jour du nom de la photo de profil de l'utilisateur connecté dans la BDD
+            $newCategory->setImage($newFileName);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $image->move(
+                $imageDirectory,
+                $newFileName
+            );
+
+            $this->addFlash('success', 'Catégorie créée avec succès !');
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('forum/newCategory.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
+
+    /**
+     * @Route("/{slug}/", name="category_")
+     */
+    public function category(CategoryRepository $category, Request $request): Response
+    {
+
+        return $this->render('main/index.html.twig', [
+            'categories' => $category->findAll(),
+        ]);
+    }
+
     /**
      * @Route("/sub-category/", name="sub_category")
      */
@@ -40,6 +96,7 @@ class ForumController extends AbstractController
         return $this->render('forum/subCategory.html.twig'
         );
     }
+
     /**
      * @Route("/sub-category/forum/", name="forum")
      */

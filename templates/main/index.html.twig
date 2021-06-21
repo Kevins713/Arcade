@@ -4,6 +4,10 @@
 {% block css %}
     <link rel="stylesheet" href="{{ asset('css/indexstyle.css') }}">
 {% endblock %}
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/index.js') }}"></script>
+{% endblock %}
 
 {% block body %}
 
@@ -13,7 +17,7 @@
                 <h1 class="fw-bold">Forum Arcade</h1>
             </div>
         </div>
-        {# News Site #}
+        {# News Site Carousel #}
         <div class="row my-5">
             <article class="col-12 text-center h-50">
                 <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-bs-ride="carousel">
@@ -22,6 +26,7 @@
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
+
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <div class="card">
@@ -30,7 +35,7 @@
                                 </div>
                                 <div class="card-body p-0 carousel-height">
                                     <h2>Lorem ipsum dolor sit amet.</h2>
-                                    <blockquote class="blockquote mb-0 h-50">
+                                    <blockquote class="blockquote mb-0">
                                         <p>A well-known quote, contained in a blockquote element. Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime repudiandae, fuga autem reprehenderit illum repellendus quam saepe natus rerum. Maiores quidem vero odio suscipit quo nam provident asperiores ducimus a.
                                             Deserunt repudiandae vitae laborum id exercitationem soluta </p>
                                     </blockquote>
@@ -76,66 +81,152 @@
             </article>
         </div>
 
-        {# Catégories principales #}
-        <div class="row pb-4 col-12 mb-4 justify-content-md-start">
-            <h2>Arcade</h2>
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>News</h3>
+        <div class="row">
+            {# Catégories principales #}
+            <div class="col-6 offset-3 offset-lg-0 col-lg-9">
+                <h2>Catégories</h2>
+                <div class="row pb-4 mb-4 justify-content-lg-start">
+                {% for category in categories %}
+
+                    <div class="col-12 col-md-6 col-lg-2 my-2">
+                        <a href="">
+                            <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
+                                <img src="{{ asset('images/categories/' ~ category.image ) }}" class="img-fluid" alt="...">
+                                <div class="category-title mt-1">
+                                    <h6 class="text-white fs-6 fs-lg-3">{{ category.title|capitalize }}</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                    {% if is_granted('ROLE_MODERATOR') %}
+                        <div class="col-12 col-md-6 col-lg-2 my-2 d-flex align-items-center">
+                            <a href="{{ path('category_new_category') }}"><button class="btn btn-darkblue">Ajouter une catégorie</button></a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Règles</h3>
-                </div>
-            </div>
 
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Bug et Suggestions</h3>
-                </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-9">
+                <h2>Actualités</h2>
+                {% for item in rss %}
+                    <div class="my-1 wrapper bg-darkblue">
+                        <div class="rss-img img my-auto">
+                            <img class="img-fluid" src="{{ item.enclosure.attributes.url }}" alt=""><br>
+                        </div>
+                        <div class="ms-2 text">
+                            <h6><a href="{{ item.link }}">{{ item.title }}</a></h6>
+                            <p>{{ item.description }}</p>
+                        </div>
+                    </div>
+
+                {% endfor %}
             </div>
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Demande d'ajout de catégorie</h3>
-                </div>
+            {# Aside Statistiques #}
+            <div class="col-12 col-lg-3">
+                <!-- Aside -->
+                <aside class="col-12">
+                    <h2>Statistiques</h2>
+                    <div class="row">
+                        <div class="col-12 p-2">
+                            <div class="aside-header bg-darkblue p-2 rounded-1">
+                                <h3 class="h6">Membres de l'équipe en ligne</h3>
+                            </div>
+                            <div class="aside-content">
+                                <p class="p-2 bg-light text-secondary">user user user user user user user user user user user user user user user user user
+                                    user user user user user user user user user user user user user user user user user user user user user user user user user user user user user user user
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-12 p-2">
+                            <div class="aside-header bg-darkblue p-2 rounded-1">
+                                <h3 class="h6">Membres en ligne</h3>
+                            </div>
+                            <div class="aside-content">
+                                <p class="p-2 users-connected bg-light text-secondary"></p>
+                            </div>
+                        </div>
+
+                        <div class="col-12 p-2">
+                            <div class="aside-header bg-darkblue p-2 rounded-1">
+                                <h3 class="h6">Statistiques globales</h3>
+                            </div>
+                            <div class="aside-content">
+                                <p class="p-2 bg-light text-secondary">
+                                    Forums : <span>46</span><br>
+                                    Messages : <span>123045</span><br>
+                                    Membres : <span>450</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-12 p-2">
+                            <div class="aside-header bg-darkblue p-2 rounded-1">
+                                <h3 class="h6">Derniers messages publiés</h3>
+                            </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="aside-content">
+                                <div class="row">
+                                    <div class="col-3 aside avatar d-flex align-items-center">
+                                        <img src="{{ asset('images/logo.jpg') }}" alt="">
+                                    </div>
+                                    <div class="col-9 aside">
+                                        <h6>Titre de caractères 15</h6>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
             </div>
         </div>
-
-        <div class="row pb-4 col-12 mb-4 justify-content-md-start">
-            <h2>Plateforme</h2>
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>PC</h3>
-                </div>
-            </div>
-
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/playstation.png') }}" class="img-fluid" alt="...">
-                    <h3>Playstation</h3>
-                </div>
-            </div>
-
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Xbox</h3>
-                </div>
-            </div>
-            <div class="col-4 col-md-2">
-                <div class="category w-100 d-flex flex-column justify-content-center">
-                    <img src="{{ asset('images/categorie-arcade.jpg') }}" class="img-fluid" alt="...">
-                    <h3>Nintendo</h3>
-                </div>
-            </div>
-        </div>
-
     </div>
 {% endblock %}

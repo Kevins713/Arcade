@@ -30,10 +30,12 @@ class RegistrationController extends AbstractController
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
+
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $date = new \DateTime();
             // encode the plain password
             $user
                 ->setPassword(
@@ -42,7 +44,8 @@ class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             )
-                ->setRegistrationDate(new \DateTime())
+                ->setRegistrationDate($date)
+                ->setLastVisit($date)
             ;
 
             $entityManager = $this->getDoctrine()->getManager();
