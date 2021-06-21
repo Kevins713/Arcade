@@ -31,7 +31,7 @@ class Category
     private $subCategories;
 
     /**
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=160, unique=true)
      * @Gedmo\Slug(fields={"title"})
      */
     private $slug;
@@ -93,6 +93,7 @@ class Category
 
         return $this;
     }
+
 
     public function getSlug(): ?string
     {

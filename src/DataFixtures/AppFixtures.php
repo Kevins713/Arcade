@@ -32,6 +32,7 @@ class AppFixtures extends Fixture
             ->setEmail('a@a.a')
             ->setRegistrationDate( $faker->dateTimeBetween('-1 year', 'now') )
             ->setPseudonym('Tatsu')
+            ->setLastVisit(new DateTime())
             ->setRoles(['ROLE_ADMIN'])
             ->setPassword(
                 $this->encoder->encodePassword($admin, 'aaaaaaaaA7/')
