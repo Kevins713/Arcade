@@ -23,20 +23,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     /**
-     * Renvoie la liste des utilisateurs connectés (sauf informations personnelles)
-     * @return array
-     */
-    public function apiFindConnectedUsers(): array
-    {
-        $date = new \DateTime('-15 mins');
-        $qb = $this->createQueryBuilder('u')
-            ->select( 'u.pseudonym')
-            ->where('u.lastVisit > :date')
-            ->setParameter('date', $date);
-        $query = $qb->getQuery();
-        return $query->execute();
-    }
-    /**
      * Used to upgrade (rehash) the user's password automatically over time.
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newEncodedPassword): void

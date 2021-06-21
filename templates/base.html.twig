@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {# #TODO Titre par défaut à changer #}
     <title>{% block title %}Arcade{% endblock %} - Forum Arcade</title>
     {# Inclusion des fichiers CSS et CND #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -75,6 +74,7 @@
         </div>
     </nav>
 
+    {# Bannière #}
     <div class="container">
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
@@ -111,7 +111,12 @@
         </footer>
     </div>
 
+    {# Affichage des messages flashes de succès et d'erreur #}
+    {% include 'partials/success.html.twig' %}
+    {% include 'partials/error.html.twig' %}
+
     {# Inclusions des fichiers JS généraux du site #}
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
     {% block javascripts %}
