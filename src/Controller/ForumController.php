@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Category;
-use App\Repository\CategoryRepository;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Repository\ForumRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Knp\Component\Pager\PaginatorInterface;
 use App\Form\CategoryFormType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use App\Entity\SubCategory;
@@ -87,7 +89,7 @@ class ForumController extends AbstractController
     }
 
     /**
-     * @Route("/sub-category/", name="sub_category")
+     * @Route("/sous-categorie/", name="sub_category")
      */
     public function sub_category(): Response
     {
@@ -96,12 +98,13 @@ class ForumController extends AbstractController
     }
 
     /**
-     * @Route("/sub-category/forum/", name="forum")
+     * @Route("/sous-categorie/forum/", name="forum")
      */
-    public function forum(): Response
+    public function forum(ForumRepository $forum, Request $request): Response
     {
-        return $this->render('forum/forum.html.twig');
-
+        return $this->render('forum/forum.html.twig',[
+            'forum'=>$forum->findAll(),
+    ]);
     }
 
 }

@@ -21,7 +21,7 @@ class CategoryFormType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => false,
                 'attr' => [
-                    'placeholder' => 'Choisissez un titre'
+                    'placeholder' => 'Ecrivez un titre'
                 ],
                 'constraints' => [
                     new NotBlank([
