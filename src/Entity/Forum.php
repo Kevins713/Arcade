@@ -6,6 +6,7 @@ use App\Repository\ForumRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=ForumRepository::class)
@@ -35,7 +36,8 @@ class Forum
     private $publicationDate;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=255, unique=true)
+     * @Gedmo\Slug(fields={"title"})
      */
     private $slug;
 
@@ -112,6 +114,7 @@ class Forum
 
         return $this;
     }
+
 
     public function getSubCategory(): ?SubCategory
     {
