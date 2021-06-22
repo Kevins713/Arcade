@@ -52,3 +52,28 @@ a{
     width: 50px;
 }
 
+/* Menus pagination */
+.pagination .page-item .page-link{
+    background-color: var(--forum-darkblue);
+    color: #eaeaea;
+    border-radius: 30px;
+    border: 3px solid var(--forum-lightblue);
+}
+
+.pagination .page-item.disabled{
+    background-color: var(--forum-darkblue);
+    color: grey;
+    border-radius: 30px;
+
+}
+
+.pagination .page-item.disabled .page-link, .pagination .page-item.active .page-link{
+    color: grey;
+    border-radius: 30px;
+    border: 3px solid grey;
+}
+
+.pagination .page-item a.page-link:hover{
+    background-color: var(--forum-orange);
+    color: #eaeaea;
+}

@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\CommentRepository;
+use App\Repository\SubCategoryRepository;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -112,12 +115,34 @@ class ForumController extends AbstractController
     /**
      * @Route("/sous-categorie/{slug}/", name="forum")
      */
-    public function forum(Forum $forum, Request $request): Response
+    public function forum(Forum $forum, CategoryRepository $categories, SubCategoryRepository $subCategories, Request $request, PaginatorInterface $paginator): Response
     {
+
+        //Paginator pour les commentaires de la page forum
+        $requestedPage = $request->query->getInt('page', 1);
+
+        if($requestedPage < 1){
+            throw new NotFoundHttpException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT c FROM App\Entity\Comment c ORDER BY c.publicationDate DESC');
+
+        $comments = $paginator->paginate(
+            $query,             // Requête de selection
+            $requestedPage,     // Numéro de la page actuelle
+            3              // Nombre d'articles par page
+        );
+
+
         // Si l'utilisateur n'est pas connecté, on appel directement la vue sans traiter le formulaire en dessous
         if(!$this->getUser()){
             return $this->render('forum\forum.html.twig', [
                 'forum' => $forum,
+                'comments'=>$comments,
+                'categories' => $categories->findAll(),
+                'subCategories'=>$subCategories->findAll(),
             ]);
         }
 
@@ -149,7 +174,7 @@ class ForumController extends AbstractController
             $em->flush();
 
             // Message flash de succès
-
+                //todo
             // supression des deux variables
             unset($newComment);
             unset($form);
@@ -158,9 +183,14 @@ class ForumController extends AbstractController
             $form = $this->createForm(CreateCommentFormType::class, $newComment);
         }
 
+
+
         return $this->render('forum/forum.html.twig',[
             'forum'=>$forum,
+            'comments'=>$comments,
             'form' =>$form->createView(),
+            'categories' => $categories->findAll(),
+            'subCategories'=>$subCategories->findAll(),
         ]);
     }
 }

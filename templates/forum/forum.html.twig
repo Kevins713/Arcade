@@ -16,12 +16,11 @@
     {# Titre de la discussion + autheur + date #}
     <div class="row">
         <div class="col-6 offset-3 text-center">
-            <h2>{ { forum.title } }</h2>
+            <h2>{{ forum.title }}</h2>
             <div class="d-flex flex-column flex-lg-row justify-content-center">
                 <p class="text-secondary px-3"><span><i class="fas fa-user px-1"></i></span>
-                    <a href="#">{ { forum.author.pseudonym } } </a></p>
-                <p class="text-secondary"><span><i class="far fa-clock px-1"></i></span>{
-                    {forum.publication_date|date("d/m/Y à H\\hi"") } }</p>
+                    <a href="#">{{ forum.author.pseudonym }} </a></p>
+                <p class="text-secondary"><span><i class="far fa-clock px-1"></i></span>{{ forum.publicationDate|date("d/m/Y à H\\hi") }}</p>
             </div>
         </div>
     </div>
@@ -31,23 +30,25 @@
 
         {# Affiche le nombre message + pagination #}
         <div class="row">
-            <p class="col-12 text-center">Nombre total de message : 10</p>
+            <p class="col-12 text-center">Nombre total de message : {{ forum.comments|length }}</p>
         </div>
-        <div class="row">
-            <div class="me-auto m-3 text-center d-flex justify-content-end ">
-                <div class=" btn btn-darkblue  offset-8 col-3">
-                    { { knp_pagination_render(comment) } }
+        {% if comments is not empty %}
+            <div class="row">
+                <div class="me-auto m-3 text-center d-flex justify-content-end ">
+                    {{ knp_pagination_render(comments) }}
                 </div>
             </div>
-        </div>
+        {% endif %}
 
         <div class="col-12">
             <div class="row">
                 <div class="bg-darkblue m-0 d-flex flex-column flex-lg-row">
                     <p class="px-3 py-2">
-                        <a href="#">{ { category.title } }</a> >
-                        <a href="#">{ { sub-categoy.title } }</a> >
-                        <a href="#">{ { forum.title } }</a>
+                        <a href="#">{ { categories.title[forum.id] } }</a> >
+
+                        <a href="#">{ { categories.subCategories.title } }</a> >
+
+                        <a href="#">{{ forum.title }}</a>
                     </p>
                 </div>
 
@@ -68,18 +69,17 @@
                      offset-2 col-8 mt-2     offset-lg-1 col-lg-10 mt-0 p-3"></a>
 
                                 <div class="mb-0 fs-6 card-title text-center">
-                                    <a href="#"><h6 class="mb-0 p-1 ">Pseudo : { { forum.author.pseudonym } }</h6></a>
-                                    <h6 class="mb-0 p-1 ">Statut : { { forum.author.roles[0] } } </h6>
+                                    <a href="#"><h6 class="mb-0 p-1 ">Pseudo : {{ forum.author.pseudonym }}</h6></a>
+                                    <h6 class="mb-0 p-1 ">Statut : {{ forum.author.roles[0] }} </h6>
                                     {# todo: renomer les roles #}
                                 </div>
                                 <hr>
                                 <div class="card-body d-none d-lg-block">
                                     <div class="card-text">
-                                        <h6 class="mb-3">Date d'inscription : { {
-                                            forum.author.registrationDate|date("d/m/Y") } }</h6>
+                                        <h6 class="mb-3">Date d'inscription : {{ forum.author.registrationDate|date("d/m/Y") }}</h6>
                                     </div>
                                     <div class="card-text">
-                                        <h6 class="mb-0">Messages : { { forum.author.comment|lenght } }</h6>
+                                        <h6 class="mb-0">Messages : { { author.comment|length } }</h6>
                                     </div>
 
 
@@ -97,7 +97,7 @@
                                 d-flex flex-column">
                         <div class="d-flex  flex-grow-1 p-5">
                             {# utilisation du filtre purify du bundle exercise/htmlpurifier pour nettoyer le contenu html #}
-                            <p>{ { forum.content|purify } }</p>
+                            <p>{{ forum.content|purify }}</p>
                         </div>
 
                         <hr>
@@ -117,19 +117,19 @@
     {# premier modèle pour les réponses au topic #}
     <div class="row mt-5">
         {# Liste des commentaires liés au topic #}
-        <h2 class="text-center mb-5">Commentaires ({{ forum.comments|length }})</h2>
+        <h2 class="text-center mb-5">Commentaires </h2>
 
 
-        {% for comment in forum.comments %}
+        {% for comment in comments %}
 
         <div class="col-12">
             <div class="row">
                 <div class="bg-darkblue m-0 d-flex flex-column flex-lg-row">
-                    <p class="px-3 py-2">Date de publication : { {forum.publication_date|date("d/m/Y à H\\hi"") } }</p>
+                    <p class="px-3 py-2">Date de publication : {{comment.publicationDate|date("d/m/Y à H\\hi") }}</p>
                     <p class="px-3 py-2">
                         <a href="#">{ { category.title } }</a> >
-                        <a href="#">{ { sub-categoy.title } }</a> >
-                        <a href="#">{ { forum.title } }</a>
+                        <a href="#">{ { subCategory.title } }</a> >
+                        <a href="#">{{ forum.title }}</a>
                     </p>
                 </div>
 
@@ -194,7 +194,7 @@
             </div>
         </div>
         {% else %}
-            <p class="text-center">Aucune commentaire n'a été publié pour le moment.</p>
+            <p class="text-center">Aucun commentaire n'a été publié pour le moment.</p>
         {% endfor %}
     </div>
 
@@ -204,9 +204,7 @@
     {# pagination bottom #}
     <div class="row">
         <div class="me-auto m-3 text-center d-flex justify-content-end ">
-            <div class=" btn btn-darkblue  offset-8 col-3">
-                { { knp_pagination_render(comment) } }
-            </div>
+            {{ knp_pagination_render(comments) }}
         </div>
     </div>
 
