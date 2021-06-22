@@ -19,6 +19,17 @@ class ForumRepository extends ServiceEntityRepository
         parent::__construct($registry, Forum::class);
     }
 
+    /**
+     * Méthode pour compter le nombre de forums dans le site
+     */
+    public function countForums(){
+        $qb = $this->createQueryBuilder('f')
+            ->select('count(f.id)');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
     // /**
     //  * @return Forum[] Returns an array of Forum objects
     //  */

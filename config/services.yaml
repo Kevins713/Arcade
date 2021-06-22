@@ -7,6 +7,11 @@ parameters:
     app_category_image_directory: '%kernel.project_dir%/public/images/categories/'
     app_subcategory_image_directory: '%kernel.project_dir%/public/images/subcategories/'
 services:
+    App\EventListener\ActivitySubscriber:
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller }
+        arguments:
+            - '@security.firewall.map'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

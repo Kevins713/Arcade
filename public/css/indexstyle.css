@@ -43,7 +43,7 @@ a:hover {
 .aside p{
     font-size: xx-small;
 }
-.users-connected span a{
+.users-connected span a, .admins-connected span a{
     color: var(--forum-darkblue);
 }
 
