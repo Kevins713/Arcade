@@ -10,14 +10,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class CreateCommentFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content', TextareaType::class, [
+            ->add('content', CKEditorType::class, [
                 'label' => false,
+                // utilisation du bundle exercise/hmtlpurifier pour contrer faille XSS
+                'purify_html' => true,
                 'attr' => [
                     'rows' => 10,
                     'placeholder' => 'Laissez votre commentaire...'

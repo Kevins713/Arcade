@@ -68,18 +68,18 @@
                      offset-2 col-8 mt-2     offset-lg-1 col-lg-10 mt-0 p-3"></a>
 
                                 <div class="mb-0 fs-6 card-title text-center">
-                                    <a href="#"><h6 class="mb-0 p-1 ">Pseudo : { { app.user.pseudonym } }</h6></a>
-                                    <h6 class="mb-0 p-1 ">Statut : { { app.user.roles[0] } } </h6>
+                                    <a href="#"><h6 class="mb-0 p-1 ">Pseudo : { { forum.author.pseudonym } }</h6></a>
+                                    <h6 class="mb-0 p-1 ">Statut : { { forum.author.roles[0] } } </h6>
                                     {# todo: renomer les roles #}
                                 </div>
                                 <hr>
                                 <div class="card-body d-none d-lg-block">
                                     <div class="card-text">
                                         <h6 class="mb-3">Date d'inscription : { {
-                                            app.user.registrationDate|date("d/m/Y") } }</h6>
+                                            forum.author.registrationDate|date("d/m/Y") } }</h6>
                                     </div>
                                     <div class="card-text">
-                                        <h6 class="mb-0">Messages : { { requetes nombre de messages postés } }</h6>
+                                        <h6 class="mb-0">Messages : { { forum.author.comment|lenght } }</h6>
                                     </div>
 
 
@@ -96,14 +96,8 @@
                     <div class="col-12 col-lg-9 col-xl-10 bg-light
                                 d-flex flex-column">
                         <div class="d-flex  flex-grow-1 p-5">
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Distinctio quidem magni
-                                commodi quos, et, adipisci rem placeat earum fugiat sunt temporibus? Natus
-                                cupiditate non commodi libero numquam provident, corporis quas? Lorem ipsum dolor
-                                sit amet consectetur, adipisicing elit. Ullam iure sint ea est, cumque quasi porro
-                                recusandae numquam, hic vel provident quae, ipsa excepturi veritatis delectus
-                                deleniti ut cupiditate? Labore.
-
-                            </p>
+                            {# utilisation du filtre purify du bundle exercise/htmlpurifier pour nettoyer le contenu html #}
+                            <p>{ { forum.content|purify } }</p>
                         </div>
 
                         <hr>
@@ -182,7 +176,7 @@
                     <div class="col-12 col-lg-9 col-xl-10 bg-light
                                 d-flex flex-column">
                         <div class="d-flex  flex-grow-1 p-5">
-                            <p>{{ comment.content|nl2br}}</p>
+                            <p>{{ comment.content|purify}}</p>
                         </div>
 
                         <hr>
@@ -216,8 +210,13 @@
         </div>
     </div>
 
+    {# formulaire #}
+    <div class="row">
+        <div class="col-12 col-md-8 offset-md-2 mt-5 bg-blue p-5">
+              {{ form(form) }}
+        </div>
+    </div>
 
-    {{ form(form) }}
-    </div> {# fin contener fluid #}
+</div> {# fin contener fluid #}
 
 {% endblock %}
