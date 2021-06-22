@@ -64,7 +64,6 @@ a{
     background-color: var(--forum-darkblue);
     color: grey;
     border-radius: 30px;
-
 }
 
 .pagination .page-item.disabled .page-link, .pagination .page-item.active .page-link{
@@ -76,4 +75,8 @@ a{
 .pagination .page-item a.page-link:hover{
     background-color: var(--forum-orange);
     color: #eaeaea;
+}
+
+.page-item:not(.disabled) {
+    margin: 0.5rem; todo : ajoute de la marge au contenu du bouton de navigation disabled
 }

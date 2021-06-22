@@ -39,20 +39,20 @@ let requestApis = function () {
 
 
     // Requête ajax pour récuperer les utilisateurs connectés
-    requestUsers('http://127.0.0.1:8000/api/liste-utilisateurs-connectes', 'users-connected');
+    requestUsers('http://localhost:8000/api/liste-utilisateurs-connectes', 'users-connected');
 
 // Requête pour récupérer les admins connectés
-    requestUsers('http://127.0.0.1:8000/api/liste-admins-connectes', 'admins-connected');
+    requestUsers('http://localhost:8000/api/liste-admins-connectes', 'admins-connected');
 
 
 // Requête pour récupérer le nombre de Forums
-    requestStats('http://127.0.0.1:8000/api/nombre-forums', 'forums-number');
+    requestStats('http://localhost:8000/api/nombre-forums', 'forums-number');
 
 // Requête pour récupérer le nombre de messages
-    requestStats('http://127.0.0.1:8000/api/nombre-messages', 'comments-number');
+    requestStats('http://localhost:8000/api/nombre-messages', 'comments-number');
 
 // Requête pour récupérer le nombre de messages
-    requestStats('http://127.0.0.1:8000/api/nombre-utlisateurs', 'users-number');
+    requestStats('http://localhost:8000/api/nombre-utlisateurs', 'users-number');
 
     // Délai de 30sec avant de rafraîchir les infos
     setTimeout(requestApis, 30000);
