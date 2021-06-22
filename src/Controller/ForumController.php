@@ -89,13 +89,108 @@ class ForumController extends AbstractController
 
 
     /**
-     * @Route("/{slug}/", name="category_")
+     * Contrôleur de la page permettant de créer une nouvelle sous categorie
+     *
+     * @Route("/{slug}/nouvelle-souscategorie/", name="new_subcategory")
+     * @Security("is_granted('ROLE_ADMIN','ROLE_MODERATOR')")
      */
-    public function category(CategoryRepository $category, Request $request): Response
+    public function newSubCategory(Request $request, Category $category): Response
     {
 
-        return $this->render('main/index.html.twig', [
-            'categories' => $category->findAll(),
+
+        $newSubCategory = new SubCategory();
+        $form = $this->createForm(SubCategoryFormType::class, $newSubCategory);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $image = $form->get('image')->getData();
+
+            $imageDirectory = $this->getParameter('app_category_image_directory');
+            $connectedUser = $this->getUser();
+
+            do {
+
+                $newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $image->guessExtension();
+
+                dump($newFileName);
+
+            } while (file_exists($imageDirectory . $newFileName));
+
+            // Mise à jour du nom de la photo de la sous catégorie
+            $newSubCategory->setImage($newFileName);
+            $newSubCategory->setCategory($category);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newSubCategory);
+            $em->flush();
+
+            $image->move(
+                $imageDirectory,
+                $newFileName
+            );
+
+            $this->addFlash('success', 'Sous-Catégorie créée avec succès !');
+            return $this->redirectToRoute('category_sub_category',[
+                'slug'=> $category->getSlug()
+            ]);
+        }
+
+        return $this->render('forum/category/newSubCategory.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+        /**
+     * Contrôleur de la page permettant de créer un nouveau forum
+     *
+     * @Route("/{slug}/nouveau-forum/", name="new_forum")
+     * @Security("is_granted('ROLE_ADMIN','ROLE_MODERATOR')")
+     */
+    public function newForum(Request $request, Forum $forum): Response
+    {
+
+
+        $newForum = new Forum();
+        $form = $this->createForm(ForumFormType::class, $newForum);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $image = $form->get('image')->getData();
+
+            $imageDirectory = $this->getParameter('app_category_image_directory');
+            $connectedUser = $this->getUser();
+
+            do {
+
+                $newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $image->guessExtension();
+
+                dump($newFileName);
+
+            } while (file_exists($imageDirectory . $newFileName));
+
+            // Mise à jour du nom de la photo de la sous catégorie
+            $newForum->setImage($newFileName);
+            $newForum->setCategory($forum);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newForum);
+            $em->flush();
+
+            $image->move(
+                $imageDirectory,
+                $newFileName
+            );
+
+            $this->addFlash('success', 'Forum créée avec succès !');
+            return $this->redirectToRoute('category_forumlist',[
+                'slug'=> $category->getSlug()
+            ]);
+        }
+
+        return $this->render('forum/category/newForum.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
@@ -104,10 +199,14 @@ class ForumController extends AbstractController
     /**
      * @Route("/sous-categorie/", name="sub_category")
      */
-    public function sub_category(): Response
+    public function subCategory(SubCategoryRepository $subCategory,Category $category, Request $request): Response
     {
-        return $this->render('forum/subCategory.html.twig'
-        );
+
+        return $this->render('forum/category/subCategory.html.twig',[
+            'categorie' => $category,
+        'subcategories' => $subCategory->findAll(),
+        ]);
+
     }
 
 
