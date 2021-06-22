@@ -54,7 +54,6 @@ class ForumController extends AbstractController
 
                 $newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $image->guessExtension();
 
-                dump($newFileName);
 
             } while (file_exists($imageDirectory . $newFileName));
 
@@ -106,5 +105,4 @@ class ForumController extends AbstractController
             'forum'=>$forum->findAll(),
     ]);
     }
-
 }
