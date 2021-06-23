@@ -5,9 +5,15 @@
 {% block body %}
 
     {# Fil d'Ariane #}
-    <div class="row my-5">
-        <div class="col-12 text-center bg-warning">
-            <h3>Fil d'ariane ?</h3>
+    <div class="row my-5 ">
+        <div class="ariane col-12 text-center bg-darkblue m-0 d-flex flex-column justify-content-center flex-lg-row"> {# todo faire style.css #}
+
+                <p class="px-3 py-2">
+                    <a href="#">{ {forum.subCategory.category.title } }</a> > {# {{ path('category', { slug: forum.subCategory.category.slug }) }} #}
+                    <a href="#">{ { forum.subCategory.title } }</a> > {# {{ path('category_sub_category', { slug: forum.subCategory.slug }) }} #}
+                    <a href="#top-forum-selected">{ { forum.title } }</a>
+                </p>
+
         </div>
     </div>
 
@@ -44,13 +50,10 @@
 
         <div class="col-12">
             <div class="row">
-                <div class="bg-darkblue m-0 d-flex flex-column flex-lg-row">
+                <div class="ariane bg-darkblue m-0 d-flex flex-column flex-lg-row">
                     <p class="px-3 py-2">
-                        <a href="#">{{ forum.subcategory.category.title }}</a> > {# {{ path('category', { slug: forum.subCategory.category.slug }) }} #}
-
-                        <a href="{{ path('category_sub_category', { slug: forum.subCategory.slug }) }}">{{ forum.subCategory.title }}</a> {# todo si ko vérifier la route dans forumcontroller et vérfier les variables en paramétre - subCategory doit etre présente mais category #}
-                        >
-
+                        <a href="#">{{forum.subCategory.category.title }}</a> > {# {{ path('category', { slug: forum.subCategory.category.slug }) }} #}
+                        <a href="#">{{ forum.subCategory.title }}</a> > {# {{ path('category_sub_category', { slug: forum.subCategory.slug }) }} #}
                         <a href="#top-forum-selected">{{ forum.title }}</a>
                     </p>
                 </div>
@@ -107,12 +110,12 @@
                             <div class="d-flex justify-content-end me-2">
 
                                 <div class="p-2 ">
-                                    <a class=" btn btn-darkblue " href="#">Editer le contenu</a>
-                                </div>
+                                    <a class=" btn btn-darkblue " href="}}">Editer le contenu</a>
+                                </div> {# {{ path('forum_edit', { id : forum.id })  #}
                                 {% if is_granted('ROLE_MODERATOR') %}
                                     <div class="p-2 ">
-                                        <a class=" btn btn-darkblue " href="#">Supprimer le message</a>
-                                    </div>
+                                        <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')" class=" btn btn-darkblue " href="">Supprimer le message</a>
+                                    </div> {# {{ path('forum_delete', { id : forum.id, csrf_token : csrf_token('forum_delete' ~ forum.id ) }) }} #}
                                 {% endif %}
                             </div>
                         {% endif %}
@@ -134,11 +137,10 @@
 
             <div class="col-12">
                 <div class="row">
-                    <div class="bg-darkblue m-0 d-flex flex-column flex-lg-row">
-                        <p class="px-3 py-2">Date de publication: {{ comment.publicationDate|date("d/m/Y à H\\hi") }}</p>
+                    <div class="ariane bg-darkblue m-0 d-flex flex-column flex-lg-row">
                         <p class="px-3 py-2">
-                            <a href="#">{ { category.title } }</a> >
-                            <a href="#">{ { subCategory.title } }</a> >
+                            <a href="#">{{forum.subCategory.category.title }}</a> > {# {{ path('category', { slug: forum.subCategory.category.slug }) }} #}
+                            <a href="#">{{ forum.subCategory.title }}</a> > {# {{ path('category_sub_category', { slug: forum.subCategory.slug }) }} #}
                             <a href="#top-forum-selected">{{ forum.title }}</a>
                         </p>
                     </div>
@@ -189,15 +191,15 @@
 
                             <hr>
                             {# Si l'utilisateur au moins moderateur, on affiche le bouton supprimer #}
-                            {% if comment.author == app.user or is_granted('ROLE_MODERATOR') %}
+                            {% if forum.author == app.user or is_granted('ROLE_MODERATOR') %}
                                 <div class="d-flex justify-content-end me-2">
 
                                     <div class="p-2 ">
-                                        <a class=" btn btn-darkblue " href="#">Editer le contenu</a>
+                                        <a class=" btn btn-darkblue " href="{{ path('comment_edit', { id : comment.id }) }}">Editer le contenu</a>
                                     </div>
                                     {% if is_granted('ROLE_MODERATOR') %}
                                         <div class="p-2 ">
-                                            <a class=" btn btn-darkblue " href="#">Supprimer le message</a>
+                                            <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')" class=" btn btn-darkblue " href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message</a>
                                         </div>
                                     {% endif %}
                                 </div>
