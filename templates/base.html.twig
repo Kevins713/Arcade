@@ -69,9 +69,8 @@
 
     {# Inclusions des fichiers JS généraux du site #}
 
-    {% block javascripts %}
-        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-        {# Inclusion JS individuels si besoin#}
-    {% endblock %}
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    {# Inclusion JS individuels si besoin#}
+    {% block javascripts %}{% endblock %}
     </body>
 </html>
