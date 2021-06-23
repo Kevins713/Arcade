@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     app_category_image_directory: '%kernel.project_dir%/public/images/categories/'
+    users_uploaded_avatar_directory: '%kernel.project_dir%/public/images/usersAvatar/'
+
     app_subcategory_image_directory: '%kernel.project_dir%/public/images/subcategories/'
 services:
     App\EventListener\ActivitySubscriber:

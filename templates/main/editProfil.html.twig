@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block css %}{% endblock %}
+
+{% block body %}
+<div class="container">
+
+    <div class="row">
+        <h1 class="col-12 text-center">Modification du profil</h1>
+    </div>
+
+    {# formulaire pour modifier l'avatar #}
+    <div class="row mt-3">
+        <div class="card bg-dark">
+            <div class="card-body  bg-dark text-white">
+                <div>
+                    {{ form(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {# formulaire pour modifier le mot de passe #}
+    <div class="row mt-3">
+        <div class="card bg-dark">
+            <div class="card-body bg-dark text-white">
+                <div>
+                    {{ form(formPass) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# formulaire pour modifier l'adresse mail #}
+    <div class="row mt-3">
+        <div class="card bg-dark">
+            <div class="card-body bg-dark text-white">
+                <div>
+                    {{ form(formEmail) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# formulaire pour modifier la description #}
+    <div class="row mt-3">
+        <div class="card bg-dark">
+            <div class="card-body bg-dark text-white">
+                <div>
+                    {{ form(formDesc) }}
+                </div>
+                <div>
+                    <a class="btn btn-secondary bg-lightblue" href="{{ path('description_delete') }}"><i class="fas fa-trash-alt me-1"></i>Supprimer la description</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
