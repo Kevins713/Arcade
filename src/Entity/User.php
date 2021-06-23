@@ -69,10 +69,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $forums;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $lastVisit;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $Description;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->forums = new ArrayCollection();
+        $this->roles[] = "ROLE_USER";
     }
 
     public function getId(): ?int
@@ -265,6 +276,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $forum->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastVisit(): ?\DateTimeInterface
+    {
+        return $this->lastVisit;
+    }
+
+    public function setLastVisit(\DateTimeInterface $lastVisit): self
+    {
+        $this->lastVisit = $lastVisit;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->Description;
+    }
+
+    public function setDescription(?string $Description): self
+    {
+        $this->Description = $Description;
 
         return $this;
     }

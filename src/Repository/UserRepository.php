@@ -36,6 +36,53 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    /**
+     * Méthode pour récupérer la liste des utlisateurs connectés
+     */
+    public function findConnectedUsers(): array
+    {
+        $role = 'ROLE_USER';
+        $date = new \DateTime('-15 mins');
+        $qb = $this->createQueryBuilder('u')
+            ->select( 'u.pseudonym')
+            ->where('u.lastVisit > :date')
+            ->andWhere('u.roles LIKE :user' )
+            ->setParameter('date', $date)
+            ->setParameter('user', '%"' . $role . '"%');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
+    /**
+     * Méthode pour compter le nombre d'utilisateur dans le site
+     */
+    public function countUsers(){
+        $qb = $this->createQueryBuilder('u')
+            ->select('count(u.id)');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
+
+    /**
+     * Méthode pour récupérer la liste des admins connectés
+     */
+    public function findConnectedAdmins(){
+        $role = 'ROLE_USER';
+        $date = new \DateTime('-15 mins');
+        $qb = $this->createQueryBuilder('u')
+            ->select( 'u.pseudonym')
+            ->where('u.lastVisit > :date')
+            ->andWhere('u.roles NOT LIKE :role')
+            ->setParameter('date', $date)
+            ->setParameter('role', '%"' . $role . '"%');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

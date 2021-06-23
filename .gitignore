@@ -15,9 +15,15 @@
 ###< symfony/phpunit-bridge ###
 
 /migrations/*.php
+/public/images/categories/*.png
+/public/images/categories/*.jpg
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
 
 /.idea
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+###< liip/imagine-bundle ###

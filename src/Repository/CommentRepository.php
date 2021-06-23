@@ -19,6 +19,19 @@ class CommentRepository extends ServiceEntityRepository
         parent::__construct($registry, Comment::class);
     }
 
+    /**
+     * Méthode pour compter le nombre de forums dans le site
+     */
+    public function countMessages(){
+        $qb = $this->createQueryBuilder('c')
+            ->select('count(c.id)');
+
+        $query = $qb->getQuery();
+        return $query->execute();
+    }
+
+
+
     // /**
     //  * @return Comment[] Returns an array of Comment objects
     //  */
