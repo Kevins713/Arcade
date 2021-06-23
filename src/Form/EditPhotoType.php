@@ -17,8 +17,9 @@ class EditPhotoType extends AbstractType
     {
         $builder
             ->add('avatar', FileType::class, [
-                'label' => 'Selectionnez un nouvelle avatar',
+                'label' => false,
                 'attr' => [
+                    'class' => 'mt-3',
                     'accept' => 'image/jpeg, image/png'
                 ],
                 'constraints' => [
@@ -39,7 +40,7 @@ class EditPhotoType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Envoyer',
                 'attr' => [
-                    'class' => 'btn btn-secondary bg-lightblue col-12',
+                    'class' => 'btn btn-secondary bg-lightblue col-12 mt-2',
                 ],
             ])
         ;

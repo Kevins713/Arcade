@@ -102,7 +102,7 @@ class MainController extends AbstractController
                 $newFileName
             );
 
-            // TODO :Message de succès
+            $this->addFlash('success', 'Avatar créé avec succès !');
 
             return $this->redirectToRoute('main_profil');
         }
@@ -131,16 +131,13 @@ class MainController extends AbstractController
 
                 $em->flush();
 
+                $this->addFlash('success', 'Mot de passe modifié avec succès !');
 
                 return $this->redirectToRoute('logout');
 
-                // TODO :Message de success mdp modifié avec succès !
-
-
             } else {
 
-                // TODO :Message d'error les mdp ne sont pas identiques !
-
+                $this->addFlash('error', 'Les mots de passe ne sont pas identiques, veuillez ré-essayer.');
             }
         }
 
@@ -167,16 +164,14 @@ class MainController extends AbstractController
 
                 $em->flush();
 
+                $this->addFlash('success', 'Email modifié avec succès !');
 
                 return $this->redirectToRoute('logout');
-
-                // TODO :Message de success email modifié avec succès !
 
 
             } else {
 
-                // TODO :Message d'error emails ne sont pas identiques !
-
+                $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez ré-essayer.');
             }
         }
 
@@ -200,9 +195,10 @@ class MainController extends AbstractController
 
                 $em->flush();
 
+                $this->addFlash('success', 'Description modifié avec succès !');
+                
                 return $this->redirectToRoute('main_profil');
 
-                // TODO :Message de success email modifié avec succès !
 
             }
         }
@@ -235,7 +231,7 @@ class MainController extends AbstractController
 
             $em->flush();
 
-            // $this->addFlash('success', 'La description a été supprimé avec succès !');
+            $this->addFlash('success', 'La description a été supprimé avec succès !');
 
         return $this->redirectToRoute('main_profil');
     }

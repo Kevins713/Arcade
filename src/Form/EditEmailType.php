@@ -16,7 +16,7 @@ class EditEmailType extends AbstractType
     {
         $builder
             ->add('mail', TextType::class, [
-                'label' => 'Modifier l\'adresse email',
+                'label' => false,
                 'attr' => [
                     'placeholder' => 'Nouvelle adresse email'
                 ],

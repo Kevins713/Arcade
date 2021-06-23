@@ -9,15 +9,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class EditDescriptionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-        ->add('description', TextType::class, [
-            'label' => 'Modifier la description de profil',
+        ->add('description', CKEditorType::class, [
+            'label' => false,
+            // utilisation du bundle exercise/hmtlpurifier pour contrer faille XSS
+            'purify_html' => true,
             'attr' => [
+                'class' => 'col-12',
+                'rows' => 2,
                 'placeholder' => 'Ajouter une description (maximum 500 caractères)'
             ],
             'constraints' => [
