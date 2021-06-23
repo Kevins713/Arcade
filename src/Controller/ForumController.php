@@ -91,7 +91,7 @@ class ForumController extends AbstractController
     {
 
         return $this->render('forum/category/category.html.twig',[
-            'categorie' => $category,
+            'categories' => $category,
             'subcategories' => $subCategory->findAll(),
         ]);
 
