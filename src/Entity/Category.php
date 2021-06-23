@@ -31,10 +31,11 @@ class Category
     private $subCategories;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=160, unique=true)
      * @Gedmo\Slug(fields={"title"})
      */
     private $slug;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -105,6 +106,7 @@ class Category
 
         return $this;
     }
+
 
     public function getImage(): ?string
     {

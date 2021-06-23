@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des categories{% endblock %}
+
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 bg-warning mt-5">
+            <h3>Fil d'ariane</h3>
+        </div>
+    </div>
+
+ 
+    <div class="row mt-5 p-3 bg-dark">
+        <div class="col-8 ms-5 bg-warning text-center">
+            <h3>Nom de la catégorie principale</h3>
+            <p>Description</p>
+        </div>
+        <div class="col-4 d-flex justify-content-end align-items-end">
+            <button class="btn btn-primary">Créer une discussion</button>
+        </div>
+    </div>
+
+    {% for categorie in categories %}
+     <div class="row mt-5">
+        <div class="col-4">
+            <div class="card" style="width: 18rem;">
+                <img src="{{categorie.image}}" class="card-img-top" alt="...">
+                <div class="card-body p-5">
+                    <h5 class="card-title"><a href="#">{{categorie.title}}</a></h5>
+                    <p class="card-text">Nombre de message dans cette discussion</p>
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <p class="mb-0 mt-3"><a href="{{ path('blog_publication_edit',{ id : categorie.id}) }}" class="text-warning"><i class="fas fa-edit me-1"></i>Modifier</a></p>
+                    <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette publication ?')" class="text-danger" href="{{ path('blog_publication_delete', { id : categorie.id, csrf_token : csrf_token('blog_publication_delete_' ~ categorie.id ) }) }}"><i class="fas fa-trash me-1"></i>Supprimer</a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        {% else %}
+
+        <p class="col-12 text-center alert alert-warning">Aucune publication à afficher pour le moment</p>
+
+        {% endfor %}
+
+    <div class="row mt-5">
+        <div class="col-12 bg-white">
+            <h1>Messages postés</h1>
+            <div class="row">
+                <div class="col-12">
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="container-profil-photo">
+                                <img src="https://image.flaticon.com/icons/png/128/3237/3237472.png" alt="Admin" class="rounded-circle profil-photo" width="150">
+                            </div>
+                            <a class="profil-title" href="#"> Titre du sujet : Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et inventore
+                                pariatur voluptas!</a>
+                            <div class="profil-content">
+                                Message de l'utilisateur : Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid consectetur fugit inventore, natus pariatur quas sequi temporibus! Debitis enim fugit, itaque odio reiciendis ut vero?
+                            </div>
+                            <div class="col-12 text-left">
+                                <p class="mx-5">Pseudo - jj/mm/aaaa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

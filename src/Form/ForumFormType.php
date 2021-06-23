@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
+use App\Entity\Forum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class CategoryFormType extends AbstractType
+class ForumFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -29,7 +29,7 @@ class CategoryFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 1,
-                        'max' => 150,
+                        'max' => 15,
                         'minMessage' => 'Le titre doit contenir au moins {{ limit }} caractère(s)',
                         'maxMessage' => 'Le titre doit contenir au maximum {{ limit }} caractères',
                     ]),

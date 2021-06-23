@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CategoryRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,11 @@ class MainController extends AbstractController
      * Page d'accueil
      * @Route("/", name="home")
      */
-    public function index(CategoryRepository $categories,Request $request): Response
+    public function index(CategoryRepository $categories, UserRepository $userRepo): Response
     {
         // Requête du flux RSS des actualités
         $rss = simplexml_load_file('https://www.jeuxactu.com/rss/multi.rss');
+        $userRepo->findConnectedAdmins();
 
         return $this->render('main/index.html.twig', [
             'categories' => $categories->findAll(),
