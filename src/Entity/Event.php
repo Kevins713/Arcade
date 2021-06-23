@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\EventRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @ORM\Entity(repositoryClass=EventRepository::class)
@@ -23,7 +24,7 @@ class Event
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=272)
+     * @ORM\Column(type="text")
      */
     private $content;
 

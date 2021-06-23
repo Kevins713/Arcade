@@ -1,16 +1,19 @@
-/* Carousel */
-@media (max-width: 991px) {
-    .carousel-height{
-        height: 400px;
-    }
-
+/* Annonce */
+.event {
+    height: 300px;
 }
-@media (min-width: 1440px) {
-    .carousel-height{
+@media (min-width: 576px) {
+    .event{
+        height: 250px;
+    }
+}
+@media (min-width: 768px) {
+    .event{
         height: 200px;
     }
 }
-/* Categories */
+
+    /* Categories */
 .card img {
     height: 131px;
     width: 125px;
@@ -50,6 +53,7 @@ a:hover {
 /* Actualité (flux RSS) */
 .wrapper {
     display: grid;
+    border: 3px solid var(--forum-lightblue);
 }
 .wrapper .img {
     grid-column: 1 / 1;
@@ -59,12 +63,3 @@ a:hover {
     grid-column: 2 / 3;
     grid-row: 1;
 }
-/*@media (max-width: 991px){*/
-/*    .rss-img img{*/
-/*        max-height: 300px;*/
-/*    }*/
-/*}@media (min-width: 992px){*/
-/*    .rss-img img{*/
-/*        max-height: 300px;*/
-/*    }*/
-/*}*/

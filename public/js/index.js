@@ -1,4 +1,4 @@
-
+// Initilisation des messages flashes
 $(function() {
     setTimeout(function(){
         $('.toast').toast('show');
@@ -6,7 +6,7 @@ $(function() {
 
 });
 
-
+// Fonction pour récuperer une liste d'utilisateur et les inserer avec un foreach
 let requestUsers = function(url, classSelector){
     $.ajax({
         type: 'GET',
@@ -21,6 +21,8 @@ let requestUsers = function(url, classSelector){
         },
     })
 }
+
+// Fonction pour récuperer des stats du site
 let requestStats = function(url, classSelector) {
     $.ajax({
         type: 'GET',
