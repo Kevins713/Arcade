@@ -16,7 +16,7 @@ class EditPasswordType extends AbstractType
     {
         $builder
             ->add('pass', PasswordType::class, [
-                'label' => 'Modifier le mot de passe',
+                'label' => false,
                 'attr' => [
                     'placeholder' => 'Nouveau mot de passe'
                 ],

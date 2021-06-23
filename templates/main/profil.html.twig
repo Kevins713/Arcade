@@ -12,7 +12,7 @@
         <!-- Profil -> avatar, pseudo et role  -->
         <div class="col-md-4 mb-3">
             <div class="card" style="height: 280px;">
-                <div class="card-body bg-dark text-white">
+                <div class="card-body bg-darkblue text-white">
                     <div class="d-flex flex-column align-items-center text-center">
 
                         {% if app.user.avatar is null %}
@@ -36,7 +36,7 @@
         <!-- détail du profil -> pseudo, date d'inscription, role et nombre de messages + bouton edit  -->
         <div class="col-md-8">
             <div class="card mb-3" style="height: 280px;">
-                <div class="card-body bg-dark text-white">
+                <div class="card-body bg-darkblue text-white">
                     <div class="row">
                         <div>
                             <h5 class="mb-0">Pseudo : {{ app.user.pseudonym }}</h5>
@@ -67,8 +67,8 @@
 
 
     <div class="row mt-2">
-        <div class="card bg-dark">
-            <div class="card-body bg-dark text-white">
+        <div class="card bg-darkblue">
+            <div class="card-body bg-darkblue text-white">
                 <div>
                     <div class="col-12">
                         <h4 class="mb-0 text-center">Description :</h4>
@@ -111,7 +111,7 @@
                         <div class="col-12 d-flex bg-dark">
 
                             <!-- détails profil-->
-                            <div class="card-profil-topic card rounded bg-dark text-white p-lg-3 d-flex flex-grow-1 d-flex flex-row flex-lg-column">
+                            <div class="card-profil-topic card rounded bg-darkblue text-white p-lg-3 d-flex flex-grow-1 d-flex flex-row flex-lg-column">
                                 <a href="{{ path('main_profil') }}">{% if app.user.avatar is null %}
                                     <img class="img-thumbnail img-fluid bg-darkblue rounded mb-3 mb-lg-5 offset-2 col-8 mt-2 offset-lg-1 col-lg-10 mt-0 p-3"
                                         src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}" alt="avatar">
@@ -163,7 +163,7 @@
 
         {% else %}
 
-        <p class="col-12 text-center alert alert-warning">Aucune publication à afficher.</p>
+        <p class="col-12 text-center alert bg-lightblue">Aucune publication à afficher.</p>
 
         {% endfor %}
     </div>

@@ -91,13 +91,13 @@
                 <div class="col-11">
                     <div class="row ">
                         <div class="col-xl-8 col-md-4 col-sm-4 my-auto">
-                            <h3 class="bold-text">Arcade.</h3>
+                            <h3>Arcade.</h3>
                         </div>
                         <div class="col-xl-2 col-md-4 col-sm-4 col-12">
                             <h6 class="mb-3 mb-lg-4 bold-text "><b>MENU</b></h6>
                             <ul class="list-unstyled">
-                                <li><a style="color: white;" class="page-footer" href="{{ path('home') }}">Page d'accueil</a></li>
-                                <li><a style="color: white;" class="page-footer" href="#">Forum</a></li>
+                                <li><a class="page-footer" href="{{ path('home') }}">Page d'accueil</a></li>
+                                <li><a class="page-footer" href="#">Forum</a></li>
                             </ul>
                         </div>
                     </div>
@@ -118,6 +118,7 @@
     {# Inclusions des fichiers JS généraux du site #}
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
+    <script src=" {{ asset('js/script.js') }} " ></script>
 
     {% block javascripts %}
     {# Inclusion JS individuels si besoin#}
