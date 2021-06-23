@@ -76,8 +76,7 @@ a{
     background-color: var(--forum-orange);
     color: #eaeaea;
 }
-/*
-.page-item:not(.disabled) {
-    margin: 0.5rem; todo : ajoute de la marge au contenu du bouton de navigation disabled
+
+.page-item {
+    margin: 0.3rem;
 }
-*/

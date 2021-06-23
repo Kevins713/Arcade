@@ -141,7 +141,7 @@ class ForumController extends AbstractController
         ]);
     }
 
-        /**
+    /**
      * Contrôleur de la page permettant de créer un nouveau forum
      *
      * @Route("/{slug}/nouveau-forum/", name="new_forum")
@@ -197,14 +197,13 @@ class ForumController extends AbstractController
 
 
     /**
-     * @Route("/sous-categorie/", name="sub_category")
+     * @Route("/sous-categorie/{slug}", name="sub_category")
      */
-    public function subCategory(SubCategoryRepository $subCategory,Category $category, Request $request): Response
+    public function subCategory(SubCategory $subCategory, Request $request): Response
     {
 
         return $this->render('forum/category/subCategory.html.twig',[
-            'categorie' => $category,
-        'subcategories' => $subCategory->findAll(),
+            'subcategories' => $subCategory,
         ]);
 
     }
@@ -212,10 +211,11 @@ class ForumController extends AbstractController
 
 
     /**
-     * @Route("/sous-categorie/{slug}/", name="forum")
+     * @Route("/sous-categorie/forum/{slug}", name="forum")
      */
-    public function forum(Forum $forum, CategoryRepository $categories, SubCategoryRepository $subCategories, Request $request, PaginatorInterface $paginator): Response
+    public function forum(Forum $forum, Request $request, PaginatorInterface $paginator): Response
     {
+        //todo Utilisation du CommentRepository pour la requete DQL
 
         //Paginator pour les commentaires de la page forum
         $requestedPage = $request->query->getInt('page', 1);
@@ -240,8 +240,6 @@ class ForumController extends AbstractController
             return $this->render('forum\forum.html.twig', [
                 'forum' => $forum,
                 'comments'=>$comments,
-                'categories' => $categories->findAll(),
-                'subCategories'=>$subCategories->findAll(),
             ]);
         }
 
@@ -273,7 +271,7 @@ class ForumController extends AbstractController
             $em->flush();
 
             // Message flash de succès
-                //todo
+            //todo
             // supression des deux variables
             unset($newComment);
             unset($form);
@@ -288,8 +286,6 @@ class ForumController extends AbstractController
             'forum'=>$forum,
             'comments'=>$comments,
             'form' =>$form->createView(),
-            'categories' => $categories->findAll(),
-            'subCategories'=>$subCategories->findAll(),
         ]);
     }
 }
