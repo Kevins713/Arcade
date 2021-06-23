@@ -74,6 +74,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $lastVisit;
 
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $Description;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -283,6 +288,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastVisit(\DateTimeInterface $lastVisit): self
     {
         $this->lastVisit = $lastVisit;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->Description;
+    }
+
+    public function setDescription(?string $Description): self
+    {
+        $this->Description = $Description;
 
         return $this;
     }

@@ -53,7 +53,7 @@
                 <div class="row pb-4 mb-4 justify-content-lg-start">
                     {% for category in categories %}
                         <div class="col-6 col-md-6 col-lg-2 my-2">
-                            <a href="{{ path('category_', {slug: category.slug}) }}">
+                            <a href="{{ path('category', {slug: category.slug}) }}">
                                 <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
                                     <img src="{{ asset('images/categories/' ~ category.image ) }}" class="img-fluid" alt="...">
                                     <div class="category-title mt-1">

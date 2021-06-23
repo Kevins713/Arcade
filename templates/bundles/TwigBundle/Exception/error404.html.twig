@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur 404!{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{{ asset('css/error404.css') }}">
+{% endblock css %}
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif;
+       /* background-image: url("images/404.png");*/ }
+
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+   
+</style>
+
+<h1></h1>
+
+
+{# <img src="{{ asset('images/404.png') }}"> #}
+{#<img style="width: 100%; height: auto;  " src="{{ asset('images/404.png') }}" class="img-fluid"  alt="Erreur 404, Page Not Found">#}
+
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="{{ asset('js/error404.js') }}"></script>
+
+{% endblock %}
