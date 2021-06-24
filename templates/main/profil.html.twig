@@ -25,8 +25,7 @@
                         {% endif %}
 
                         <div class="mt-2">
-                            <h6 class="mb-0">Roles : <span class="text-info">{{ is_granted('ROLE_ADMIN') ?
-                                    'Administrateur' : 'Membre' }}</span></h6>
+                            <h6 class="mb-0 p-1 ">Statut : {{ app.user.roles[0]|renameRole }} </h6>
                         </div>
                     </div>
                 </div>
@@ -89,7 +88,7 @@
 
     {# Affiche le nombre message#}
     <div class="row">
-        <p class="col-12 text-center mt-4">Nombre total de message : 5 </p>
+        <p class="col-12 text-center mt-4">Nombre total de message : {{ comments|length }} </p>
     </div>
 
 
@@ -123,7 +122,7 @@
 
                                 <div class="mb-0 fs-6 card-title text-center">
                                     <a><h6 class="mb-0 p-1 ">Pseudo : {{ app.user.pseudonym }}</h6></a>
-                                    <h6 class="mb-0 p-1 ">Statut : {{ is_granted('ROLE_ADMIN') ? 'Administrateur' : 'Membre' }} </h6>
+                                    <h6 class="mb-0 p-1 ">Statut : {{ app.user.roles[0]|renameRole }} </h6>
                                 </div>
                                 <hr>
                                 <div class="card-body d-none d-lg-block">
@@ -136,25 +135,28 @@
                     </div>
 
                     <!--  content col-10 -->
-                    <div class="col-12 col-lg-9 col-xl-10 bg-light
-                                d-flex flex-column">
-                        <div class="d-flex  flex-grow-1 p-5">
-                            {# TODO mettre le titre de l'article commenté #}
-                            <p>{{ comment.content }}</p>
+                    <div class="col-12 col-lg-9 col-xl-10 bg-light d-flex flex-column">
+                        <div class="flex-grow-1 p-4">
+                            <div>
+                                {# TODO : ajouter la route #}
+                                <a class="mt-2" href=" "><h4>{{ comment.forum.title }}</h4></a>
+                            </div>
+
+                            <div>
+                                <p>{{ comment.content }}</p>
+                            </div>
                         </div>
 
                         <hr>
 
                         {# Si l'utilisateur est admin, on affiche le bouton supprimer #}
-                        {% if is_granted('ROLE_ADMIN') %}
+                        {% if app.user %}
                         <div class="d-flex justify-content-end me-2">
-                            <div class="p-2 "><a class="btn btn-secondary btn-sm bg-lightblue" href="#">Editer le
-                                    contenu</a></div>
-                            <div class="p-2 "><a class="btn btn-secondary btn-sm bg-lightblue" href="#">Supprimer le
-                                    message</a></div>
+                            <div class="p-1 "><a class="btn btn-secondary btn-sm bg-lightblue" href="#">Editer le contenu</a></div>
+                            {# TODO : ajouter les routes pour éditer et supprimer #}
+                            <div class="p-1 "><a class="btn btn-secondary btn-sm bg-lightblue" href="#">Supprimer le message</a></div>
                         </div>
                         {% endif %}
-
                     </div>
 
                 </div>

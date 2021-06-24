@@ -9,11 +9,24 @@ use App\Form\EventType;
 use App\Repository\CategoryRepository;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+use App\Form\EditDescriptionType;
+use App\Form\EditPasswordType;
+use App\Form\EditPhotoType;
+use App\Form\EditEmailType;
+
+use App\Entity\Comment;
+use App\Entity\Forum;
+use App\Entity\User;
+
 
 
 class MainController extends AbstractController
