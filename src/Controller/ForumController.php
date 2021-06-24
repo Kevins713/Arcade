@@ -188,7 +188,7 @@ class ForumController extends AbstractController
 
 
     /**
-     * @Route("/forum/profil/{id}", name="main_profil_forum")
+     * @Route("/forum/profil/{id}/", name="main_profil_forum")
      * @Security("is_granted('ROLE_USER')")
      */
     public function profil(User $user, Request $request): Response
@@ -207,7 +207,7 @@ class ForumController extends AbstractController
 
 
     /**
-     * @Route("/forum/{slug}", name="forum")
+     * @Route("/forum/{slug}/", name="forum")
      */
     public function forum(Forum $forum, Request $request, PaginatorInterface $paginator): Response
     {
