@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\CategoryRepository;
+use App\Repository\ForumRepository;
 use App\Repository\EventRepository;
 use App\Repository\UserRepository;
 
@@ -17,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+use App\Form\CreateCommentFormType;
 
 use App\Form\EditDescriptionType;
 use App\Form\EditPasswordType;
@@ -64,13 +67,205 @@ class MainController extends AbstractController
 
 
     /**
-     * @Route("/mon-profil", name="main_profil")
+     * @Route("/mon-profil/", name="main_profil")
      * @Security("is_granted('ROLE_USER')")
      */
     public function profil(): Response
     {
-        return $this->render('main/profil.html.twig');
+        $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
+
+        $comments = $commentRepo->findBy([], ['publicationDate' => 'DESC']);
+
+        $test = $this->getUser();
+        dump($test);
+        return $this->render('main/profil.html.twig', [
+            'comments' => $test->getComments(),
+        ]);
+
     }
+
+
+/**
+     * @Route("/edit-profil/", name="edit_profil")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function editProfil(Request $request, UserPasswordEncoderInterface $encoder): Response
+    {
+        $form = $this->createForm(editPhotoType::class);
+
+        $form->handleRequest($request);
+
+        // Si le formulaire a été envoyé et il n'y a aucune erreur
+        if($form->isSubmitted() && $form->isValid()){
+
+            $avatar = $form->get('avatar')->getData();
+
+            // Récupération de l'emplacement du dossier des photos de profils
+            $profilAvatarDirectory = $this->getParameter('users_uploaded_avatar_directory');
+
+            // Récupération de l'utilisateur connecté
+            $connectedUser = $this->getUser();
+
+            // Si l'utilistateur à déjà un avatar, l'ancienne est supprimé
+            if($connectedUser->getAvatar() != null){
+                unlink( $profilAvatarDirectory . $connectedUser->getAvatar() );
+            }
+
+            //dump($avatar);
+
+            do{
+
+                $newFileName = md5( $connectedUser->getId() . random_bytes(100) ) . '.' . $avatar->guessExtension();
+
+            //dump($newFileName);
+
+            } while( file_exists( $profilAvatarDirectory . $newFileName ) );
+
+            // Mise à jour de l'avatar de l'utilisateur dans la bdd
+            $connectedUser->setAvatar($newFileName);
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->flush();
+
+            $avatar->move(
+                $profilAvatarDirectory,
+                $newFileName
+            );
+
+            $this->addFlash('success', 'Avatar créé avec succès !');
+
+            return $this->redirectToRoute('main_profil');
+        }
+
+
+        //Modification du mot de passe
+        $formPass = $this->createForm(editPasswordType::class);
+
+        $formPass->handleRequest($request);
+
+        // Si le formulaire a été envoyé et il n'y a aucune erreur
+        if($formPass->isSubmitted() && $formPass->isValid()){
+
+            $connectedUser = $this->getUser();
+
+            dump($formPass->get('pass')->getData());
+
+            // Si les deux champs sont correct+
+            if($formPass->get('pass')->getData() == $formPass->get('confirm-pass')->getData()){
+
+                $hashOfNewPassword = $encoder->encodePassword($connectedUser, $formPass->get('pass')->getData());
+
+                $connectedUser->setPassword($hashOfNewPassword);
+
+                $em = $this->getDoctrine()->getManager();
+
+                $em->flush();
+
+                $this->addFlash('success', 'Mot de passe modifié avec succès !');
+
+                return $this->redirectToRoute('logout');
+
+            } else {
+
+                $this->addFlash('error', 'Les mots de passe ne sont pas identiques, veuillez ré-essayer.');
+            }
+        }
+
+
+        //Modification de l'adresse mail
+        $formEmail = $this->createForm(editEmailType::class);
+
+        $formEmail->handleRequest($request);
+
+        // Si le formulaire a été envoyé et il n'y a aucune erreur
+        if($formEmail->isSubmitted() && $formEmail->isValid()){
+
+            dump($formEmail->get('mail')->getData());
+
+            if($formEmail->get('mail')->getData() == $formEmail->get('confirm-mail')->getData()){
+
+                $em = $this->getDoctrine()->getManager();
+
+                $connectedUser = $this->getUser();
+
+                $connectedUser->setEmail($formEmail->get('mail')->getData());
+
+                //$connectedUser->setIsVerified()
+
+                $em->flush();
+
+                $this->addFlash('success', 'Email modifié avec succès !');
+
+                return $this->redirectToRoute('logout');
+
+
+            } else {
+
+                $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez ré-essayer.');
+            }
+        }
+
+        //Modification de la description
+        $formDesc = $this->createForm(editDescriptionType::class);
+
+        $formDesc->handleRequest($request);
+
+        // Si le formulaire a été envoyé et il n'y a aucune erreur
+        if($formDesc->isSubmitted() && $formDesc->isValid()){
+
+            dump($formDesc->get('description')->getData());
+
+            if($formDesc->get('description')->getData()){
+
+                $em = $this->getDoctrine()->getManager();
+
+                $connectedUser = $this->getUser();
+
+                $connectedUser->setDescription($formDesc->get('description')->getData());
+
+                $em->flush();
+
+                $this->addFlash('success', 'Description modifié avec succès !');
+
+                return $this->redirectToRoute('main_profil');
+
+
+            }
+        }
+
+
+        return $this->render('main/editProfil.html.twig', [
+            'form' => $form->CreateView(),
+            'formPass' => $formPass->CreateView(),
+            'formEmail' => $formEmail->CreateView(),
+            'formDesc' => $formDesc->CreateView(),
+        ]);
+    }
+
+    /**
+     * Page permettant de supprimer un la description
+     *
+     * @Route("/description/suppression/", name="description_delete")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function descriptionDelete(Request $request): Response
+    {
+
+            // Suppression de la description
+            $em = $this->getDoctrine()->getManager();
+
+            $connectedUser = $this->getUser();
+
+            $connectedUser->setDescription(null);
+
+            $em->flush();
+
+            $this->addFlash('success', 'La description a été supprimé avec succès !');
+
+        return $this->redirectToRoute('main_profil');
+    }
+
 
     /**
      * @Route("/creer-une-annonce", name="create_event")
@@ -144,4 +339,81 @@ class MainController extends AbstractController
     }
 
 
+        /**
+     * Page moderation permettant de modifier un commentaire existant
+     *
+     * @Route("/forum/modifier-commentaire/{id}/", name="comment_edit")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function commentEdit(Comment $comment, Request $request): Response
+    {
+
+        $user = $this->getUser();
+
+        if($user == $comment->getAuthor()){
+            // Création du formulaire de modification
+        $form = $this->createForm(CreateCommentFormType::class, $comment);
+
+        // Liaison des données POST avec le formulaire
+        $form->handleRequest($request);
+
+            // Si le formulaire est envoyé et n'a pas d'erreur
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                // Sauvegarde des changements dans la BDD
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
+
+                // Message flash de succès
+                $this->addFlash('success', 'Sujet modifié avec succès !');
+
+                // Redirection vers la page de l'article modifié
+                return $this->redirectToRoute('main_profil', [
+                    'slug' => $comment->getForum()->getSlug(),
+                ]);
+
+            }
+
+        }  else {
+
+            return $this->render('bundles/TwigBundle/Exception/error403.html.twig');
+
+        }
+
+        // Appel de la vue en envoyant le formulaire à afficher
+        return $this->render('forum/commentEdit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+    /**
+     * Page moderation permettant de supprimer un commentaire
+     *
+     * @Route("/forum/suppression-commentaire/{id}/", name="comment_delete")
+     * @Security("is_granted('ROLE_MODERATOR')")
+     */
+    public function commentDelete(Comment $comment, Request $request): Response
+    {
+
+        // Récupération du token csrf dans l'url
+        $tokenCSRF = $request->query->get('csrf_token');
+
+        // Vérification que le token est valide
+        if (!$this->isCsrfTokenValid('comment_delete' . $comment->getId(), $tokenCSRF)) {
+            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+        } else {
+            dump('test');
+            // Suppression du commentaire
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($comment);
+            $em->flush();
+
+            $this->addFlash('success', 'Le commentaire a été supprimé avec succès !');
+
+        }
+        return $this->redirectToRoute('main_profil', [
+            'slug' => $comment->getForum()->getSlug(),
+        ]);
+    }
 }

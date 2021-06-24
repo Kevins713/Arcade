@@ -22,6 +22,7 @@ class CreateCommentFormType extends AbstractType
                 // utilisation du bundle exercise/hmtlpurifier pour contrer faille XSS
                 'purify_html' => true,
                 'attr' => [
+                    'class' => 'col-12',
                     'rows' => 10,
                     'placeholder' => 'Laissez votre commentaire...'
                 ],
