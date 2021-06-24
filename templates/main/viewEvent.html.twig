@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonces{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="fw-bolder text-center">Annonces</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3">
+                {% if is_granted('ROLE_MODERATOR') %}
+                    <button class="btn btn-darkblue"><a class="text-white" href="{{ path('create_event') }}">Créer une annonce</a></button>
+                {% endif %}
+                {% for event in events %}
+                    <div class="my-3 bg-darkblue border border-dark card">
+                        <div class="card-body">
+                            <h2 class="text-center card-header">{{ event.title }}</h2>
+                            <p class="card-text">Publié le {{ event.publicationDate|date('d/m/y à H\\hi') }}</p>
+                            <p class="card-text">{{ event.content }}</p>
+                            <div class="card-footer">
+                                {% if is_granted('ROLE_MODERATOR') %}
+                                    <div class="mt-3 text-center d-flex justify-content-center">
+                                        <button class="btn btn-primary mx-1"><a class="text-white" href="{{ path('edit_event', {id: event.id}) }}">Modifier
+                                                l'annonce</a></button>
+                                        <form class="mx-1" method="post" action="{{ path('delete_event', {'id': event.id}) }}" onsubmit="return confirm
+                                        ('Etes-vous sûr ' +
+                                         'de vouloir supprimer cette annonce ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ event.id) }}">
+                                            <button class="btn btn-danger">Supprimer l'annonce</button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification d'un commentaire{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+        {# Titre h1 #}
+        <div class="row">
+            <h1 class="col-12 text-center my-5">Modification du commentaire</h1>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2">
+                {# Affichage du formulaire #}
+                {{ form(form) }}
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
