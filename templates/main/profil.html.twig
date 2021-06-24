@@ -139,7 +139,7 @@
                         <div class="flex-grow-1 p-4">
                             <div>
                                 {# TODO : ajouter la route #}
-                                <a class="mt-2" href=" "><h4>{{ comment.forum.title }}</h4></a>
+                                <a class="mt-2" href="{{ path('forum', { slug:comment.forum.slug}) }}"><h4>{{ comment.forum.title }}</h4></a>
                             </div>
 
                             <div>
@@ -149,12 +149,20 @@
 
                         <hr>
 
-                        {# Si l'utilisateur est admin, on affiche le bouton supprimer #}
-                        {% if app.user %}
+                        {# Si l'utilisateur  #}
+                        {% if comment.author == app.user or is_granted('ROLE_MODERATOR') %}
                         <div class="d-flex justify-content-end me-2">
-                            <div class="p-1 "><a class="btn btn-secondary btn-sm bg-lightblue" href="#">Editer le contenu</a></div>
-                            {# TODO : ajouter les routes pour éditer et supprimer #}
-                            <div class="p-1 "><a class="btn btn-secondary btn-sm bg-lightblue" href="#">Supprimer le message</a></div>
+                            <div class="p-2 ">
+                                <a class=" btn btn-darkblue "
+                                   href="{{ path('comment_edit', { id : comment.id }) }}">Editer le contenu</a>
+                            </div>
+                            {% if is_granted('ROLE_MODERATOR') %}
+                            <div class="p-2 ">
+                                <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
+                                   class=" btn btn-darkblue "
+                                   href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message</a>
+                            </div>
+                            {% endif %}
                         </div>
                         {% endif %}
                     </div>
