@@ -87,14 +87,16 @@
             {# Flux RSS#}
             <div class="col-12 col-lg-9">
                 <h2 class="fw-bolder">Actualités</h2>
-                {% for item in rss|slice(0,10) %}
-                    <div class="my-1 wrapper bg-darkblue">
-                        <div class="ms-2 text">
-{#                            <h6 class="mb-lg-5 mt-2"><a target="_blank" href="{{ item.link }}">{{ item.title }}</a></h6>#}
-                            <div>{{ item.description|purify }}</div>
+                {% if rss.channel.item|length > 1 %}
+                    {% for item in rss.channel.item|slice(0,10) %}
+                        <div class="my-1 wrapper bg-darkblue">
+                            <div class="ms-2 text">
+                                <div>{{ item.description|purify }}</div>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% endif %}
+
             </div>
             {# Aside Statistiques #}
             <div class="col-12 col-lg-3">

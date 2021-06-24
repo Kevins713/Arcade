@@ -25,7 +25,16 @@ class MainController extends AbstractController
     public function index(CategoryRepository $categories, UserRepository $userRepo): Response
     {
         // Requête du flux RSS des actualités
-        $rss = simplexml_load_file('https://www.actugaming.net/feed/');
+        try {
+            $rss = simplexml_load_file('https://www.actugaming.net/feed/');
+
+        } catch(\Exception $e) {
+           $rss = ['channel' => [
+                'item' => [
+                    ''
+                ]
+            ]];
+        }
         $userRepo->findConnectedAdmins();
 
         // Récupération des 2 derniers Event
@@ -35,7 +44,7 @@ class MainController extends AbstractController
 
         return $this->render('main/index.html.twig', [
             'categories' => $categories->findAll(),
-            'rss' => $rss->channel->item,
+            'rss' => $rss,
             'events' => $events,
         ]);
     }
