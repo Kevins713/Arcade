@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -29,37 +30,37 @@ class ForumFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 1,
-                        'max' => 15,
+                        'max' => 150,
                         'minMessage' => 'Le titre doit contenir au moins {{ limit }} caractère(s)',
                         'maxMessage' => 'Le titre doit contenir au maximum {{ limit }} caractères',
                     ]),
                 ],
             ])
-            ->add('image', FileType::class, [
-                'label' => 'Sélectionnez une photo',
+
+            ->add('content', TextareaType::class, [
+                'label' => 'Contenu',
+                'attr' => [
+                    'rows' => 10,
+                ],
+
+                // Liste des contraintes du champ
                 'constraints' => [
-                    new File([
-                        // Taille maximum de 1Mo
-                        'maxSize' => '1M',
-    
-                        // jpg et png uniquement
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                        ],
-    
-                        // Message d'erreur en cas de fichier au type non autorisé
-                        'mimeTypesMessage' => 'L\'image doit être de type jpg ou png',
-    
-                        // Message en cas de fichier trop gros
-                        'maxSizeMessage' => 'Fichier trop volumineux ({{ size }} {{ suffix }}). La taille maximum autorisée est {{ limit }}{{ suffix }}',
-                    ]),
+
+                    // Ne doit pas être vide
                     new NotBlank([
-                        // Message en cas de formulaire envoyé sans fichier
-                        'message' => 'Vous devez sélectionner un fichier',
-                    ])
+                        'message' => 'Merci de renseigner votre message' // Message d'erreur si cette contrainte n'est pas respectée
+                    ]),
+
+                    // Doit avoir une certaine taille
+                    new Length([
+                        'min' => 10, // Taille minimum autorisée
+                        'minMessage' => 'Le message doit contenir au moins {{ limit }} caractères',   // Message d'erreur si plus petit
+                        'max' => 20000,   // Taille maximum autorisée
+                        'maxMessage' => 'Le message doit contenir au maximum {{ limit }} caractères',  // Message d'erreur si plus grand
+                    ]),
                 ]
             ])
+
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
