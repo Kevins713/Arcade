@@ -87,14 +87,11 @@
             {# Flux RSS#}
             <div class="col-12 col-lg-9">
                 <h2 class="fw-bolder">Actualités</h2>
-                {% for item in rss %}
+                {% for item in rss|slice(0,10) %}
                     <div class="my-1 wrapper bg-darkblue">
-                        <div class="rss-img img my-auto">
-                            <img class="img-fluid" src="{{ item.enclosure.attributes.url }}" alt=""><br>
-                        </div>
                         <div class="ms-2 text">
-                            <h6 class="mb-lg-5 mt-2"><a target="_blank" href="{{ item.link }}">{{ item.title }}</a></h6>
-                            <p>{{ item.description }}</p>
+{#                            <h6 class="mb-lg-5 mt-2"><a target="_blank" href="{{ item.link }}">{{ item.title }}</a></h6>#}
+                            <div>{{ item.description|purify }}</div>
                         </div>
                     </div>
                 {% endfor %}

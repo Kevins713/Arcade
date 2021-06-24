@@ -25,7 +25,7 @@ class MainController extends AbstractController
     public function index(CategoryRepository $categories, UserRepository $userRepo): Response
     {
         // Requête du flux RSS des actualités
-        $rss = simplexml_load_file('https://www.jeuxactu.com/rss/multi.rss');
+        $rss = simplexml_load_file('https://www.actugaming.net/feed/');
         $userRepo->findConnectedAdmins();
 
         // Récupération des 2 derniers Event

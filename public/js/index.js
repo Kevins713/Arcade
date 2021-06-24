@@ -6,6 +6,7 @@ $(function() {
 
 });
 
+
 // Fonction pour récuperer une liste d'utilisateur et les inserer avec un foreach
 let requestUsers = function(url, classSelector){
     $.ajax({
