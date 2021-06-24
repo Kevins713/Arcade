@@ -29,37 +29,13 @@ class ForumFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 1,
-                        'max' => 15,
+                        'max' => 150,
                         'minMessage' => 'Le titre doit contenir au moins {{ limit }} caractère(s)',
                         'maxMessage' => 'Le titre doit contenir au maximum {{ limit }} caractères',
                     ]),
                 ],
             ])
-            ->add('image', FileType::class, [
-                'label' => 'Sélectionnez une photo',
-                'constraints' => [
-                    new File([
-                        // Taille maximum de 1Mo
-                        'maxSize' => '1M',
-    
-                        // jpg et png uniquement
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                        ],
-    
-                        // Message d'erreur en cas de fichier au type non autorisé
-                        'mimeTypesMessage' => 'L\'image doit être de type jpg ou png',
-    
-                        // Message en cas de fichier trop gros
-                        'maxSizeMessage' => 'Fichier trop volumineux ({{ size }} {{ suffix }}). La taille maximum autorisée est {{ limit }}{{ suffix }}',
-                    ]),
-                    new NotBlank([
-                        // Message en cas de formulaire envoyé sans fichier
-                        'message' => 'Vous devez sélectionner un fichier',
-                    ])
-                ]
-            ])
+
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
