@@ -44,7 +44,6 @@ class ForumController extends AbstractController
     public function newCategory(Request $request): Response
     {
 
-
         $newCategory = new Category();
         $form = $this->createForm(CategoryFormType::class, $newCategory);
         $form->handleRequest($request);
@@ -68,7 +67,7 @@ class ForumController extends AbstractController
 
             // Mise à jour du nom de la photo de profil de l'utilisateur connecté dans la BDD
             $newCategory->setImage($newFileName);
-            $em = $this->getDoctrine()->getManager();
+
             $em->flush();
 
             $image->move(
@@ -91,8 +90,8 @@ class ForumController extends AbstractController
     public function category(SubCategoryRepository $subCategory, Category $category, Request $request): Response
     {
 
-        return $this->render('forum/category/category.html.twig', [
-            'categorie' => $category,
+        return $this->render('forum/category/category.html.twig',[
+            'categories' => $category,
             'subcategories' => $subCategory->findAll(),
         ]);
 

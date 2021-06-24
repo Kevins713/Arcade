@@ -20,7 +20,7 @@ class CommentRepository extends ServiceEntityRepository
     }
 
     /**
-     * Méthode pour compter le nombre de forums dans le site
+     * Méthode pour compter le nombre de messages dans le site
      */
     public function countMessages(){
         $qb = $this->createQueryBuilder('c')
