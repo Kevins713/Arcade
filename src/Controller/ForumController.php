@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+<<<<<<< HEAD
 use App\Controller\MainController;
 use App\Form\CategoryEditType;
 use App\Form\ForumFormType;
+=======
+>>>>>>> origin/master
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +23,7 @@ use App\Repository\ForumRepository;
 use App\Form\CreateCommentFormType;
 use App\Form\SubCategoryFormType;
 use App\Form\CategoryFormType;
+use App\Form\ForumFormType;
 
 use App\Entity\Category;
 use App\Entity\SubCategory;
@@ -95,8 +99,8 @@ class ForumController extends AbstractController
     {
 
         return $this->render('forum/category/category.html.twig',[
-            'categories' => $category,
-            'subcategories' => $subCategory->findAll(),
+            'categorie' => $category,
+        'subcategories' => $subCategory->findAll(),
         ]);
 
     }
@@ -155,6 +159,18 @@ class ForumController extends AbstractController
         ]);
     }
 
+        /**
+     * @Route("/forumlist/{slug}", name="forumlist")
+     */
+    public function forumList(Request $request, SubCategory $subCategory): Response
+    {
+
+        return $this->render('forum/forumList.html.twig',[
+            'subcategory' => $subCategory,
+        ]);
+
+    }
+
 
     /**
      * Contrôleur de la page permettant de créer un nouveau forum
@@ -162,36 +178,62 @@ class ForumController extends AbstractController
      * @Route("/nouveau-forum/{slug}", name="new_forum")
      * @Security("is_granted('ROLE_ADMIN','ROLE_MODERATOR')")
      */
-    public function newForum(Request $request, Forum $createForum): Response
+    public function newForum(Request $request, SubCategory $subCategory): Response
     {
         $newForum = new Forum();
         $form = $this->createForm(ForumFormType::class, $newForum);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $connectedUser = $this->getUser();
-            $newForum->setSubCategory($createForum);
+            $newForum
+            ->setSubCategory($subCategory)
+            ->setAuthor($connectedUser)
+            ->setPublicationDate(new DateTime());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($newForum);
             $em->flush();
 
 
+
             $this->addFlash('success', 'Forum créée avec succès !');
             return $this->redirectToRoute('forumlist',[
-                'slug'=> $subCategory->getSlug()
+                'slug'=> $subCategory->getSlug(),
             ]);
         }
 
-        return $this->render('forum/category/newForum.html.twig', [
+        return $this->render('forum/newForum.html.twig', [
             'form' => $form->createView(),
             'forumlist' => $newForum,
         ]);
     }
 
+<<<<<<< HEAD
+=======
+
     /**
-     * @Route("/forum/{slug}", name="forum")
+     * @Route("/forum/profil/{id}/", name="main_profil_forum")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function profil(User $user, Request $request): Response
+    {
+        $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
+
+        $comments = $commentRepo->findBy([], ['publicationDate' => 'DESC']);
+
+
+        return $this->render('forum/profilForum.html.twig', [
+            'comments' => $comments,
+            'userForum' => $user,
+
+        ]);
+    }
+
+
+>>>>>>> origin/master
+    /**
+     * @Route("/forum/{slug}/", name="forum")
      */
     public function forum(Forum $forum, Request $request, PaginatorInterface $paginator): Response
     {
@@ -200,7 +242,7 @@ class ForumController extends AbstractController
         //Paginator pour les commentaires de la page forum
         $requestedPage = $request->query->getInt('page', 1);
 
-        if($requestedPage < 1){
+        if ($requestedPage < 1) {
             throw new NotFoundHttpException();
         }
 
@@ -209,17 +251,17 @@ class ForumController extends AbstractController
         $query = $em->createQuery('SELECT c FROM App\Entity\Comment c ORDER BY c.publicationDate DESC');
 
         $comments = $paginator->paginate(
-            $query,             // Requête de selection
+            $forum->getComments(),             // Requête de selection
             $requestedPage,     // Numéro de la page actuelle
-            3              // Nombre d'articles par page
+            5              // Nombre d'articles par page
         );
 
 
         // Si l'utilisateur n'est pas connecté, on appel directement la vue sans traiter le formulaire en dessous
-        if(!$this->getUser()){
+        if (!$this->getUser()) {
             return $this->render('forum\forum.html.twig', [
                 'forum' => $forum,
-                'comments'=>$comments,
+                'comments' => $comments,
             ]);
         }
 
@@ -231,17 +273,16 @@ class ForumController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             // Récupération de la personne connectée
             $connectedUser = $this->getUser();
 
             // Hydratation du comment avec la date et l'auteur
             $newComment
-                ->setPublicationDate( new DateTime() )
+                ->setPublicationDate(new DateTime())
                 ->setAuthor($connectedUser)
-                ->setForum($forum)
-            ;
+                ->setForum($forum);
 
             // Récupération du manager général pour sauvegarder l'article en BDD
             $em = $this->getDoctrine()->getManager();
@@ -266,13 +307,17 @@ class ForumController extends AbstractController
             ]);
         }
 
-        return $this->render('forum/forum.html.twig',[
-            'forum'=>$forum,
-            'comments'=>$comments,
-            'form' =>$form->createView(),
+        return $this->render('forum/forum.html.twig', [
+            'forum' => $forum,
+            'comments' => $comments,
+            'form' => $form->createView(),
         ]);
     }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     /**
      * Page moderation permettant de supprimer un commentaire
      *
@@ -286,8 +331,7 @@ class ForumController extends AbstractController
         $tokenCSRF = $request->query->get('csrf_token');
 
         // Vérification que le token est valide
-        if(!$this->isCsrfTokenValid('comment_delete' . $comment->getId(), $tokenCSRF ))
-        {
+        if (!$this->isCsrfTokenValid('comment_delete' . $comment->getId(), $tokenCSRF)) {
             $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
         } else {
             dump('test');
@@ -304,13 +348,16 @@ class ForumController extends AbstractController
         ]);
     }
 
+<<<<<<< HEAD
+=======
+
     /**
      * Page moderation permettant de modifier un commentaire existant
      *
      * @Route("/forum/modifier-commentaire/{id}/", name="comment_edit")
      * @Security("is_granted('ROLE_MODERATOR')")
      */
-    public function commentEdit( Comment $comment, Request $request): Response
+    public function commentEdit(Comment $comment, Request $request): Response
     {
 
         // Création du formulaire de modification
@@ -320,7 +367,7 @@ class ForumController extends AbstractController
         $form->handleRequest($request);
 
         // Si le formulaire est envoyé et n'a pas d'erreur
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             // Sauvegarde des changements dans la BDD
             $em = $this->getDoctrine()->getManager();
@@ -342,6 +389,49 @@ class ForumController extends AbstractController
         ]);
 
     }
+
+
+>>>>>>> origin/master
+    /**
+     * Page moderation permettant de modifier un topic existant
+     *
+     * @Route("/forum/modifier-sujet/{id}/", name="forum_edit")
+     * @Security("is_granted('ROLE_MODERATOR')")
+     */
+    public function publicationEdit(Forum $forum, Request $request): Response
+    {
+
+        // Création du formulaire de modification
+        $form = $this->createForm(ForumFormType::class, $forum);
+
+        // Liaison des données POST avec le formulaire
+        $form->handleRequest($request);
+
+        // Si le formulaire est envoyé et n'a pas d'erreur
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // Sauvegarde des changements dans la BDD
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            // Message flash de succès
+            $this->addFlash('success', 'Sujet modifié avec succès !');
+
+            // Redirection vers la page de l'article modifié
+            return $this->redirectToRoute('forum', [
+                'slug' => $forum->getSlug(),
+            ]);
+
+        }
+
+
+        // Appel de la vue en envoyant le formulaire à afficher
+        return $this->render('forum/topicEdit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+<<<<<<< HEAD
 
     /**
      * @Route("/modifier-categorie/{id}", name="edit_category")
@@ -404,5 +494,6 @@ class ForumController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
+=======
+>>>>>>> origin/master
 }
-

@@ -15,17 +15,17 @@
                 <div class="card-body bg-darkblue text-white">
                     <div class="d-flex flex-column align-items-center text-center">
 
-                        {% if app.user.avatar is null %}
+                        {% if userForum.avatar is null %}
                         <img class="img-thumbnail img-fluid"
                             src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}" alt="avatar">
                         {% else %}
                         <img class="img-thumbnail img-fluid"
-                            src="{{ asset('images/usersAvatar/' ~ app.user.avatar)|imagine_filter('avatar') }}"
+                            src="{{ asset('images/usersAvatar/' ~ userForum.avatar)|imagine_filter('avatar') }}"
                             alt="avatar">
                         {% endif %}
 
                         <div class="mt-2">
-                            <h6 class="mb-0 p-1 ">Statut : {{ app.user.roles[0]|renameRole }} </h6>
+                            <h6 class="mb-0">Roles : {{ userForum.roles[0]|renameRole }}</h6>
                         </div>
                     </div>
                 </div>
@@ -38,19 +38,19 @@
                 <div class="card-body bg-darkblue text-white">
                     <div class="row">
                         <div>
-                            <h5 class="mb-0">Pseudo : {{ app.user.pseudonym }}</h5>
+                            <h5 class="mb-0">Pseudo : {{ userForum.pseudonym }}</h5>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div>
-                            <h5 class="mb-0">Date d'inscription : {{ app.user.registrationDate|date("d/m/Y à H\\hi") }}</h5>
+                            <h5 class="mb-0">Date d'inscription : {{ userForum.registrationDate|date("d/m/Y à H\\hi") }}</h5>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
                         <div>
-                            <h5 class="mb-0">Email : {{ app.user.email }} </h5>
+                            <h5 class="mb-0">Email : {{ userForum.email }} </h5>
                         </div>
                     </div>
                     <hr>
@@ -72,13 +72,13 @@
                     <div class="col-12">
                         <h4 class="mb-0 text-center">Description :</h4>
                     </div>
-                    {% if app.user.description is null %}
+                    {% if userForum.description is null %}
                         <div class="mt-1 text-secondary text-center">
                             <p>Aucune description</p>
                         </div>
                     {% else %}
                         <div class="mt-1 text-center">
-                            {{ app.user.description }}
+                            {{ userForum.description }}
                         </div>
                     {% endif %}
                 </div>
@@ -88,7 +88,7 @@
 
     {# Affiche le nombre message#}
     <div class="row">
-        <p class="col-12 text-center mt-4">Nombre total de message : {{ comments|length }} </p>
+        <p class="col-12 text-center mt-4">Nombre total de message : 5 </p>
     </div>
 
 
@@ -111,18 +111,18 @@
 
                             <!-- détails profil-->
                             <div class="card-profil-topic card rounded bg-darkblue text-white p-lg-3 d-flex flex-grow-1 d-flex flex-row flex-lg-column">
-                                <a href="{{ path('main_profil') }}">{% if app.user.avatar is null %}
+                                <a href="{{ path('main_profil') }}">{% if userForum.avatar is null %}
                                     <img class="img-thumbnail img-fluid bg-darkblue rounded mb-3 mb-lg-5 offset-2 col-8 mt-2 offset-lg-1 col-lg-10 mt-0 p-3"
                                         src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}" alt="avatar">
                                     {% else %}
                                     <img class="img-thumbnail img-fluid bg-darkblue rounded mb-3 mb-lg-5 offset-2 col-8 mt-2 offset-lg-1 col-lg-10 mt-0 p-3"
-                                        src="{{ asset('images/usersAvatar/' ~ app.user.avatar)|imagine_filter('avatar') }}"
+                                        src="{{ asset('images/usersAvatar/' ~ userForum.avatar)|imagine_filter('avatar') }}"
                                         alt="avatar">
                                     {% endif %}
 
                                 <div class="mb-0 fs-6 card-title text-center">
-                                    <a><h6 class="mb-0 p-1 ">Pseudo : {{ app.user.pseudonym }}</h6></a>
-                                    <h6 class="mb-0 p-1 ">Statut : {{ app.user.roles[0]|renameRole }} </h6>
+                                    <a><h6 class="mb-0 p-1 ">Pseudo : {{ userForum.pseudonym }}</h6></a>
+                                    <h6 class="mb-0 p-1 ">Statut : {{ userForum.roles[0]|renameRole }}</h6>
                                 </div>
                                 <hr>
                                 <div class="card-body d-none d-lg-block">
@@ -135,36 +135,16 @@
                     </div>
 
                     <!--  content col-10 -->
-                    <div class="col-12 col-lg-9 col-xl-10 bg-light d-flex flex-column">
-                        <div class="flex-grow-1 p-4">
-                            <div>
-                                {# TODO : ajouter la route #}
-                                <a class="mt-2" href="{{ path('forum', { slug:comment.forum.slug}) }}"><h4>{{ comment.forum.title }}</h4></a>
-                            </div>
-
-                            <div>
-                                <p>{{ comment.content }}</p>
-                            </div>
+                    <div class="col-12 col-lg-9 col-xl-10 bg-light
+                                d-flex flex-column">
+                        <div class="d-flex  flex-grow-1 p-5">
+                            {# TODO mettre le titre de l'article commenté #}
+                            <p>{{ comment.content|purify }}</p>
                         </div>
 
                         <hr>
 
-                        {# Si l'utilisateur  #}
-                        {% if comment.author == app.user or is_granted('ROLE_MODERATOR') %}
-                        <div class="d-flex justify-content-end me-2">
-                            <div class="p-2 ">
-                                <a class=" btn btn-darkblue "
-                                   href="{{ path('comment_edit', { id : comment.id }) }}">Editer le contenu</a>
-                            </div>
-                            {% if is_granted('ROLE_MODERATOR') %}
-                            <div class="p-2 ">
-                                <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
-                                   class=" btn btn-darkblue "
-                                   href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message</a>
-                            </div>
-                            {% endif %}
-                        </div>
-                        {% endif %}
+
                     </div>
 
                 </div>
