@@ -30,7 +30,7 @@ class ForumFormType extends AbstractType
                     ]),
                     new Length([
                         'min' => 1,
-                        'max' => 15,
+                        'max' => 150,
                         'minMessage' => 'Le titre doit contenir au moins {{ limit }} caractère(s)',
                         'maxMessage' => 'Le titre doit contenir au maximum {{ limit }} caractères',
                     ]),
