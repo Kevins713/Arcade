@@ -122,3 +122,22 @@ a{
     margin-bottom: 2em;
     font-family: PixelFlag, sans-serif;
 }
+/* Catégories et sous-catégories */
+.category {
+    box-shadow: 0px 0px 10px 1px black;
+}
+.category img {
+    height: 143px;
+    width: 154px;
+}
+.category:hover {
+    background-color: var(--forum-orange);
+}
+.category-title {
+    border-top: black 1px solid;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+}

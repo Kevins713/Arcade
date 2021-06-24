@@ -53,12 +53,19 @@
 
                                 <div class="p-2 ">
                                     <a class=" btn btn-darkblue " href="{{ path('forum_edit', { id : forum.id }) }}">Editer le forum</a>
-                                </div> {#  #}
+                                </div>
                                 {% if is_granted('ROLE_MODERATOR') %}
                                 <div class="p-2 ">
-                                    <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
-                                       class=" btn btn-darkblue " href="#">Supprimer le forum</a>
-                                </div> {# {{ path('forum_delete', { id : forum.id, csrf_token : csrf_token('forum_delete' ~ forum.id ) }) }} #}
+                                    <form
+                                            class="mx-1"
+                                            method="post"
+                                            action="{{ path('delete_forum', {'id': forum.id}) }}"
+                                            onsubmit="return confirm('Etes-vous sûr de vouloir supprimer ce forum ?');"
+                                    >
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ forum.id) }}">
+                                        <button class="btn btn-darkblue">Supprimer</button>
+                                    </form>
+                                </div>
                                 {% endif %}
                                 </div>
                         {% endif %}
