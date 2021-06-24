@@ -6,21 +6,34 @@
 {% block body %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-12 mt-5">
-            <h3>Fil d'ariane</h3>
-        </div>
-    </div>
+            {# Fil d'Ariane #}
+            <div class="container">
+                <div class="row gutters-sm mt-5">
+                    <div class="row my-5 ">
+                        <div class="ariane col-12 text-center bg-darkblue m-0 d-flex flex-column justify-content-center flex-lg-row ">
+    
+                            <div class="px-3 py-2 text-white">
+                                <a href="#">{{ subcategory.category.title }} </a> {# {{ path('category', { slug: forum.subCategory.category.slug }) }} #}
+                            </div>
+                            <span class="px-3 py-2"><i class="fas fa-angle-right"></i></span>
+                            <div class="px-3 py-2">
+                                <a href="#">{{ subcategory.title }} </a> {# {{ path('category_sub_category', { slug: forum.subCategory.slug }) }} #}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
  
-    <div class="row mt-5 p-3 bg-dark">
-            <h3 class ="text-light">{{subcategory.title}}</h3>
+    <div class="row m-2 p-3">
+            <h3 class ="text-dark text-center">{{subcategory.title}}</h3>
     </div>
 
     <div class="row">
         {# Catégories principales #}
-        <div class="col-6 offset-3 offset-lg-0 col-lg-9">
-            <h2>Liste des forums</h2>
+
+        <div class="col-12 offset-3 offset-lg-0 ">
+            <h2 class="bg-darkblue mb-0 text-center">Liste des forums</h2>
             <div class="row pb-4 mb-4 justify-content-lg-start">
             {% for forums in subcategory.forums %}
 
@@ -28,13 +41,28 @@
                     <div class="row">
                         <!-- Profil de l'utilisateur (pseudo, rôle, photo de profil si il y'en as une, date d'inscription, nombre de messages) (bonne chance pour le
                         responsive) -->
-                        <div class="col-2 bg-primary">
-                            <div class="d-block offset-3 col-sm-6 mt-2 p-4 bg-dark text-white">image</div>
+                        <div class="col-1">
+                            <img class="d-block img-fluid p-2 text-white" src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}"></img>{{forums.author.avatar}}</img>
                         </div>
-                        <div class="col-10 p-2">
-                            <p class="mt-2">{{forums.content}}</p>
-                            <p class="mt-5">{{forums.author.pseudonym}}</p>
+                        <div class="col-10 pl-3">
+                            <a style="text-decoration:none;" href="{{path('forum',{slug: forums.slug})}}">{{forums.title}}</a>
+                            <p>{{forums.content|slice(0,100) }}</p>
+                            <p class="">{{forums.author.pseudonym}} {{forums.publicationDate|date("d/m/Y à H\\hi") }}</p>
                         </div>
+                        {% if forums.author == app.user or is_granted('ROLE_MODERATOR') %}
+                            <div class="d-flex p-2 bd-highlight">
+
+                                <div class="p-2 ">
+                                    <a class=" btn btn-darkblue " href="{{ path('forum_edit', { id : forums.id }) }}">Editer le forum</a>
+                                </div> {#  #}
+                                {% if is_granted('ROLE_MODERATOR') %}
+                                <div class="p-2 ">
+                                    <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
+                                       class=" btn btn-darkblue " href="#">Supprimer le forum</a>
+                                </div> {# {{ path('forum_delete', { id : forum.id, csrf_token : csrf_token('forum_delete' ~ forum.id ) }) }} #}
+                                {% endif %}
+                                </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -43,6 +71,12 @@
                         <a href="{{path('new_forum',{slug: subcategory.slug})}}"><button class="btn btn-darkblue">Ajouter un forum</button></a>
                     </div>
                 {% endif %}
+            </div>
+            {# pagination bottom #}
+            <div class="row">
+                <div class="me-auto m-3 text-center d-flex justify-content-end ">
+                    {{ knp_pagination_render(subcategories) }}
+                </div>
             </div>
         </div>
 
