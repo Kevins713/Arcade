@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Controller\MainController;
 use App\Form\CategoryEditType;
+use App\Form\EditSubCategoryType;
 use App\Form\ForumFormType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -96,8 +97,7 @@ class ForumController extends AbstractController
     {
 
         return $this->render('forum/category/category.html.twig',[
-            'categorie' => $category,
-            'subcategories' => $subCategory->findAll(),
+            'category' => $category,
         ]);
 
     }
@@ -121,7 +121,7 @@ class ForumController extends AbstractController
 
             $image = $form->get('image')->getData();
 
-            $imageDirectory = $this->getParameter('app_category_image_directory');
+            $imageDirectory = $this->getParameter('app_subcategory_image_directory');
             $connectedUser = $this->getUser();
 
             do {
@@ -408,7 +408,6 @@ class ForumController extends AbstractController
 
         return $this->render('forum/category/editCategory.html.twig', [
             'form' => $form->createView(),
-            'category' => $category
         ]);
     }
 
@@ -497,6 +496,92 @@ class ForumController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Catégorie supprimée avec succès !');
+        } else {
+            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+        }
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("/modifier-sous-categorie/{id}", name="edit_sub_category")
+     * @Security("is_granted('ROLE_MODERATOR')")
+     */
+    public function subCategoryEdit(Request $request, SubCategory $subCategory): Response
+    {
+        $form = $this->createForm(EditSubCategoryType::class, $subCategory);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+
+            // Message flash de succès et redirection de l'utilisateur
+            $this->addFlash('success', 'Sous-catégorie modifiée avec succès !');
+            return $this->redirectToRoute('category', [
+                'slug' => $subCategory->getCategory()->getSlug(),
+            ]);
+
+        }
+
+        return $this->render('forum/editSubCategory.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("supprimer-sous-categorie/{id}", name="delete_sub_category", methods={"POST"})
+     */
+    public function deleteSubCategory(Request $request, SubCategory $subCategory): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$subCategory->getId(), $request->request->get('_token'))) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            // On parcourt toute les forums et tout leurs contenus pour les supprimer sinon erreur (EntityManager is closed)
+            $forums = $subCategory->getForums();
+
+            foreach ($forums as $forum){
+                $comments = $forum->getComments();
+                foreach ($comments as $comment){
+                    $entityManager->remove($comment);
+                }
+                $entityManager->remove($forum);
+            }
+            $entityManager->remove($subCategory);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Catégorie supprimée avec succès !');
+        } else {
+            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+        }
+
+        return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("supprimer-forum/{id}", name="delete_forum", methods={"POST"})
+     */
+    public function deleteForum(Request $request, Forum $forum): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$forum->getId(), $request->request->get('_token'))) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            // On parcourt toute les forums et tout leurs contenus pour les supprimer sinon erreur (EntityManager is closed)
+            $comments = $forum->getComments();
+
+                foreach ($comments as $comment){
+                    $entityManager->remove($comment);
+                }
+                $entityManager->remove($forum);
+
+            $entityManager->remove($forum);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Forum supprimé avec succès !');
         } else {
             $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
         }
