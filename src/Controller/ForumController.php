@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Form\ForumFormType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +17,7 @@ use App\Repository\ForumRepository;
 use App\Form\CreateCommentFormType;
 use App\Form\SubCategoryFormType;
 use App\Form\CategoryFormType;
+use App\Form\ForumFormType;
 
 use App\Entity\Category;
 use App\Entity\SubCategory;
@@ -87,12 +87,12 @@ class ForumController extends AbstractController
     /**
      * @Route("categorie/{slug}/", name="category")
      */
-    public function category(SubCategoryRepository $subCategory, Category $category, Request $request): Response
+    public function category(SubCategoryRepository $subCategory ,Category $category, Request $request): Response
     {
 
         return $this->render('forum/category/category.html.twig',[
-            'categories' => $category,
-            'subcategories' => $subCategory->findAll(),
+            'categorie' => $category,
+        'subcategories' => $subCategory->findAll(),
         ]);
 
     }
@@ -141,14 +141,26 @@ class ForumController extends AbstractController
             );
 
             $this->addFlash('success', 'Sous-Catégorie créée avec succès !');
-            return $this->redirectToRoute('category', [
-                'slug' => $category->getSlug()
+            return $this->redirectToRoute('category',[
+                'slug'=> $category->getSlug()
             ]);
         }
 
         return $this->render('forum/category/newSubCategory.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+        /**
+     * @Route("/forumlist/{slug}", name="forumlist")
+     */
+    public function forumList(Request $request, SubCategory $subCategory): Response
+    {
+
+        return $this->render('forum/forumList.html.twig',[
+            'subcategory' => $subCategory,
+        ]);
+
     }
 
 
@@ -158,29 +170,32 @@ class ForumController extends AbstractController
      * @Route("/nouveau-forum/{slug}", name="new_forum")
      * @Security("is_granted('ROLE_ADMIN','ROLE_MODERATOR')")
      */
-    public function newForum(Request $request, Forum $createForum): Response
+    public function newForum(Request $request, SubCategory $subCategory): Response
     {
         $newForum = new Forum();
         $form = $this->createForm(ForumFormType::class, $newForum);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $connectedUser = $this->getUser();
-            $newForum->setSubCategory($createForum);
+            $newForum
+            ->setSubCategory($subCategory)
+            ->setAuthor($connectedUser)
+            ->setPublicationDate(new DateTime());
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($newForum);
             $em->flush();
 
 
+
             $this->addFlash('success', 'Forum créée avec succès !');
-            return $this->redirectToRoute('forumlist', [
-                'slug' => $subCategory->getSlug()
+            return $this->redirectToRoute('forumlist',[
+                'slug'=> $subCategory->getSlug(),
             ]);
         }
 
-        return $this->render('forum/category/newForum.html.twig', [
+        return $this->render('forum/newForum.html.twig', [
             'form' => $form->createView(),
             'forumlist' => $newForum,
         ]);
@@ -188,7 +203,7 @@ class ForumController extends AbstractController
 
 
     /**
-     * @Route("/forum/profil/{id}", name="main_profil_forum")
+     * @Route("/forum/profil/{id}/", name="main_profil_forum")
      * @Security("is_granted('ROLE_USER')")
      */
     public function profil(User $user, Request $request): Response
@@ -207,7 +222,7 @@ class ForumController extends AbstractController
 
 
     /**
-     * @Route("/forum/{slug}", name="forum")
+     * @Route("/forum/{slug}/", name="forum")
      */
     public function forum(Forum $forum, Request $request, PaginatorInterface $paginator): Response
     {
