@@ -7,6 +7,9 @@
 {% block body %}
 
 <div class="container">
+    <div>
+        <a href=" {{ path('forum'), {slug : forumOrigin.slug }} "><img style="height: 60px;" src=" {{ asset('images/retour.png') }} " alt="bouton-retour"></a>
+    </div>
     <div class="row gutters-sm mt-5">
 
         <!-- Profil -> avatar, pseudo et role  -->
