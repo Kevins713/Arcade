@@ -36,6 +36,7 @@ class CategoryFormType extends AbstractType
                 ],
             ])
             ->add('image', FileType::class, [
+                'data_class' => null,
                 'label' => 'Sélectionnez une photo',
                 'constraints' => [
                     new File([

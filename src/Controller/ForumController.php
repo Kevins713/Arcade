@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
+use App\Controller\MainController;
+use App\Form\CategoryEditType;
 use App\Form\ForumFormType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Knp\Component\Pager\PaginatorInterface;
-
+use Symfony\Component\HttpFoundation\File\File;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\CategoryRepository;
@@ -56,7 +58,7 @@ class ForumController extends AbstractController
 
             $connectedUser = $this->getUser();
             $em = $this->getDoctrine()->getManager();
-            $em->persist($newCategory);
+
 
             do {
 
@@ -65,9 +67,11 @@ class ForumController extends AbstractController
 
             } while (file_exists($imageDirectory . $newFileName));
 
-            // Mise à jour du nom de la photo de profil de l'utilisateur connecté dans la BDD
-            $newCategory->setImage($newFileName);
+            dump($newFileName);
 
+            // Mise à jour de l'image de la catégorie dans la BDD
+            $newCategory->setImage($newFileName);
+            $em->persist($newCategory);
             $em->flush();
 
             $image->move(
@@ -186,8 +190,6 @@ class ForumController extends AbstractController
         ]);
     }
 
-
-
     /**
      * @Route("/forum/{slug}", name="forum")
      */
@@ -271,10 +273,6 @@ class ForumController extends AbstractController
         ]);
     }
 
-
-
-
-
     /**
      * Page moderation permettant de supprimer un commentaire
      *
@@ -305,14 +303,6 @@ class ForumController extends AbstractController
             'slug' => $comment->getForum()->getSlug(),
         ]);
     }
-
-
-
-
-
-
-
-
 
     /**
      * Page moderation permettant de modifier un commentaire existant
@@ -353,5 +343,66 @@ class ForumController extends AbstractController
 
     }
 
+    /**
+     * @Route("/modifier-categorie/{id}", name="edit_category")
+     * @Security("is_granted('ROLE_MODERATOR')")
+     */
+    public function categoryEdit(Request $request, Category $category): Response
+    {
+        $form = $this->createForm(CategoryEditType::class, $category);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+
+            // Message flash de succès et redirection de l'utilisateur
+            $this->addFlash('success', 'Image de catégorie modifiée avec succès !');
+            return $this->redirectToRoute('home');
+
+        }
+
+        return $this->render('forum/category/editCategory.html.twig', [
+            'form' => $form->createView(),
+            'category' => $category
+        ]);
+    }
+
+
+    /**
+     * @Route("supprimer-categorie/{id}", name="delete_category", methods={"POST"})
+     */
+    public function deleteCategory(Request $request, Category $category): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            // On parcourt toute ses sous-catégories et tout leurs contenus pour les supprimer sinon erreur
+            $subCategories = $category->getSubCategories();
+            foreach($subCategories as $subCategory){
+                $forums = $subCategory->getForums();
+                foreach ($forums as $forum){
+                    $comments = $forum->getComments();
+                    foreach ($comments as $comment){
+                        $entityManager->remove($comment);
+                    }
+                    $entityManager->remove($forum);
+                }
+                $entityManager->remove($subCategory);
+            }
+
+            $entityManager->remove($category);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Catégorie supprimée avec succès !');
+        } else {
+            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+        }
+
+        return $this->redirectToRoute('home');
+    }
 }
 
