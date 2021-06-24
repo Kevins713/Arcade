@@ -10,6 +10,11 @@
     font-family: Roboto;
     src: url('../fonts/Roboto-Light.ttf');
 }
+@font-face {
+    font-family: PixelFlag;
+    src: url('../fonts/PixelFlag.ttf');
+}
+
 
 /* Global */
 body {
@@ -87,8 +92,8 @@ a{
     margin: 0.3rem;
 }
 
-/* liens page topic */
 
+/* Fil d'ariane */
 .ariane a{
     color: white !important;
     font-weight: bolder;
@@ -103,4 +108,13 @@ a{
 .ariane>div:hover{
     background-color: var(--forum-orange);
     color: #eaeaea;
+}
+
+/* card-profil-topic*/
+.card-profil-topic>.card-title>h6>a{
+    color: #eaeaea ;
+    font-weight: bold !important;
+    font-size: 1.5em ;
+    margin-bottom: 2em;
+    font-family: PixelFlag, sans-serif;
 }
