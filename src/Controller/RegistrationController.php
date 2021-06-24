@@ -46,6 +46,7 @@ class RegistrationController extends AbstractController
             )
                 ->setRegistrationDate($date)
                 ->setLastVisit($date)
+                ->setMessage(0)
             ;
 
             $entityManager = $this->getDoctrine()->getManager();

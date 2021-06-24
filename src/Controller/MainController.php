@@ -85,7 +85,7 @@ class MainController extends AbstractController
     }
 
 
-/**
+    /**
      * @Route("/edit-profil/", name="edit_profil")
      * @Security("is_granted('ROLE_USER')")
      */
@@ -414,6 +414,19 @@ class MainController extends AbstractController
         }
         return $this->redirectToRoute('main_profil', [
             'slug' => $comment->getForum()->getSlug(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/classement/", name="rank")
+     */
+    public function rank(Request $request): Response
+    {
+        $userRepo = $this->getDoctrine()->getRepository(User::class);
+        $users = $userRepo->findBy([], ['message' => 'DESC'], 100);
+        return $this->render('main/rank.html.twig', [
+            'users' => $users,
         ]);
     }
 }

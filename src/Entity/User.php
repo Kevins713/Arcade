@@ -79,6 +79,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $Description;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $message;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -300,6 +305,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setDescription(?string $Description): self
     {
         $this->Description = $Description;
+
+        return $this;
+    }
+
+    public function getMessage(): ?int
+    {
+        return $this->message;
+    }
+
+    public function setMessage(int $message): self
+    {
+        $this->message = $message;
 
         return $this;
     }

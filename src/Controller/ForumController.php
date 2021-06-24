@@ -257,6 +257,7 @@ class ForumController extends AbstractController
                 ->setForum($forum)
             ;
 
+            $connectedUser->setMessage($connectedUser->getMessage() + 1);
             // Récupération du manager général pour sauvegarder l'article en BDD
             $em = $this->getDoctrine()->getManager();
 
@@ -384,6 +385,63 @@ class ForumController extends AbstractController
         ]);
     }
 
+    /**
+     * Page moderation permettant de modifier un topic existant
+     *
+     * @Route("/forum/modifier-sujet/{id}/", name="forum_edit")
+     * @Security("is_granted('ROLE_MODERATOR')")
+     */
+    public function publicationEdit(Forum $forum, Request $request): Response
+    {
+
+        // Création du formulaire de modification
+        $form = $this->createForm(ForumFormType::class, $forum);
+
+        // Liaison des données POST avec le formulaire
+        $form->handleRequest($request);
+
+        // Si le formulaire est envoyé et n'a pas d'erreur
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // Sauvegarde des changements dans la BDD
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            // Message flash de succès
+            $this->addFlash('success', 'Sujet modifié avec succès !');
+
+            // Redirection vers la page de l'article modifié
+            return $this->redirectToRoute('forum', [
+                'slug' => $forum->getSlug(),
+            ]);
+
+        }
+
+
+        // Appel de la vue en envoyant le formulaire à afficher
+        return $this->render('forum/topicEdit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+
+    /**
+     * @Route("/forum/profil/{id}/", name="main_profil_forum")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function profil(User $user, Request $request): Response
+    {
+        $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
+
+        $comments = $commentRepo->findBy([], ['publicationDate' => 'DESC']);
+
+
+        return $this->render('forum/profilForum.html.twig', [
+            'comments' => $comments,
+            'userForum' => $user,
+
+        ]);
+    }
 
     /**
      * @Route("supprimer-categorie/{id}", name="delete_category", methods={"POST"})
