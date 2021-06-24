@@ -154,11 +154,29 @@ class ForumController extends AbstractController
         /**
      * @Route("/forumlist/{slug}", name="forumlist")
      */
-    public function forumList(Request $request, SubCategory $subCategory): Response
+    public function forumList(Request $request, SubCategory $subCategory, PaginatorInterface $paginator): Response
     {
 
+        //Paginator pour les forums
+        $requestedPage = $request->query->getInt('page', 1);
+
+        if ($requestedPage < 1) {
+            throw new NotFoundHttpException();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        $query = $em->createQuery('SELECT c FROM App\Entity\Forum c ORDER BY c.publicationDate DESC');
+
+        $pagination = $paginator->paginate(
+            $subCategory->getForums(),
+            $requestedPage,     // Numéro de la page actuelle
+            5              // Nombre de forums par page
+        );
+
         return $this->render('forum/forumList.html.twig',[
-            'subcategory' => $subCategory,
+            'subcategory' => $pagination,
+            'subcategories' => $subCategory->getForums(),
         ]);
 
     }

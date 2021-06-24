@@ -6,11 +6,19 @@
 {% block body %}
 
 <div class="container">
-    <div class="row">
-        <div class="col-12  mt-5">
-            <h3>Fil d'ariane</h3>
+        {# Fil d'Ariane #}
+        <div class="container">
+            <div class="row gutters-sm mt-5">
+                <div class="row my-5 ">
+                    <div class="ariane col-12 text-center bg-darkblue m-0 d-flex flex-column justify-content-center flex-lg-row ">
+
+                        <div class="px-3 py-2 text-white">
+                            <a href="#">{{ categorie.title }} </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
 
  
     <div class="row mt-5 p-3 bg-dark">
@@ -20,32 +28,35 @@
     </div>
 
     <div class="row">
-        {# Catégories principales #}
-        <div class="col-6 offset-3 offset-lg-0 col-lg-9">
-            <h2>Sous-Catégories</h2>
+        {# Catégories principales#}
+        <h2 class="fw-bolder">Catégories</h2>
+        <div class="col-12 col-md-8 offset-md-2 col-lg-12 offset-lg-0 ">
             <div class="row pb-4 mb-4 justify-content-lg-start">
-            {% for subcategory in categorie.subCategories %}
-
-                <div class="col-12 col-md-6 col-lg-2 my-2">
-                    <a href="{{ path('forumlist', {slug: subcategory.slug}) }}">
-                        <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
-                            <img src="{{ asset('images/categories/' ~ subcategory.image ) }}" class="img-fluid" alt="...">
-                            <div class="category-title mt-1">
-                                <h6 class="text-white fs-6 fs-lg-3">{{ subcategory.title|capitalize }}</h6>
+                {% for subcategory in categorie.subCategories %}
+                    <div class="col-6 col-md-6 col-lg-2 my-2">
+                        <a href="{{ path('forumlist', {slug: subcategory.slug}) }}">
+                            <div class="category w-100 d-flex flex-column justify-content-center bg-lightblue p-1 rounded-3">
+                                <img src="{{ asset('images/categories/' ~ subcategory.image ) }}" class="img-fluid" alt="...">
+                                <div class="category-title mt-1">
+                                    <h6 class="text-white fs-6 fs-lg-3">{{ subcategory.title|capitalize }}</h6>
+                                </div>
                             </div>
-                        </div>
-                    </a>
-                </div>
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="col-6 col-md-6 col-lg-2 my-2">
+                        <p class="bg-darkblue rounded-3">Aucune catégorie à afficher !</p>
+                    </div>
                 {% endfor %}
                 {% if is_granted('ROLE_MODERATOR') %}
                     <div class="col-12 col-md-6 col-lg-2 my-2 d-flex align-items-center">
-                        <a href="{{ path('new_subcategory',{slug: categorie.slug}) }}"><button class="btn btn-darkblue">Ajouter une sous catégorie</button></a>
+                        <a href="{{ path('new_subcategory',{slug: categorie.slug}) }}">
+                            <button class="btn btn-darkblue">Ajouter une sous-catégorie</button>
+                        </a>
                     </div>
                 {% endif %}
             </div>
         </div>
-
-
     </div>
 </div>
 
