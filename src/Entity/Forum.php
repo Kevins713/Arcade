@@ -43,6 +43,7 @@ class Forum
 
     /**
      * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="forums")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $subCategory;
 
