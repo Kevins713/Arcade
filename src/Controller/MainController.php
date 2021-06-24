@@ -40,7 +40,7 @@ class MainController extends AbstractController
      */
     public function index(CategoryRepository $categories, UserRepository $userRepo): Response
     {
-        // Requête du flux RSS des actualités
+        // Requête du flux RSS des actualités dans un try & catch si jamais le lien n'est plus valide
         try {
             $rss = simplexml_load_file('https://www.actugaming.net/feed/');
 
