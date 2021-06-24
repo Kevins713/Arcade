@@ -38,7 +38,7 @@
                 <div class="card-body bg-darkblue text-white">
                     <div class="row">
                         <div>
-                            <h5 class="mb-0">Pseudo : {{ app.user.pseudonym }}</h5>
+                            <h5 class="mb-0 text-capitalize">Pseudo : {{ app.user.pseudonym }}</h5>
                         </div>
                     </div>
                     <hr>
@@ -56,7 +56,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-12 text-center pt-3">
-                            <a class="btn btn-secondary bg-lightblue" href=" {{ path('edit_profil') }} ">Editer le profil</a>
+                            <a class="btn btn-lg btn-darkblue " href=" {{ path('edit_profil') }} ">Editer le profil</a>
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@
             <div class="card-body bg-darkblue text-white">
                 <div>
                     <div class="col-12">
-                        <h4 class="mb-0 text-center">Description :</h4>
+                        <h4 class="mb-0 text-center">Description </h4>
                     </div>
                     {% if app.user.description is null %}
                         <div class="mt-1 text-secondary text-center">
@@ -78,7 +78,7 @@
                         </div>
                     {% else %}
                         <div class="mt-1 text-center">
-                            {{ app.user.description }}
+                            {{ app.user.description|purify }}
                         </div>
                     {% endif %}
                 </div>
@@ -92,7 +92,7 @@
     </div>
 
 
-    <h1>Messages postés :</h1>
+    <h1>Messages postés </h1>
 
     <div class="row mt-2">
 
@@ -119,17 +119,7 @@
                                         src="{{ asset('images/usersAvatar/' ~ app.user.avatar)|imagine_filter('avatar') }}"
                                         alt="avatar">
                                     {% endif %}
-
-                                <div class="mb-0 fs-6 card-title text-center">
-                                    <a><h6 class="mb-0 p-1 ">Pseudo : {{ app.user.pseudonym }}</h6></a>
-                                    <h6 class="mb-0 p-1 ">Statut : {{ app.user.roles[0]|renameRole }} </h6>
-                                </div>
-                                <hr>
-                                <div class="card-body d-none d-lg-block">
-                                    <div class="card-text">
-                                        <h6 class="mb-3">Date d'inscription: {{ comment.publicationDate|date("d/m/Y à H\\hi") }}</h6>
-                                    </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -139,22 +129,30 @@
                         <div class="flex-grow-1 p-4">
                             <div>
                                 {# TODO : ajouter la route #}
-                                <a class="mt-2" href=" "><h4>{{ comment.forum.title }}</h4></a>
+                                <h4><a class="mt-2 text-capitalize" href="{{ path('forum', { slug:comment.forum.slug}) }}">{{ comment.forum.title }}</a></h4>
                             </div>
 
-                            <div>
-                                <p>{{ comment.content }}</p>
+                            <div class="text-break">
+                                <p>{{ comment.content|purify }}</p>
                             </div>
                         </div>
 
                         <hr>
 
-                        {# Si l'utilisateur est admin, on affiche le bouton supprimer #}
-                        {% if app.user %}
+                        {# Si l'utilisateur  #}
+                        {% if comment.author == app.user or is_granted('ROLE_MODERATOR') %}
                         <div class="d-flex justify-content-end me-2">
-                            <div class="p-1 "><a class="btn btn-secondary btn-sm bg-lightblue" href="#">Editer le contenu</a></div>
-                            {# TODO : ajouter les routes pour éditer et supprimer #}
-                            <div class="p-1 "><a class="btn btn-secondary btn-sm bg-lightblue" href="#">Supprimer le message</a></div>
+                            <div class="p-2 ">
+                                <a class=" btn btn-darkblue "
+                                   href="{{ path('comment_edit', { id : comment.id }) }}">Editer le contenu</a>
+                            </div>
+                            {% if is_granted('ROLE_MODERATOR') %}
+                            <div class="p-2 ">
+                                <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
+                                   class=" btn btn-darkblue "
+                                   href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message</a>
+                            </div>
+                            {% endif %}
                         </div>
                         {% endif %}
                     </div>

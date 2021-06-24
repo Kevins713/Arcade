@@ -64,6 +64,17 @@
                                     <div class="category-title mt-1">
                                         <h6 class="text-white fs-6 fs-lg-3">{{ category.title|capitalize }}</h6>
                                     </div>
+                                    {% if is_granted('ROLE_MODERATOR') %}
+                                        <div class="mt-3 text-center">
+                                            <button class="btn btn-primary mb-3 mx-1"><a class="text-white" href="{{ path('edit_category', {id: category.id})
+                                                }}">Modifier</a></button>
+                                            <form class="mx-1" method="post" action="{{ path('delete_category', {'id': category.id}) }}"
+                                                  onsubmit="return confirm('Etes-vous sûr de vouloir supprimer cette catégorie ?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ category.id) }}">
+                                                <button class="btn btn-danger">Supprimer</button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </a>
                         </div>
