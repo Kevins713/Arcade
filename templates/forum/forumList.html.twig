@@ -6,54 +6,53 @@
 {% block body %}
 
 <div class="container">
-            {# Fil d'Ariane #}
-            <div class="container">
-                <div class="row gutters-sm mt-5">
-                    <div class="row my-5 ">
-                        <div class="ariane col-12 text-center bg-darkblue m-0 d-flex flex-column justify-content-center flex-lg-row ">
-    
-                            <div class="px-3 py-2 text-white">
-                                <a href="#">{{ subcategory.category.title }} </a> {# {{ path('category', { slug: forum.subCategory.category.slug }) }} #}
-                            </div>
-                            <span class="px-3 py-2"><i class="fas fa-angle-right"></i></span>
-                            <div class="px-3 py-2">
-                                <a href="#">{{ subcategory.title }} </a> {# {{ path('category_sub_category', { slug: forum.subCategory.slug }) }} #}
-                            </div>
-                        </div>
-                    </div>
+    {# Fil d'Ariane #}
+        <div class="row my-5 ">
+            <div class="ariane col-12 text-center bg-darkblue m-0 d-flex flex-column justify-content-center flex-lg-row ">
+                <div class="px-3 py-2 text-white">
+                    <a href="{{ path('category', { slug: subCategory.category.slug }) }}">{{ subCategory.category.title }} </a>
+                </div>
+                <span class="px-3 py-2"><i class="fas fa-angle-right"></i></span>
+                <div class="px-3 py-2">
+                    <p>{{ subCategory.title }}</p>
                 </div>
             </div>
+        </div>
 
  
     <div class="row m-2 p-3">
-            <h3 class ="text-dark text-center">{{subcategory.title}}</h3>
+            <h3 class ="text-dark text-center">{{ subCategory.title }}</h3>
     </div>
 
     <div class="row">
         {# Catégories principales #}
 
-        <div class="col-12 offset-3 offset-lg-0 ">
-            <h2 class="bg-darkblue mb-0 text-center">Liste des forums</h2>
+        <div class="col-12 offset-lg-0 ">
             <div class="row pb-4 mb-4 justify-content-lg-start">
-            {% for forums in subcategory.forums %}
-
-                <div class="col-12 card">
+                <h2 class="bg-darkblue mb-0 text-center">Liste des forums</h2>
+            {% for forum in forums %}
+                <hr>
+                <div class="col-12 forum">
                     <div class="row">
-                        <!-- Profil de l'utilisateur (pseudo, rôle, photo de profil si il y'en as une, date d'inscription, nombre de messages) (bonne chance pour le
-                        responsive) -->
-                        <div class="col-1">
-                            <img class="d-block img-fluid p-2 text-white" src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}"></img>{{forums.author.avatar}}</img>
+                        <!-- Profil de l'utilisateur (pseudo, rôle, photo de profil si il y'en as une, date d'inscription, nombre de messages) -->
+                        <div class="col-3 col-md-1">
+                            <img class="d-block img-fluid mt-1" src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}">
                         </div>
-                        <div class="col-10 pl-3">
-                            <a style="text-decoration:none;" href="{{path('forum',{slug: forums.slug})}}">{{forums.title}}</a>
-                            <p>{{forums.content|slice(0,100) }}</p>
-                            <p class="">{{forums.author.pseudonym}} {{forums.publicationDate|date("d/m/Y à H\\hi") }}</p>
+                        <div class="col-9 col-md-7 d-flex flex-column">
+                            <a class="card-title fs-3" style="text-decoration:none;" href="{{path('forum',{slug: forum.slug})}}">{{forum.title}}</a>
+                            <p>{{ forum.author.pseudonym }} - {{ forum.publicationDate|date("d/m/Y") }}</p>
                         </div>
-                        {% if forums.author == app.user or is_granted('ROLE_MODERATOR') %}
+                        <div class="col-6 col-md-2 d-flex justify-content-center align-items-center forum-aside">
+                            <p>Réponse : {{ forum.comments|length }}</p>
+                        </div>
+                        <div class="col-6 col-md-2 d-flex justify-content-center align-items-center forum-aside">
+                            <p>Vues : {{ forum.view }}</p>
+                        </div>
+                        {% if forum.author == app.user or is_granted('ROLE_MODERATOR') %}
                             <div class="d-flex p-2 bd-highlight">
 
                                 <div class="p-2 ">
-                                    <a class=" btn btn-darkblue " href="{{ path('forum_edit', { id : forums.id }) }}">Editer le forum</a>
+                                    <a class=" btn btn-darkblue " href="{{ path('forum_edit', { id : forum.id }) }}">Editer le forum</a>
                                 </div> {#  #}
                                 {% if is_granted('ROLE_MODERATOR') %}
                                 <div class="p-2 ">
@@ -68,22 +67,17 @@
                 {% endfor %}
                 {% if is_granted('ROLE_MODERATOR') %}
                     <div class="col-12 col-md-6 col-lg-2 my-2 d-flex align-items-center">
-                        <a href="{{path('new_forum',{slug: subcategory.slug})}}"><button class="btn btn-darkblue">Ajouter un forum</button></a>
+                        <a href="{{path('new_forum',{slug: subCategory.slug})}}"><button class="btn btn-darkblue">Ajouter un forum</button></a>
                     </div>
                 {% endif %}
             </div>
             {# pagination bottom #}
             <div class="row">
-                <div class="me-auto m-3 text-center d-flex justify-content-end ">
-                    {{ knp_pagination_render(subcategories) }}
+                <div class=" text-center d-flex justify-content-center ">
+                    {{ knp_pagination_render(forums) }}
                 </div>
             </div>
         </div>
-
-    </div>
-
-    <div class="row mt-5">
-
     </div>
 </div>
 

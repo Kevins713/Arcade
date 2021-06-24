@@ -165,23 +165,25 @@ class ForumController extends AbstractController
         //Paginator pour les forums
         $requestedPage = $request->query->getInt('page', 1);
 
+
         if ($requestedPage < 1) {
             throw new NotFoundHttpException();
         }
 
+        $forumList = $subCategory->getForums();
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery('SELECT c FROM App\Entity\Forum c ORDER BY c.publicationDate DESC');
 
         $pagination = $paginator->paginate(
-            $subCategory->getForums(),
+            $forumList,
             $requestedPage,     // Numéro de la page actuelle
             5              // Nombre de forums par page
         );
 
         return $this->render('forum/forumList.html.twig',[
-            'subcategory' => $pagination,
-            'subcategories' => $subCategory->getForums(),
+            'forums' => $pagination,
+            'subCategory' => $subCategory,
         ]);
 
     }
@@ -204,7 +206,10 @@ class ForumController extends AbstractController
             $newForum
             ->setSubCategory($subCategory)
             ->setAuthor($connectedUser)
-            ->setPublicationDate(new DateTime());
+            ->setPublicationDate(new DateTime())
+            ->setView(0)
+            ;
+
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($newForum);
@@ -229,6 +234,11 @@ class ForumController extends AbstractController
     {
         //todo Utilisation du CommentRepository pour la requete DQL
 
+
+        // On ajoute +1 aux views du forum
+        $forum->setView(($forum->getView() + 1));
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
         //Paginator pour les commentaires de la page forum
         $requestedPage = $request->query->getInt('page', 1);
 
@@ -236,7 +246,7 @@ class ForumController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $em = $this->getDoctrine()->getManager();
+
 
         $query = $em->createQuery('SELECT c FROM App\Entity\Comment c ORDER BY c.publicationDate DESC');
 
