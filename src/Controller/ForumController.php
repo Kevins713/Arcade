@@ -282,7 +282,6 @@ class ForumController extends AbstractController
 
             // Message flash de succès
             $this->addFlash('success', 'Le commentaire a été publié avec succès !');
-            //todo ne s'affiche pas
 
             // supression des deux variables
             unset($newComment);
