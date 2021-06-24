@@ -27,17 +27,34 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav  mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link{{ route == 'home' ? ' active' }}" href="{{ path('home') }}"><i
                                 class="fas fa-home mx-1"></i>Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{{ route == 'view_event' ? ' active' }}" href="{{ path('view_event') }}">Annonces</a>
+                        <a class="nav-link{{ route == 'rank' ? ' active' }}" href="{{ path('rank') }}"><i class="fas fa-trophy"></i> Classement</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{{ route == 'rank' ? ' active' }}" href="{{ path('rank') }}">Classement</a>
+                        <a class="nav-link{{ route == 'view_event' ? ' active' }}" href="{{ path('view_event') }}"><i class="fas fa-newspaper me-1"></i> Annonces</a>
                     </li>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="profil-dropdown" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-pen-square me-1"></i> Création :
+                        </a>
+                        <div class="dropdown-menu bg-dark" aria-labelledby="profil-dropdown">
+
+                            <a class="dropdown-item" href="{{ path('view_event') }}"><i
+                                class="fas fa-newspaper me-1"></i>Annonces</a>
+
+                            <a class="dropdown-item" href="{{ path('new_category') }}"><i
+                                class="fas fa-list-ul me-1"></i>catégories</a>
+                        </div>
+                    </li>
+                    {% endif %}
                 </ul>
 
                 {# Boutons à droite #}
