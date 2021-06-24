@@ -586,8 +586,6 @@ class ForumController extends AbstractController
             $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
         }
 
-        return $this->redirectToRoute('category', [
-            'slug' => $forum->getSubCategory()
-        ]);
+        return $this->redirectToRoute('home');
     }
 }
