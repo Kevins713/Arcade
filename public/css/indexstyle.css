@@ -14,31 +14,12 @@
 }
 
     /* Categories */
-.card img {
-    height: 131px;
-    width: 125px;
-}
+
 a {
     color: #eaeaea;
     font-weight: bolder;
 }
-.category {
-    box-shadow: 0px 0px 10px 1px black;
-}
-a:hover {
-    color: #eaeaea;
-}
 
-.category:hover {
-    background-color: var(--forum-orange);
-}
-.category-title {
-    border-top: black 1px solid;
-    height: 75px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 /* Aside */
 .aside {
     height: 60px;
