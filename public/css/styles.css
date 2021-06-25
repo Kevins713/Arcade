@@ -97,14 +97,13 @@ a{
 .ariane a{
     color: white !important;
     font-weight: bolder;
-
 }
-
 
 .ariane>div:hover{
     background-color: var(--forum-orange);
     color: #eaeaea;
 }
+
 
 /* Page liste des forums */
 .forum-aside {

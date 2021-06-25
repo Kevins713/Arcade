@@ -315,7 +315,6 @@ class ForumController extends AbstractController
             'form' =>$form->createView(),
         ]);
     }
-
     /**
      * Page moderation permettant de supprimer un commentaire
      *
@@ -386,6 +385,7 @@ class ForumController extends AbstractController
 
     }
 
+
     /**
      * @Route("/modifier-categorie/{id}", name="edit_category")
      * @Security("is_granted('ROLE_MODERATOR')")
@@ -401,7 +401,6 @@ class ForumController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-
             // Message flash de succès et redirection de l'utilisateur
             $this->addFlash('success', 'Image de catégorie modifiée avec succès !');
             return $this->redirectToRoute('home');
@@ -413,12 +412,15 @@ class ForumController extends AbstractController
         ]);
     }
 
+
     /**
      * Page moderation permettant de modifier un topic existant
      *
      * @Route("/forum/modifier-sujet/{id}/", name="forum_edit")
      * @Security("is_granted('ROLE_MODERATOR')")
      */
+
+
     public function publicationEdit(Forum $forum, Request $request): Response
     {
 
@@ -457,6 +459,8 @@ class ForumController extends AbstractController
      * @Route("/forum/profil/{id}/", name="main_profil_forum")
      * @Security("is_granted('ROLE_USER')")
      */
+
+
     public function profil(User $user, Request $request): Response
     {
         $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
@@ -467,7 +471,6 @@ class ForumController extends AbstractController
         return $this->render('forum/profilForum.html.twig', [
             'comments' => $comments,
             'userForum' => $user,
-
         ]);
     }
 
@@ -506,6 +509,7 @@ class ForumController extends AbstractController
 
         return $this->redirectToRoute('home');
     }
+
 
     /**
      * @Route("/modifier-sous-categorie/{id}", name="edit_sub_category")
@@ -627,3 +631,4 @@ class ForumController extends AbstractController
         ]);
     }
 }
+

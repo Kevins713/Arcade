@@ -342,7 +342,7 @@ class MainController extends AbstractController
         /**
      * Page moderation permettant de modifier un commentaire existant
      *
-     * @Route("/forum/modifier-commentaire/{id}/", name="comment_edit")
+     * @Route("/forum/modifier-commentaire/{id}/", name="comment_edit_profil")
      * @Security("is_granted('ROLE_USER')")
      */
     public function commentEdit(Comment $comment, Request $request): Response
@@ -390,7 +390,7 @@ class MainController extends AbstractController
     /**
      * Page moderation permettant de supprimer un commentaire
      *
-     * @Route("/forum/suppression-commentaire/{id}/", name="comment_delete")
+     * @Route("/forum/suppression-commentaire/{id}/", name="comment_delete_profil")
      * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function commentDelete(Comment $comment, Request $request): Response

@@ -144,13 +144,13 @@
                         <div class="d-flex justify-content-end me-2">
                             <div class="p-2 ">
                                 <a class=" btn btn-darkblue "
-                                   href="{{ path('comment_edit', { id : comment.id }) }}">Editer le contenu</a>
+                                   href="{{ path('comment_edit_profil', { id : comment.id }) }}">Editer le contenu</a>
                             </div>
                             {% if is_granted('ROLE_MODERATOR') %}
                             <div class="p-2 ">
                                 <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
                                    class=" btn btn-darkblue "
-                                   href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message</a>
+                                   href="{{ path('comment_delete_profil', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message</a>
                             </div>
                             {% endif %}
                         </div>
