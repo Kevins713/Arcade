@@ -351,33 +351,33 @@ class MainController extends AbstractController
         $user = $this->getUser();
 
         if($user == $comment->getAuthor()){
+
             // Création du formulaire de modification
-        $form = $this->createForm(CreateCommentFormType::class, $comment);
+            $form = $this->createForm(CreateCommentFormType::class, $comment);
 
-        // Liaison des données POST avec le formulaire
-        $form->handleRequest($request);
+            // Liaison des données POST avec le formulaire
+            $form->handleRequest($request);
 
-            // Si le formulaire est envoyé et n'a pas d'erreur
-            if ($form->isSubmitted() && $form->isValid()) {
+                // Si le formulaire est envoyé et n'a pas d'erreur
+                if ($form->isSubmitted() && $form->isValid()) {
 
-                // Sauvegarde des changements dans la BDD
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                    // Sauvegarde des changements dans la BDD
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
 
-                // Message flash de succès
-                $this->addFlash('success', 'Sujet modifié avec succès !');
+                    // Message flash de succès
+                    $this->addFlash('success', 'Sujet modifié avec succès !');
 
-                // Redirection vers la page de l'article modifié
-                return $this->redirectToRoute('main_profil', [
-                    'slug' => $comment->getForum()->getSlug(),
-                ]);
+                    // Redirection vers la page de l'article modifié
+                    return $this->redirectToRoute('main_profil', [
+                        'slug' => $comment->getForum()->getSlug(),
+                    ]);
 
-            }
+                }
 
-        }  else {
+        } else {
 
-            return $this->render('bundles/TwigBundle/Exception/error403.html.twig');
-
+            throw new AccessDeniedHttpException();
         }
 
         // Appel de la vue en envoyant le formulaire à afficher
