@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier la Sous-Catégorie{% endblock %}
+{% block title %}Déplacer un forum{% endblock %}
 
 {% block body %}
 
     <div class="container-fluid">
         <div class="row">
-            <h1 class="col-12 text-center my-5">Modifier la Sous-Catégorie</h1>
+            <h1 class="col-12 text-center my-5">Déplacer le forum <a href="{{ path('forum', {slug: forum.slug}) }}">"{{ forum.title }}"</a></h1>
         </div>
         <div class="row">
             <div class="col-12 col-md-6 offset-md-3">

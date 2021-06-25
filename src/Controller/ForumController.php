@@ -7,6 +7,7 @@ use App\Controller\MainController;
 use App\Form\CategoryEditType;
 use App\Form\EditSubCategoryType;
 use App\Form\ForumFormType;
+use App\Form\MoveForumType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -388,6 +389,7 @@ class ForumController extends AbstractController
     /**
      * @Route("/modifier-categorie/{id}", name="edit_category")
      * @Security("is_granted('ROLE_MODERATOR')")
+     * Methode permettant de modfier une catégorie
      */
     public function categoryEdit(Request $request, Category $category): Response
     {
@@ -474,6 +476,8 @@ class ForumController extends AbstractController
 
     /**
      * @Route("supprimer-categorie/{id}", name="delete_category", methods={"POST"})
+     * @Security("is_granted('ROLE_MODERATOR')")
+     * Methode permettant de supprimer une catégorie
      */
     public function deleteCategory(Request $request, Category $category): Response
     {
@@ -510,6 +514,7 @@ class ForumController extends AbstractController
     /**
      * @Route("/modifier-sous-categorie/{id}", name="edit_sub_category")
      * @Security("is_granted('ROLE_MODERATOR')")
+     * Methode permettant de modifier une sous-catégorie
      */
     public function subCategoryEdit(Request $request, SubCategory $subCategory): Response
     {
@@ -537,6 +542,8 @@ class ForumController extends AbstractController
 
     /**
      * @Route("supprimer-sous-categorie/{id}", name="delete_sub_category", methods={"POST"})
+     * @Security("is_granted('ROLE_MODERATOR')")
+     * Methode permettant de supprimer une sous-catégorie
      */
     public function deleteSubCategory(Request $request, SubCategory $subCategory): Response
     {
@@ -567,6 +574,7 @@ class ForumController extends AbstractController
 
     /**
      * @Route("supprimer-forum/{id}", name="delete_forum", methods={"POST"})
+     * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function deleteForum(Request $request, Forum $forum): Response
     {
@@ -591,6 +599,36 @@ class ForumController extends AbstractController
         }
 
         return $this->redirectToRoute('home');
+    }
+
+    /**
+     * @Route("deplacer-forum/{id}", name="move_forum")
+     * @Security("is_granted('ROLE_MODERATOR')")
+     * Methode permettant de déplacer un forum dans une autre sous-catégorie
+     */
+    public function moveForum(Request $request, Forum $forum): Response
+    {
+        $form = $this->createForm(MoveForumType::class, $forum);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+
+            // Message flash de succès et redirection de l'utilisateur
+            $this->addFlash('success', 'Sous-catégorie déplacée avec succès !');
+            return $this->redirectToRoute('forumlist', [
+                'slug' => $forum->getSubCategory()->getSlug(),
+            ]);
+
+        }
+
+        return $this->render('forum/moveForum.html.twig', [
+            'form' => $form->createView(),
+            'forum' => $forum,
+        ]);
     }
 }
 
