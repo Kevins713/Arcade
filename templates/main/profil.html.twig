@@ -127,9 +127,15 @@
                     <!--  content col-10 -->
                     <div class="col-12 col-lg-9 col-xl-10 bg-light d-flex flex-column">
                         <div class="flex-grow-1 p-4">
-                            <div>
-                                {# TODO : ajouter la route #}
-                                <h4><a class="mt-2 text-capitalize" href="{{ path('forum', { slug:comment.forum.slug}) }}">{{ comment.forum.title }}</a></h4>
+
+                            <div class="row">
+                                <div class="titre-forum  m-0 d-flex flex-column flex-lg-row px-3 py-2 justify-content-between">
+                                    <div class="px-1 py-1"><span><i class="far fa-clock px-1"></i></span>{{ comment.publicationDate|date("d/m/Y à H\\hi") }}
+                                    </div>
+                                    <div class="px-0 py-0 text-capitalize">
+                                        <a href="{{ path('forum', { slug:comment.forum.slug}) }}" class=" px-1 py-1  " >{{ comment.forum.title }}</a>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="text-break">
