@@ -47,7 +47,7 @@
                         </a>
                         <div class="dropdown-menu bg-dark" aria-labelledby="profil-dropdown">
 
-                            <a class="dropdown-item" href="{{ path('view_event') }}"><i
+                            <a class="dropdown-item" href="{{ path('create_event') }}"><i
                                 class="fas fa-newspaper me-1"></i>Annonces</a>
 
                             <a class="dropdown-item" href="{{ path('new_category') }}"><i
@@ -120,8 +120,9 @@
                     <div class="col-xl-2 col-md-4 col-sm-4 col-12">
                         <h6 class="mb-3 mb-lg-4 bold-text "><b>MENU</b></h6>
                         <ul class="list-unstyled">
-                            <li><a style="color: white;" class="page-footer" href="{{ path('home') }}">Page d'accueil</a></li>
-                            <li><a style="color: white;" class="page-footer" href="#">Forum</a></li>
+                            <li><a class="page-footer" href="{{ path('home') }}">Page d'accueil</a></li>
+                            <li><a class="page-footer" href="{{ path('rank') }}">Classement</a></li>
+                            <li><a class="page-footer" href="{{ path('view_event') }}">Annonces</a></li>
                         </ul>
                     </div>
                 </div>
