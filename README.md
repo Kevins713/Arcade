@@ -30,5 +30,7 @@ php bin/console doctrine:database:create
 php bin/console make:migration
 php bin/console doctrine:migrations:migrate
 php bin/console assets:install public
+php bin/ console ckeditor:install
+php bin/ console assets:install public
 
 ```

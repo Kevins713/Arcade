@@ -39,7 +39,7 @@
                         <a class="nav-link{{ route == 'view_event' ? ' active' }}" href="{{ path('view_event') }}"><i class="fas fa-newspaper me-1"></i> Annonces</a>
                     </li>
 
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_MODERATOR') %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-light" href="#" id="profil-dropdown" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
