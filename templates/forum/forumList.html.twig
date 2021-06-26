@@ -9,6 +9,10 @@
     {# Fil d'Ariane #}
         <div class="row my-5 ">
             <div class="ariane col-12 text-center bg-darkblue m-0 d-flex flex-column justify-content-center flex-lg-row ">
+                <div class="px-3 py-2">
+                    <a href="{{ path('home') }}">Accueil</a>
+                </div>
+                <span class="px-3 py-2"><i class="fas fa-angle-right"></i></span>
                 <div class="px-3 py-2 text-white">
                     <a href="{{ path('category', { slug: subCategory.category.slug }) }}">{{ subCategory.category.title }} </a>
                 </div>
@@ -34,13 +38,24 @@
                 <hr>
                 <div class="col-12 forum">
                     <div class="row">
-                        <!-- Profil de l'utilisateur (pseudo, rôle, photo de profil si il y'en as une, date d'inscription, nombre de messages) -->
+
+                        <!-- avatar auteur -->
                         <div class="col-3 col-md-1">
-                            <img class="d-block img-fluid mt-1" src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}">
+                            <a href="{{ path('main_profil_forum', { id : forum.author.id }) }}">
+                                {% if forum.author.avatar is null %}
+                                <img class="d-block img-fluid mt-1" src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}">
+                                {% else %}
+                                    <img class="d-block img-fluid mt-1"
+                                         src="{{ asset('images/usersAvatar/' ~ forum.author.avatar)|imagine_filter('avatar') }}"
+                                         alt="avatar">
+                                {% endif %}
+                            </a>
                         </div>
-                        <div class="col-9 col-md-7 d-flex flex-column">
-                            <a class="card-title fs-3" style="text-decoration:none;" href="{{path('forum',{slug: forum.slug})}}">{{forum.title}}</a>
-                            <p>{{ forum.author.pseudonym }} - {{ forum.publicationDate|date("d/m/Y") }}</p>
+
+                        <div class="titre-forum col-9 col-md-7 d-flex flex-column">
+                            <a class="card-title fs-3 text-capitalize" style="text-decoration:none;" href="{{path('forum',{slug: forum.slug})}}">{{forum.title}}</a>
+                            <p><a href="{{ path('main_profil_forum', { id : forum.author.id }) }}">{{ forum.author.pseudonym }}</a>- {{ forum.publicationDate|date("d/m/Y") }}</p>
+
                         </div>
                         <div class="col-6 col-md-2 d-flex justify-content-center align-items-center forum-aside">
                             <p>Réponse : {{ forum.comments|length }}</p>
