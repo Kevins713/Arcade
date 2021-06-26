@@ -164,7 +164,7 @@ class MainController extends AbstractController
 
                 $this->addFlash('success', 'Mot de passe modifié avec succès !');
 
-                return $this->redirectToRoute('logout');
+                return $this->redirectToRoute('main_profil');
 
             } else {
 
@@ -197,7 +197,7 @@ class MainController extends AbstractController
 
                 $this->addFlash('success', 'Email modifié avec succès !');
 
-                return $this->redirectToRoute('logout');
+                return $this->redirectToRoute('main_profil');
 
 
             } else {
@@ -226,7 +226,7 @@ class MainController extends AbstractController
 
                 $em->flush();
 
-                $this->addFlash('success', 'Description modifié avec succès !');
+                $this->addFlash('success', 'Description modifiée avec succès !');
 
                 return $this->redirectToRoute('main_profil');
 
