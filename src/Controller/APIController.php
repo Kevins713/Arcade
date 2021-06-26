@@ -72,4 +72,15 @@ class APIController extends AbstractController
 
         return $response;
     }
+
+    /**
+     * @Route("/derniers-messages", name="last_forums")
+     * Méthode permettant de récupérer les 5 derniers messages
+     */
+    public function getLastForum(ForumRepository $forumRepo, APIService $APIService)
+    {
+        $response = $APIService->getApi($forumRepo->findBy([], ['publicationDate' => 'DESC'], 5));
+
+        return $response;
+    }
 }

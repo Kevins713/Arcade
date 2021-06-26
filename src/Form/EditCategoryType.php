@@ -2,26 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class CategoryFormType extends AbstractType
+class EditCategoryType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => false,
+                'label' => 'Titre',
+                'mapped' => false,
                 'attr' => [
-                    'placeholder' => 'Ecrivez un titre',
+                    'placeholder' => 'Choisissez un titre',
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -36,33 +36,26 @@ class CategoryFormType extends AbstractType
                 ],
             ])
             ->add('image', FileType::class, [
-                'data_class' => null,
-                'label' => 'Sélectionnez une photo',
+                'label' => false,
+                'mapped' => false,
                 'attr' => [
-                    'accept' => 'image/jpeg, image/png',
+                    'class' => 'mt-3',
+                    'accept' => 'image/jpeg, image/png'
                 ],
                 'constraints' => [
+                    new NotBlank([
+                        'message' => 'Vous devez sélectionner un fichier'
+                    ]),
                     new File([
-                        // Taille maximum de 1Mo
                         'maxSize' => '1M',
-    
-                        // jpg et png uniquement
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
                         ],
-    
-                        // Message d'erreur en cas de fichier au type non autorisé
-                        'mimeTypesMessage' => 'L\'image doit être de type jpg ou png',
-    
-                        // Message en cas de fichier trop gros
-                        'maxSizeMessage' => 'Fichier trop volumineux ({{ size }} {{ suffix }}). La taille maximum autorisée est {{ limit }}{{ suffix }}',
+                        'mimeTypesMessage' => 'Le fichier doit être de type JPG ou PNG',
+                        'maxSizeMessage' => 'Fichier trop volumineux {{ size }}{{ suffix }}, la taille maximum est {{ limit }}{{ suffix }}',
                     ]),
-                    new NotBlank([
-                        // Message en cas de formulaire envoyé sans fichier
-                        'message' => 'Vous devez sélectionner un fichier',
-                    ])
-                ]
+                ],
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
@@ -71,5 +64,13 @@ class CategoryFormType extends AbstractType
                 ],
             ])
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            // Configure your form options here
+            'data_class' => null,
+        ]);
     }
 }

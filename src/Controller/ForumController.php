@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Controller\MainController;
 use App\Form\CategoryEditType;
+use App\Form\EditCategoryType;
 use App\Form\EditSubCategoryType;
 use App\Form\ForumFormType;
 use App\Form\MoveForumType;
@@ -393,16 +394,49 @@ class ForumController extends AbstractController
      */
     public function categoryEdit(Request $request, Category $category): Response
     {
-        $form = $this->createForm(CategoryEditType::class, $category);
+
+        $form = $this->createForm(EditCategoryType::class, $category);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // Récupération du champ photo
+            $image = $form->get('image')->getData();
+
+            // Récupération de l'emplacement du dossier des photos de profils
+            $categoryImageDirectory = $this->getParameter('app_category_image_directory');
+
+            // Récupération de l'utilisateur connecté
+            $connectedUser = $this->getUser();
+
+
+            // Si l'utilisateur a déjà une photo de profil, on la supprime
+            if($category->getImage() != null){
+                unlink( $categoryImageDirectory . $category->getImage() );
+            }
+
+            // Génération d'un nom de fichier jusqu'à en trouver un qui soit dispo
+            do{
+
+                $newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $image->guessExtension();
+
+                dump($newFileName);
+
+            } while( file_exists( $categoryImageDirectory . $newFileName ) );
+
+            // Mise à jour du nom de la photo de profil de l'utilisateur connecté dans la BDD
+            $category->setImage($newFileName);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
+            $image->move(
+                $categoryImageDirectory,
+                $newFileName
+            );
+
             // Message flash de succès et redirection de l'utilisateur
-            $this->addFlash('success', 'Image de catégorie modifiée avec succès !');
+            $this->addFlash('success', 'Catégorie modifiée avec succès !');
+
             return $this->redirectToRoute('home');
 
         }
@@ -588,7 +622,6 @@ class ForumController extends AbstractController
                 foreach ($comments as $comment){
                     $entityManager->remove($comment);
                 }
-                $entityManager->remove($forum);
 
             $entityManager->remove($forum);
             $entityManager->flush();
