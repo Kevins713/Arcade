@@ -12,7 +12,7 @@
 }
 @font-face {
     font-family: PixelFlag;
-    src: url('../fonts/PixelFlag.ttf');
+    src: url('../fonts/{PixelFlag}.ttf');
 }
 
 
@@ -118,14 +118,32 @@ a{
         border: none;
     }
 }
-/* card-profil-topic*/
+
+
+/* card-profil-topic */
 .card-profil-topic>.card-title>h6>a{
     color: #eaeaea ;
     font-weight: bold !important;
     font-size: 1.5em ;
     margin-bottom: 2em;
-    font-family: PixelFlag, sans-serif;
+    /* font-family: PixelFlag, sans-serif; */
 }
+
+
+/* Titre des forums dans les commentaires des profils */
+.titre-forum>div>a {
+    color: black;
+    font-weight: bolder;
+}
+.titre-forum>div>a:hover {
+    background-color: var(--forum-orange);
+    color: #eaeaea;
+    font-weight: bolder;
+}
+.titre-forum>div{
+    color:black;
+}
+
 /* Catégories et sous-catégories */
 .category {
     box-shadow: 0px 0px 10px 1px black;

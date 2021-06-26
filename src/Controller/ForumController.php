@@ -45,7 +45,7 @@ class ForumController extends AbstractController
      * Contrôleur de la page permettant de créer une nouvelle sous categorie
      *
      * @Route("/nouvelle-categorie/", name="new_category")
-     * @Security("is_granted('ROLE_ADMIN','ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function newCategory(Request $request): Response
     {
@@ -109,7 +109,7 @@ class ForumController extends AbstractController
      * Contrôleur de la page permettant de créer une nouvelle sous categorie
      *
      * @Route("/nouvelle-souscategorie/{slug}", name="new_subcategory")
-     * @Security("is_granted('ROLE_ADMIN','ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function newSubCategory(Request $request, Category $category): Response
     {
@@ -195,7 +195,7 @@ class ForumController extends AbstractController
      * Contrôleur de la page permettant de créer un nouveau forum
      *
      * @Route("/nouveau-forum/{slug}", name="new_forum")
-     * @Security("is_granted('ROLE_ADMIN','ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function newForum(Request $request, SubCategory $subCategory): Response
     {
@@ -631,7 +631,7 @@ class ForumController extends AbstractController
             $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
         }
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('forumList.html.twig');
     }
 
     /**
