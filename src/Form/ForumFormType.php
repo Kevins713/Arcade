@@ -71,3 +71,4 @@ class ForumFormType extends AbstractType
         ;
     }
 }
+

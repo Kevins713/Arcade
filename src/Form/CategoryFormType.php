@@ -72,4 +72,5 @@ class CategoryFormType extends AbstractType
             ])
         ;
     }
+
 }
