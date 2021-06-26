@@ -51,6 +51,8 @@ class MainController extends AbstractController
                 ]
             ]];
         }
+        $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
+        $lastComments = $commentRepo->findBy([], ['publicationDate' => 'DESC'], 5);
         $userRepo->findConnectedAdmins();
 
         // Récupération des 2 derniers Event
@@ -62,6 +64,7 @@ class MainController extends AbstractController
             'categories' => $categories->findAll(),
             'rss' => $rss,
             'events' => $events,
+            'Comments' => $lastComments
         ]);
     }
 
@@ -285,8 +288,10 @@ class MainController extends AbstractController
             $em->persist($event);
             $em->flush();
 
+            $this->addFlash('success', 'Annonce créee avec succès !');
             return $this->redirectToRoute('home');
         }
+
 
         return $this->render('main/newEvent.html.twig', [
             'form' => $form->createView(),
@@ -295,7 +300,6 @@ class MainController extends AbstractController
 
     /**
      * @Route("/annonces/", name="view_event")
-     * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function viewEvent(EventRepository $eventRepo): Response
     {
@@ -316,8 +320,11 @@ class MainController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'Annonce modifiée avec succès !');
+
             return $this->redirectToRoute('view_event');
         }
+
 
         return $this->render('main/editEvent.html.twig', [
             'form' => $form->createView()
@@ -326,6 +333,7 @@ class MainController extends AbstractController
 
     /**
      * @Route("supprimer-l-annonce/{id}", name="delete_event", methods={"POST"})
+     * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function deleteEvent(Request $request, Event $event): Response
     {
@@ -333,6 +341,11 @@ class MainController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($event);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Annonce supprimée !');
+        }
+        else {
+            $this->addFlash('error', 'Token invalide, veuillez ré-essayer.');
         }
 
         return $this->redirectToRoute('view_event');
