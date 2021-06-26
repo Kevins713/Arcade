@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 
 class ForumFormType extends AbstractType
 {
@@ -37,7 +38,7 @@ class ForumFormType extends AbstractType
                 ],
             ])
 
-            ->add('content', TextareaType::class, [
+            ->add('content', CKEditorType::class, [
                 'label' => 'Contenu',
                 'attr' => [
                     'rows' => 10,
@@ -64,7 +65,7 @@ class ForumFormType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
-                    'class' => 'btn btn-outline-primary col-12',
+                    'class' => 'btn btn-darkblue col-12',
                 ],
             ])
         ;

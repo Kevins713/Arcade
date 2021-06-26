@@ -150,13 +150,13 @@
                         <div class="d-flex justify-content-end me-2">
                             <div class="p-2 ">
                                 <a class=" btn btn-darkblue "
-                                   href="{{ path('comment_edit_profil', { id : comment.id }) }}">Editer le contenu</a>
+                                   href="{{ path('comment_edit_profil', { id : comment.id }) }}" title="Modifier le message"><i class="fas fa-edit"></i></a>
                             </div>
                             {% if is_granted('ROLE_MODERATOR') %}
                             <div class="p-2 ">
                                 <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
                                    class=" btn btn-darkblue "
-                                   href="{{ path('comment_delete_profil', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message</a>
+                                   href="{{ path('comment_delete_profil', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}" title="Supprimer le message"><i class="fas fa-trash-alt"> </i></a>
                             </div>
                             {% endif %}
                         </div>
@@ -169,7 +169,7 @@
 
         {% else %}
 
-        <p class="col-12 fw-bold text-center alert bg-lightblue ">Aucun message à afficher.</p>
+        <p class="col-12 fw-bold text-center alert bg-lightblue mt-3">Aucun message à afficher.</p>
 
         {% endfor %}
     </div>

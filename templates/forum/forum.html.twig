@@ -137,12 +137,12 @@
                             <div class="d-flex justify-content-end me-2">
 
                                 <div class="p-2 ">
-                                    <a class=" btn btn-darkblue " href="{{ path('forum_edit', { id : forum.id }) }}">Editer le contenu</a>
+                                    <a class=" btn btn-darkblue " href="{{ path('forum_edit', { id : forum.id }) }}" title="Modifier le message"><i class="fas fa-edit"></i></a>
                                 </div>
                                 {% if is_granted('ROLE_MODERATOR') %}
                                 <div class="p-2 ">
                                     <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
-                                       class=" btn btn-darkblue " href="{{ path('delete_forum', { id : forum.id, csrf_token : csrf_token('forum_delete' ~ forum.id ) }) }}">Supprimer le sujet</a>
+                                       class=" btn btn-darkblue " href="{{ path('delete_forum', { id : forum.id, csrf_token : csrf_token('forum_delete' ~ forum.id ) }) }}" title="Supprimer le message">Supprimer le sujet</a>
                                 </div>
                                 {% endif %}
                                 </div>
@@ -236,13 +236,13 @@
 
                                 <div class="p-2 ">
                                     <a class=" btn btn-darkblue "
-                                       href="{{ path('comment_edit', { id : comment.id }) }}">Editer le contenu</a>
+                                       href="{{ path('comment_edit', { id : comment.id }) }}" title="Modifier le message"><i class="fas fa-edit"></i></a>
                                 </div>
                                 {% if is_granted('ROLE_MODERATOR') %}
                                 <div class="p-2 ">
                                     <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
                                        class=" btn btn-darkblue "
-                                       href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message</a>
+                                       href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}" title="Supprimer le message"><i class="fas fa-trash-alt"></i></a>
                                 </div>
                                 {% endif %}
                                 </div>

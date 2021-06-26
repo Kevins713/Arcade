@@ -18,9 +18,10 @@ class EventType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre',
+                'label' => false,
                 'attr' => [
                     'class' => 'form-control',
+                    'placeholder' => 'Choisissez un titre',
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -55,7 +56,7 @@ class EventType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Envoyer',
                 'attr' => [
-                    'class' => 'btn btn-darkblue'
+                    'class' => 'btn btn-darkblue col-12'
                 ]
             ])
         ;
