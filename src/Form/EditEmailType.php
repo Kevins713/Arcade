@@ -9,23 +9,24 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Validator\Constraints\Email;
+
+
 
 class EditEmailType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('mail', TextType::class, [
+            ->add('mail', EmailType::class, [
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Nouvelle adresse email'
                 ],
                 'constraints' => [
-                    new Length([
-                        'min' => 2,
-                        'max' => 255,
-                        'minMessage' => 'Le titre doit contenir au minimum {{ limit }} caractères',
-                        'maxMessage' => 'Le titre doit contenir au maximum {{ limit }} caractères',
+                    new Email([
+                        'message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide'
                     ]),
                     new NotBlank([
                         'message' => 'Merci de renseigner une adresse mail',
@@ -33,17 +34,14 @@ class EditEmailType extends AbstractType
                 ]
             ])
 
-            ->add('confirm-mail' , TextType::class, [
+            ->add('confirm-mail' , EmailType::class, [
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Confirmer l\'adresse email'
                 ],
                 'constraints' => [
-                    new Length([
-                        'min' => 2,
-                        'max' => 255,
-                        'minMessage' => 'Le titre doit contenir au minimum {{ limit }} caractères',
-                        'maxMessage' => 'Le titre doit contenir au maximum {{ limit }} caractères',
+                    new Email([
+                        'message' => 'L\'adresse email {{ value }} n\'est pas une adresse email valide'
                     ]),
                     new NotBlank([
                         'message' => 'Merci de confirmer l\'adresse mail',
