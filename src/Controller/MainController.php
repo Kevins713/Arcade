@@ -51,7 +51,7 @@ class MainController extends AbstractController
             ]];
         }
         $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
-        $lastComments = $commentRepo->findBy([], ['publicationDate' => 'DESC'], 4);
+        $lastComments = $commentRepo->findBy([], ['publicationDate' => 'DESC'], 5);
         $userRepo->findConnectedAdmins();
 
         // Récupération des 2 derniers Event
@@ -63,7 +63,7 @@ class MainController extends AbstractController
             'categories' => $categories->findAll(),
             'rss' => $rss,
             'events' => $events,
-            'comments' => $lastComments
+            'Comments' => $lastComments
         ]);
     }
 
@@ -168,7 +168,7 @@ class MainController extends AbstractController
 
             } else {
 
-                $this->addFlash('error', 'Les mots de passe ne sont pas identiques, veuillez ré-essayer.');
+                $this->addFlash('error', 'Les mots de passe ne sont pas identiques, veuillez réessayer.');
             }
         }
 
@@ -196,7 +196,7 @@ class MainController extends AbstractController
 
             if( !empty($query->getResult()) ) {
 
-                $this->addFlash('error', 'L\'adresse mail est déjà utilisée , veuillez ré-essayer.');
+                $this->addFlash('error', 'L\'adresse mail est déjà utilisée , veuillez réessayer.');
 
             } else {
 
@@ -219,7 +219,7 @@ class MainController extends AbstractController
     
                 } else {
     
-                    $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez ré-essayer.');
+                    $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez réessayer.');
                 }
 
 
@@ -364,7 +364,7 @@ class MainController extends AbstractController
             $this->addFlash('success', 'Annonce supprimée !');
         }
         else {
-            $this->addFlash('error', 'Token invalide, veuillez ré-essayer.');
+            $this->addFlash('error', 'Token invalide, veuillez réessayer.');
         }
 
         return $this->redirectToRoute('view_event');
@@ -433,7 +433,7 @@ class MainController extends AbstractController
 
         // Vérification que le token est valide
         if (!$this->isCsrfTokenValid('comment_delete' . $comment->getId(), $tokenCSRF)) {
-            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+            $this->addFlash('error', 'Token sécurité invalide, veuillez réessayer.');
         } else {
             dump('test');
             // Suppression du commentaire
