@@ -12,33 +12,25 @@
         height: 200px;
     }
 }
-
-    /* Categories */
-.card img {
-    height: 131px;
-    width: 125px;
+@media (min-width: 1200px){
+    .annonce + div{
+        margin-left: 0 !important;
+    }
 }
+.img-avatar{
+    object-fit: contain;
+}
+@media (min-width: 992px) and (max-width: 1200px){
+    .img-avatar{
+        margin-right: 10px;
+    }
+}
+    /* Categories */
 a {
     color: #eaeaea;
     font-weight: bolder;
 }
-.category {
-    box-shadow: 0px 0px 10px 1px black;
-}
-a:hover {
-    color: #eaeaea;
-}
 
-.category:hover {
-    background-color: var(--forum-orange);
-}
-.category-title {
-    border-top: black 1px solid;
-    height: 75px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 /* Aside */
 .aside {
     height: 60px;

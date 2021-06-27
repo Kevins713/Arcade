@@ -31,7 +31,6 @@ use App\Entity\Forum;
 use App\Entity\User;
 
 
-
 class MainController extends AbstractController
 {
     /**
@@ -40,7 +39,7 @@ class MainController extends AbstractController
      */
     public function index(CategoryRepository $categories, UserRepository $userRepo): Response
     {
-        // Requête du flux RSS des actualités
+        // Requête du flux RSS des actualités dans un try & catch si jamais le lien n'est plus valide
         try {
             $rss = simplexml_load_file('https://www.actugaming.net/feed/');
 
@@ -51,6 +50,8 @@ class MainController extends AbstractController
                 ]
             ]];
         }
+        $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
+        $lastComments = $commentRepo->findBy([], ['publicationDate' => 'DESC'], 5);
         $userRepo->findConnectedAdmins();
 
         // Récupération des 2 derniers Event
@@ -62,6 +63,7 @@ class MainController extends AbstractController
             'categories' => $categories->findAll(),
             'rss' => $rss,
             'events' => $events,
+            'Comments' => $lastComments
         ]);
     }
 
@@ -85,7 +87,7 @@ class MainController extends AbstractController
     }
 
 
-/**
+    /**
      * @Route("/edit-profil/", name="edit_profil")
      * @Security("is_granted('ROLE_USER')")
      */
@@ -149,8 +151,6 @@ class MainController extends AbstractController
 
             $connectedUser = $this->getUser();
 
-            dump($formPass->get('pass')->getData());
-
             // Si les deux champs sont correct+
             if($formPass->get('pass')->getData() == $formPass->get('confirm-pass')->getData()){
 
@@ -164,11 +164,11 @@ class MainController extends AbstractController
 
                 $this->addFlash('success', 'Mot de passe modifié avec succès !');
 
-                return $this->redirectToRoute('logout');
+                return $this->redirectToRoute('main_profil');
 
             } else {
 
-                $this->addFlash('error', 'Les mots de passe ne sont pas identiques, veuillez ré-essayer.');
+                $this->addFlash('error', 'Les mots de passe ne sont pas identiques, veuillez réessayer.');
             }
         }
 
@@ -181,29 +181,51 @@ class MainController extends AbstractController
         // Si le formulaire a été envoyé et il n'y a aucune erreur
         if($formEmail->isSubmitted() && $formEmail->isValid()){
 
+            // Récupérer toute les adresses mail de la bdd
+            $allEmail = $this->getDoctrine()->getRepository(User::class);
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $query = $entityManager->createQuery(
+                'SELECT u.email
+                FROM App\Entity\User u
+                WHERE u.email = :email'
+            )->setParameter('email', $formEmail->get('mail')->getData());
+
             dump($formEmail->get('mail')->getData());
 
-            if($formEmail->get('mail')->getData() == $formEmail->get('confirm-mail')->getData()){
+            if( !empty($query->getResult()) ) {
 
-                $em = $this->getDoctrine()->getManager();
-
-                $connectedUser = $this->getUser();
-
-                $connectedUser->setEmail($formEmail->get('mail')->getData());
-
-                //$connectedUser->setIsVerified()
-
-                $em->flush();
-
-                $this->addFlash('success', 'Email modifié avec succès !');
-
-                return $this->redirectToRoute('logout');
-
+                $this->addFlash('error', 'L\'adresse mail est déjà utilisée , veuillez réessayer.');
 
             } else {
 
-                $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez ré-essayer.');
+                if($formEmail->get('mail')->getData() == $formEmail->get('confirm-mail')->getData()){
+
+                    $em = $this->getDoctrine()->getManager();
+    
+                    $connectedUser = $this->getUser();
+    
+                    $connectedUser->setEmail($formEmail->get('mail')->getData());
+    
+                    //$connectedUser->setIsVerified()
+    
+                    $em->flush();
+    
+                    $this->addFlash('success', 'Mail modifié avec succès !');
+    
+                    return $this->redirectToRoute('main_profil');
+    
+    
+                } else {
+    
+                    $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez réessayer.');
+                }
+
+
             }
+
+            
         }
 
         //Modification de la description
@@ -226,7 +248,7 @@ class MainController extends AbstractController
 
                 $em->flush();
 
-                $this->addFlash('success', 'Description modifié avec succès !');
+                $this->addFlash('success', 'Description modifiée avec succès !');
 
                 return $this->redirectToRoute('main_profil');
 
@@ -285,8 +307,10 @@ class MainController extends AbstractController
             $em->persist($event);
             $em->flush();
 
+            $this->addFlash('success', 'Annonce créée avec succès !');
             return $this->redirectToRoute('home');
         }
+
 
         return $this->render('main/newEvent.html.twig', [
             'form' => $form->createView(),
@@ -295,7 +319,6 @@ class MainController extends AbstractController
 
     /**
      * @Route("/annonces/", name="view_event")
-     * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function viewEvent(EventRepository $eventRepo): Response
     {
@@ -316,8 +339,11 @@ class MainController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->addFlash('success', 'Annonce modifiée avec succès !');
+
             return $this->redirectToRoute('view_event');
         }
+
 
         return $this->render('main/editEvent.html.twig', [
             'form' => $form->createView()
@@ -326,6 +352,7 @@ class MainController extends AbstractController
 
     /**
      * @Route("supprimer-l-annonce/{id}", name="delete_event", methods={"POST"})
+     * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function deleteEvent(Request $request, Event $event): Response
     {
@@ -333,6 +360,11 @@ class MainController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($event);
             $entityManager->flush();
+
+            $this->addFlash('success', 'Annonce supprimée !');
+        }
+        else {
+            $this->addFlash('error', 'Token invalide, veuillez réessayer.');
         }
 
         return $this->redirectToRoute('view_event');
@@ -342,7 +374,7 @@ class MainController extends AbstractController
         /**
      * Page moderation permettant de modifier un commentaire existant
      *
-     * @Route("/forum/modifier-commentaire/{id}/", name="comment_edit")
+     * @Route("/profil/modifier-commentaire/{id}/", name="comment_edit_profil")
      * @Security("is_granted('ROLE_USER')")
      */
     public function commentEdit(Comment $comment, Request $request): Response
@@ -351,33 +383,33 @@ class MainController extends AbstractController
         $user = $this->getUser();
 
         if($user == $comment->getAuthor()){
+
             // Création du formulaire de modification
-        $form = $this->createForm(CreateCommentFormType::class, $comment);
+            $form = $this->createForm(CreateCommentFormType::class, $comment);
 
-        // Liaison des données POST avec le formulaire
-        $form->handleRequest($request);
+            // Liaison des données POST avec le formulaire
+            $form->handleRequest($request);
 
-            // Si le formulaire est envoyé et n'a pas d'erreur
-            if ($form->isSubmitted() && $form->isValid()) {
+                // Si le formulaire est envoyé et n'a pas d'erreur
+                if ($form->isSubmitted() && $form->isValid()) {
 
-                // Sauvegarde des changements dans la BDD
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
+                    // Sauvegarde des changements dans la BDD
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
 
-                // Message flash de succès
-                $this->addFlash('success', 'Sujet modifié avec succès !');
+                    // Message flash de succès
+                    $this->addFlash('success', 'Sujet modifié avec succès !');
 
-                // Redirection vers la page de l'article modifié
-                return $this->redirectToRoute('main_profil', [
-                    'slug' => $comment->getForum()->getSlug(),
-                ]);
+                    // Redirection vers la page de l'article modifié
+                    return $this->redirectToRoute('main_profil', [
+                        'slug' => $comment->getForum()->getSlug(),
+                    ]);
 
-            }
+                }
 
-        }  else {
+        } else {
 
-            return $this->render('bundles/TwigBundle/Exception/error403.html.twig');
-
+            throw new AccessDeniedHttpException();
         }
 
         // Appel de la vue en envoyant le formulaire à afficher
@@ -390,7 +422,7 @@ class MainController extends AbstractController
     /**
      * Page moderation permettant de supprimer un commentaire
      *
-     * @Route("/forum/suppression-commentaire/{id}/", name="comment_delete")
+     * @Route("/forum/suppression-commentaire/{id}/", name="comment_delete_profil")
      * @Security("is_granted('ROLE_MODERATOR')")
      */
     public function commentDelete(Comment $comment, Request $request): Response
@@ -401,7 +433,7 @@ class MainController extends AbstractController
 
         // Vérification que le token est valide
         if (!$this->isCsrfTokenValid('comment_delete' . $comment->getId(), $tokenCSRF)) {
-            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+            $this->addFlash('error', 'Token sécurité invalide, veuillez réessayer.');
         } else {
             dump('test');
             // Suppression du commentaire
@@ -414,6 +446,19 @@ class MainController extends AbstractController
         }
         return $this->redirectToRoute('main_profil', [
             'slug' => $comment->getForum()->getSlug(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/classement/", name="rank")
+     */
+    public function rank(Request $request): Response
+    {
+        $userRepo = $this->getDoctrine()->getRepository(User::class);
+        $users = $userRepo->findBy([], ['message' => 'DESC'], 100);
+        return $this->render('main/rank.html.twig', [
+            'users' => $users,
         ]);
     }
 }

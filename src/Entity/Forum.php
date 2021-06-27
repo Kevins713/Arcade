@@ -42,7 +42,13 @@ class Forum
     private $slug;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $view;
+
+    /**
      * @ORM\ManyToOne(targetEntity=SubCategory::class, inversedBy="forums")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $subCategory;
 
@@ -166,6 +172,18 @@ class Forum
                 $comment->setForum(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getView(): ?int
+    {
+        return $this->view;
+    }
+
+    public function setView(int $view): self
+    {
+        $this->view = $view;
 
         return $this;
     }

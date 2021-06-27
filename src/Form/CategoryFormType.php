@@ -19,9 +19,9 @@ class CategoryFormType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => false,
+                'label' => 'Choisissez un titre',
                 'attr' => [
-                    'placeholder' => 'Ecrivez un titre'
+                    'placeholder' => 'Ecrivez un titre',
                 ],
                 'constraints' => [
                     new NotBlank([
@@ -36,7 +36,11 @@ class CategoryFormType extends AbstractType
                 ],
             ])
             ->add('image', FileType::class, [
+                'data_class' => null,
                 'label' => 'Sélectionnez une photo',
+                'attr' => [
+                    'accept' => 'image/jpeg, image/png',
+                ],
                 'constraints' => [
                     new File([
                         // Taille maximum de 1Mo
@@ -63,9 +67,10 @@ class CategoryFormType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
-                    'class' => 'btn btn-outline-primary col-12',
+                    'class' => 'btn btn-darkblue col-12',
                 ],
             ])
         ;
     }
+
 }

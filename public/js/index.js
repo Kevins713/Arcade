@@ -17,7 +17,7 @@ let requestUsers = function(url, classSelector){
         success: function(data){
             $('.' + classSelector).text('');
             data.forEach((pseudonym) => {
-                $('.' + classSelector).append('<span><a href="127.0.0.1:8000/profil/' + pseudonym.pseudonym +'"> ' + pseudonym.pseudonym + '</span></a>');
+                $('.' + classSelector).append('<span><a href="/forum/profil/' + pseudonym.id +'/"> ' + pseudonym.pseudonym + '</span></a>');
             });
         },
     })
@@ -41,21 +41,21 @@ let requestStats = function(url, classSelector) {
 let requestApis = function () {
 
 
-    // Requête ajax pour récuperer les utilisateurs connectés
-    requestUsers('http://localhost:8000/api/liste-utilisateurs-connectes', 'users-connected');
+    // Requête ajax pour récuperer les utilisateurs connectés et les insérer dans l'aside
+    requestUsers( url + 'api/liste-utilisateurs-connectes', 'users-connected');
 
-// Requête pour récupérer les admins connectés
-    requestUsers('http://localhost:8000/api/liste-admins-connectes', 'admins-connected');
+// Requête pour récupérer les admins connectés et les insérer dans l'aside
+    requestUsers(url + 'api/liste-admins-connectes', 'admins-connected');
 
+// Requête pour récupérer le nombre de Forums et les insérer dans l'aside
+    requestStats(url + 'api/nombre-forums', 'forums-number');
 
-// Requête pour récupérer le nombre de Forums
-    requestStats('http://localhost:8000/api/nombre-forums', 'forums-number');
+// Requête pour récupérer le nombre de messages et les insérer dans l'aside
+    requestStats(url + 'api/nombre-messages', 'comments-number');
 
-// Requête pour récupérer le nombre de messages
-    requestStats('http://localhost:8000/api/nombre-messages', 'comments-number');
+// Requête pour récupérer le nombre de messages et les insérer dans l'aside
+    requestStats(url + 'api/nombre-utlisateurs', 'users-number');
 
-// Requête pour récupérer le nombre de messages
-    requestStats('http://localhost:8000/api/nombre-utlisateurs', 'users-number');
 
     // Délai de 30sec avant de rafraîchir les infos
     setTimeout(requestApis, 30000);

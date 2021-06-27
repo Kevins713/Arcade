@@ -15,6 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+use App\Recaptcha\RecaptchaValidator;
+use Symfony\Component\Form\FormError;
+
+
 class RegistrationController extends AbstractController
 {
     private $emailVerifier;
@@ -27,44 +31,54 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request,RecaptchaValidator $recaptcha, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $user = new User();
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $date = new \DateTime();
-            // encode the plain password
-            $user
-                ->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            )
-                ->setRegistrationDate($date)
-                ->setLastVisit($date)
-            ;
+        if ($form->isSubmitted()) {
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            if (!$recaptcha->verify($request->request->get('g-recaptcha-response'), $request->server->get('REMOTE_ADDR'))) {
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                (new TemplatedEmail())
-                    ->from(new Address('projet.arcade.forum@gmail.com', 'Arcade'))
-                    ->to($user->getEmail())
-                    ->subject('Veuillez confirmer votre adresse email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-            // TODO Ajouter un message flash pour demander a vérifier l'adresse email
+                // Ajout d'une nouvelle erreur manuellement dans le formulaire
+                $form->addError(new FormError('Le Captcha doit être validé !'));
 
-            return $this->redirectToRoute('login');
+            }
+
+            if ($form->isValid()) {
+
+                $date = new \DateTime();
+                // encode the plain password
+                $user
+                    ->setPassword(
+                        $passwordEncoder->encodePassword(
+                            $user,
+                            $form->get('plainPassword')->getData()
+                        )
+                    )
+                    ->setRegistrationDate($date)
+                    ->setLastVisit($date)
+                    ->setMessage(0);
+
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+
+                // generate a signed url and email it to the user
+                $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+                    (new TemplatedEmail())
+                        ->from(new Address('projet.arcade.forum@gmail.com', 'Arcade'))
+                        ->to($user->getEmail())
+                        ->subject('Veuillez confirmer votre adresse email')
+                        ->htmlTemplate('registration/confirmation_email.html.twig')
+                );
+                // TODO Ajouter un message flash pour demander a vérifier l'adresse email
+
+                return $this->redirectToRoute('login');
+            }
         }
-
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);

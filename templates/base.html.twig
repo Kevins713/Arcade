@@ -10,6 +10,7 @@
     {# Inclusion des fichiers CSS et CND #}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     {% block css %}
     {# Inclusion CSS individuels si besoin#}
@@ -27,14 +28,34 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav  mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link{{ route == 'home' ? ' active' }}" href="{{ path('home') }}"><i
                                 class="fas fa-home mx-1"></i>Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link{{ route == 'view_event' ? ' active' }}" href="{{ path('view_event') }}">Annonces</a>
+                        <a class="nav-link{{ route == 'rank' ? ' active' }}" href="{{ path('rank') }}"><i class="fas fa-trophy"></i> Classement</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link{{ route == 'view_event' ? ' active' }}" href="{{ path('view_event') }}"><i class="fas fa-newspaper me-1"></i> Annonces</a>
+                    </li>
+
+                    {% if is_granted('ROLE_MODERATOR') %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="profil-dropdown" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-pen-square me-1"></i> Création :
+                        </a>
+                        <div class="dropdown-menu bg-dark" aria-labelledby="profil-dropdown">
+
+                            <a class="dropdown-item" href="{{ path('create_event') }}"><i
+                                class="fas fa-newspaper me-1"></i>Annonces</a>
+
+                            <a class="dropdown-item" href="{{ path('new_category') }}"><i
+                                class="fas fa-list-ul me-1"></i>catégories</a>
+                        </div>
+                    </li>
+                    {% endif %}
                 </ul>
 
                 {# Boutons à droite #}
@@ -69,10 +90,7 @@
 
                 </ul>
 
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Chercher dans le forum">
-                    <button class="btn btn-outline-success" type="submit">Rechercher</button>
-                </form>
+                
             </div>
         </div>
     </nav>
@@ -100,8 +118,9 @@
                     <div class="col-xl-2 col-md-4 col-sm-4 col-12">
                         <h6 class="mb-3 mb-lg-4 bold-text "><b>MENU</b></h6>
                         <ul class="list-unstyled">
-                            <li><a style="color: white;" class="page-footer" href="{{ path('home') }}">Page d'accueil</a></li>
-                            <li><a style="color: white;" class="page-footer" href="#">Forum</a></li>
+                            <li><a class="page-footer" href="{{ path('home') }}">Page d'accueil</a></li>
+                            <li><a class="page-footer" href="{{ path('rank') }}">Classement</a></li>
+                            <li><a class="page-footer" href="{{ path('view_event') }}">Annonces</a></li>
                         </ul>
                     </div>
                 </div>
