@@ -17,7 +17,7 @@ let requestUsers = function(url, classSelector){
         success: function(data){
             $('.' + classSelector).text('');
             data.forEach((pseudonym) => {
-                $('.' + classSelector).append('<span><a href="127.0.0.1:8000/profil/' + pseudonym.pseudonym +'"> ' + pseudonym.pseudonym + '</span></a>');
+                $('.' + classSelector).append('<span><a href="/forum/profil/' + pseudonym.id +'/"> ' + pseudonym.pseudonym + '</span></a>');
             });
         },
     })
@@ -56,34 +56,6 @@ let requestApis = function () {
 // Requête pour récupérer le nombre de messages et les insérer dans l'aside
     requestStats(url + 'api/nombre-utlisateurs', 'users-number');
 
-    // Requête pour récupérer les 5 derniers forums
-    $.ajax({
-        type: 'GET',
-        url:  + 'api/derniers-messages',
-        dataType: 'json',
-        timeout: '7500',
-        error: function(){
-            console.log('error');
-        },
-        success: function(data){
-            $('.aside-content').text('');
-            data.forEach((forum) => {
-                console.log(forum);
-                // $('.' + classSelector).append('<span><a href="127.0.0.1:8000/profil/' + pseudonym.pseudonym +'"> ' + pseudonym.pseudonym + '</span></a>');
-                // $('.' + classSelector).append(`
-                //     <div class="row">
-                //         <div class="col-3 aside avatar d-flex align-items-center">
-                //             <img src="` + asset + '/images/usersAvatar/' + forum. + `) }}" alt="">
-                //         </div>
-                //         <div class="col-9 aside">
-                //             <h6>Aled</h6>
-                //             <p>Je sais pas quoi faire pour faire...</p>
-                //         </div>
-                //     </div>
-                // `)
-            });
-        },
-    })
 
     // Délai de 30sec avant de rafraîchir les infos
     setTimeout(requestApis, 30000);

@@ -51,7 +51,7 @@ class MainController extends AbstractController
             ]];
         }
         $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
-        $lastComments = $commentRepo->findBy([], ['publicationDate' => 'DESC'], 5);
+        $lastComments = $commentRepo->findBy([], ['publicationDate' => 'DESC'], 4);
         $userRepo->findConnectedAdmins();
 
         // Récupération des 2 derniers Event
@@ -63,7 +63,7 @@ class MainController extends AbstractController
             'categories' => $categories->findAll(),
             'rss' => $rss,
             'events' => $events,
-            'Comments' => $lastComments
+            'comments' => $lastComments
         ]);
     }
 
@@ -307,7 +307,7 @@ class MainController extends AbstractController
             $em->persist($event);
             $em->flush();
 
-            $this->addFlash('success', 'Annonce créee avec succès !');
+            $this->addFlash('success', 'Annonce créée avec succès !');
             return $this->redirectToRoute('home');
         }
 
