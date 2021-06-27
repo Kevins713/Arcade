@@ -19,7 +19,7 @@ class CategoryFormType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => false,
+                'label' => 'Choisissez un titre',
                 'attr' => [
                     'placeholder' => 'Ecrivez un titre',
                 ],
@@ -67,9 +67,10 @@ class CategoryFormType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
-                    'class' => 'btn btn-outline-primary col-12',
+                    'class' => 'btn btn-darkblue col-12',
                 ],
             ])
         ;
     }
+
 }

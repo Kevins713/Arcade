@@ -78,7 +78,7 @@
                         {% endif %}
                     </div>
                 </div>
-           
+
         </div>
 
 
@@ -102,62 +102,45 @@
         <div class="col-12 mt-3 ">
             <div class="row">
 
-                <div class="row topic-forum bg-dark border border-dark border-3 p-0 g-0
-                            d-flex flex-column flex-lg-row">
-
-                    <!-- Profil de l'utilisateur (pseudo, rôle, photo de profil si il y'en as une, date d'inscription, nombre de messages) (bonne chance pour le
-                    responsive) -->
-                    <div class=" col-12 col-lg-3 col-xl-2 d-flex ">
-                        <div class="col-12 d-flex bg-dark">
-
-                            <!-- détails profil-->
-                            <div class="rounded bg-darkblue p-lg-3 d-flex flex-grow-1 d-flex flex-row flex-lg-column ">
-                                <a href="{{ path('main_profil') }}">{% if userForum.avatar is null %}
-                                    <img class="img-thumbnail img-fluid bg-darkblue rounded mb-3 mb-lg-5 offset-2 col-8 mt-2 offset-lg-1 col-lg-10 mt-0 p-3"
-                                        src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}" alt="avatar">
-                                    {% else %}
-                                    <img class="img-thumbnail img-fluid bg-darkblue rounded mb-3 mb-lg-5 offset-2 col-8 mt-2 offset-lg-1 col-lg-10 mt-0 p-3"
-                                        src="{{ asset('images/usersAvatar/' ~ userForum.avatar)|imagine_filter('avatar') }}"
-                                        alt="avatar">
-                                    {% endif %}
-                                </a>
-                            </div>
-                        </div>
+                    <!-- avatar auteur -->
+                    <div class="col-3 col-md-2">
+                        <a href="{{ path('main_profil_forum', { id : userForum.id }) }}">
+                            {% if userForum.avatar is null %}
+                            <img class=" d-block img-fluid "
+                                src="{{ asset('images/profil_default.jpg')|imagine_filter('avatar') }}" alt="avatar">
+                            {% else %}
+                            <img class="d-block img-fluid "
+                                src="{{ asset('images/usersAvatar/' ~ userForum.avatar)|imagine_filter('avatar') }}"
+                                alt="avatar">
+                            {% endif %}
+                        </a>
                     </div>
 
-                    <!--  content col-10 -->
-                    <div class="col-12 col-lg-9 col-xl-10 bg-light d-flex flex-column">
-                        <div class=" flex-grow-1 p-4">
-                            <div class="row">
-                                <div class="titre-forum  m-0 d-flex flex-column flex-lg-row px-3 py-2 justify-content-between">
-
-                                    <div class="px-0 py-0 text-capitalize">
-                                        <a href="{{ path('forum', { slug:comment.forum.slug}) }}" class=" px-1 py-1  " ><i class="far fa-arrow-alt-circle-right"></i> {{ comment.forum.title }}</a>
-                                    </div>
-                                    <div class="px-1 py-1"><span><i class="far fa-clock px-1"></i></span>{{ comment.publicationDate|date("d/m/Y à H\\hi") }}
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class=" mt-3 text-break">
-                                <p>{{ comment.content|purify }}</p>
-                            </div>
+                    <!--  content  -->
+                    <div class=" titre-forum col-9 col-md-10 d-flex flex-column ">
+                        <p class="text-bolder fs-5">Réponse à
+                        <a href="{{ path('forum', { slug:comment.forum.slug}) }}" class=" fs-4 text-capitalize text-dark " > <i class="far fa-arrow-alt-circle-right"></i> {{ comment.forum.title }}</a></p>
+                        <div class=" mt-3 text-break">
+                            {{ comment.content|purify }}
+                        </div>
+                        <div>
+                            <span><i class="far fa-clock px-1"></i></span>{{ comment.publicationDate|date("d/m/Y à H\\hi") }}
                         </div>
 
-                        <hr>
+
 
                         {# Si l'utilisateur  #}
                         {% if comment.author == app.user or is_granted('ROLE_MODERATOR') %}
                         <div class="d-flex justify-content-end me-2">
                             <div class="p-2 ">
                                 <a class=" btn btn-darkblue "
-                                   href="{{ path('comment_edit', { id : comment.id }) }}">Editer le contenu</a>
+                                   href="{{ path('comment_edit', { id : comment.id }) }}" title="Modifier le message"><i class="fas fa-edit"></i></a>
                             </div>
                             {% if is_granted('ROLE_MODERATOR') %}
                             <div class="p-2 ">
                                 <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
                                    class=" btn btn-darkblue "
-                                   href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}">Supprimer le message
+                                   href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}" title="Supprimer le message"><i class="fas fa-trash-alt">
                                 </a>
                             </div>
                             {% endif %}
@@ -165,7 +148,7 @@
                         {% endif %}
                     </div>
 
-                </div>
+                <hr>
             </div>
         </div>
 

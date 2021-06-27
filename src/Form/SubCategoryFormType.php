@@ -2,11 +2,9 @@
 
 namespace App\Form;
 
-use App\Entity\SubCategory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Length;
@@ -63,7 +61,7 @@ class SubCategoryFormType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
-                    'class' => 'btn btn-outline-primary col-12',
+                    'class' => 'btn btn-darkblue col-12',
                 ],
             ])
         ;

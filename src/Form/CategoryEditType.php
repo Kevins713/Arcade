@@ -17,7 +17,7 @@ class CategoryEditType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre',
+                'label' => false,
                 'attr' => [
                     'placeholder' => 'Choisissez un titre'
                 ],
@@ -36,7 +36,7 @@ class CategoryEditType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
-                    'class' => 'btn btn-outline-primary col-12',
+                    'class' => 'btn btn-darkblue col-12',
                 ],
             ])
         ;

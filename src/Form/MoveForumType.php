@@ -26,7 +26,7 @@ class MoveForumType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Déplacer',
                 'attr' => [
-                    'class' => 'ms-auto btn btn-darkblue'
+                    'class' => 'btn btn-darkblue col-12'
                 ]
             ])
         ;

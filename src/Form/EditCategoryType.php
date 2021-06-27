@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,7 +19,7 @@ class EditCategoryType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Titre',
+                'label' => false,
                 'mapped' => false,
                 'attr' => [
                     'placeholder' => 'Choisissez un titre',
@@ -60,7 +61,7 @@ class EditCategoryType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Publier',
                 'attr' => [
-                    'class' => 'btn btn-outline-primary col-12',
+                    'class' => 'btn btn-darkblue col-12',
                 ],
             ])
         ;
@@ -69,7 +70,6 @@ class EditCategoryType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
             'data_class' => null,
         ]);
     }
