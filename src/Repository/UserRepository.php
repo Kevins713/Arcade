@@ -44,7 +44,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $role = 'ROLE_USER';
         $date = new \DateTime('-15 mins');
         $qb = $this->createQueryBuilder('u')
-            ->select( 'u.pseudonym')
+            ->select( 'u.pseudonym, u.id')
             ->where('u.lastVisit > :date')
             ->andWhere('u.roles LIKE :user' )
             ->setParameter('date', $date)
@@ -73,7 +73,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $role = 'ROLE_USER';
         $date = new \DateTime('-15 mins');
         $qb = $this->createQueryBuilder('u')
-            ->select( 'u.pseudonym')
+            ->select( 'u.pseudonym, u.id')
             ->where('u.lastVisit > :date')
             ->andWhere('u.roles NOT LIKE :role')
             ->setParameter('date', $date)

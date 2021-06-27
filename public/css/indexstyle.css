@@ -12,12 +12,17 @@
         height: 200px;
     }
 }
-@media (min-width: 992px){
+@media (min-width: 1200px){
     .annonce + section{
         margin-left: 0 !important;
     }
-    .annonce + section + section{
-
+}
+.img-avatar{
+    object-fit: contain;
+}
+@media (min-width: 992px) and (max-width: 1200px){
+    .img-avatar{
+        margin-right: 10px;
     }
 }
     /* Categories */

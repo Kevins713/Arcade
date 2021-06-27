@@ -400,17 +400,17 @@ class ForumController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            // Récupération du champ photo
+            // Récupération du champ image
             $image = $form->get('image')->getData();
 
-            // Récupération de l'emplacement du dossier des photos de profils
+            // Récupération de l'emplacement du dossier des images de catégories
             $categoryImageDirectory = $this->getParameter('app_category_image_directory');
 
             // Récupération de l'utilisateur connecté
             $connectedUser = $this->getUser();
 
 
-            // Si l'utilisateur a déjà une photo de profil, on la supprime
+            // Si la catégorie a déjà une image, on la supprime
             if($category->getImage() != null){
                 unlink( $categoryImageDirectory . $category->getImage() );
             }
@@ -424,8 +424,9 @@ class ForumController extends AbstractController
 
             } while( file_exists( $categoryImageDirectory . $newFileName ) );
 
-            // Mise à jour du nom de la photo de profil de l'utilisateur connecté dans la BDD
+            // Mise à jour du nom de l'image dans la BDD
             $category->setImage($newFileName);
+            $category->setTitle($form->get('title')->getData());
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
@@ -552,13 +553,45 @@ class ForumController extends AbstractController
      */
     public function subCategoryEdit(Request $request, SubCategory $subCategory): Response
     {
-        $form = $this->createForm(EditSubCategoryType::class, $subCategory);
+        $form = $this->createForm(EditCategoryType::class, $subCategory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
+            // Récupération du champ image
+            $image = $form->get('image')->getData();
+
+            // Récupération de l'emplacement du dossier des images de catégories
+            $subCategoryImageDirectory = $this->getParameter('app_subcategory_image_directory');
+
+            // Récupération de l'utilisateur connecté
+            $connectedUser = $this->getUser();
+
+
+            // Si la catégorie a déjà une image, on la supprime
+            if($subCategory->getImage() != null){
+                unlink( $subCategoryImageDirectory . $subCategory->getImage() );
+            }
+
+            // Génération d'un nom de fichier jusqu'à en trouver un qui soit dispo
+            do{
+
+                $newFileName = md5($connectedUser->getId() . random_bytes(100)) . '.' . $image->guessExtension();
+
+                dump($newFileName);
+
+            } while( file_exists( $subCategoryImageDirectory . $newFileName ) );
+
+            // Mise à jour du nom de l'image dans la BDD
+            $subCategory->setImage($newFileName);
+            $subCategory->setTitle($form->get('title')->getData());
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
+            $image->move(
+                $subCategoryImageDirectory,
+                $newFileName
+            );
 
 
             // Message flash de succès et redirection de l'utilisateur

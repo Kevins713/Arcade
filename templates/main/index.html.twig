@@ -38,7 +38,7 @@
                     {% endif %}
                 </h2>
                 {% for event in events %}
-                    <section class="col-12 {{ events|length == 2 ? 'col-lg-5 offset-lg-2' : '' }} mb-3 bg-darkblue rounded-3">
+                    <section class="col-12 {{ events|length == 2 ? 'col-xl-5 offset-xl-2' : '' }} mb-3 bg-darkblue rounded-3">
                         <article class="p-2 event d-flex flex-column align-items-center justify-content-center">
                             <h2>{{ event.title }}</h2>
                             <p class="text-break">{{ event.content|slice(0,300) }}</p>
@@ -58,8 +58,6 @@
                                 </div>
                             {% endif %}
                         </div>
-
-
                     </section>
                 {% endfor %}
             </div>
@@ -72,7 +70,6 @@
             </div>
         {% endif %}
 
-        {# Bloc principal #}
         <div class="row">
             {# Catégories principales#}
             <h2 class="fw-bolder">Catégories
@@ -83,8 +80,6 @@
                     </a>
                 {% endif %}
             </h2>
-
-
             <div class="col-12 col-md-8 offset-md-2 col-lg-12 offset-lg-0 ">
                 <div class="row pb-4 mb-4 justify-content-lg-start">
                     {% for category in categories %}
@@ -127,12 +122,11 @@
                     {% for item in rss.channel.item|slice(0,10) %}
                         <div class="my-2 wrapper bg-darkblue">
                             <div class="ms-2 text p-3">
-                                <div>{{ item.description|purify }}</div>
+                                <div>{{ item.description ? item.description|purify  }}</div>
                             </div>
                         </div>
                     {% endfor %}
                 {% endif %}
-
             </div>
             {# Aside Statistiques #}
             <div class="col-12 col-lg-3 ">
@@ -173,59 +167,20 @@
                         <h3 class="h6">Derniers messages publiés</h3>
                     </div>
                     <div class="aside-content">
-                        <div class="row">
-                            <div class="col-3 aside avatar d-flex align-items-center">
-                                <img src="{{ asset('images/logo.jpg') }}" alt="">
+                        {% for comment in comments %}
+                            <div class="row">
+                                <div class="col-4 avatar d-flex align-items-center">
+                                    <img style="height: 60px; width: 60px;" class="img-avatar" src="{{ asset('images/usersAvatar/' ~ comment.author.avatar) }}"
+                                         alt="avatar">
+                                </div>
+                                <div class="col-8 aside">
+                                    <h6 class="m-0 p-0"><a class="text-dark" href="{{ path('forum', {slug: comment.forum.slug}) }}">{{ comment.forum.title
+                                            }}</a></h6>
+                                    <div class="comment-content">{{ comment.content|slice(0,50)|purify }}</div>
+                                </div>
+                                <hr class="my-1">
                             </div>
-                            <div class="col-9 aside">
-                                <h6>Aled</h6>
-                                <p>Je sais pas quoi faire pour faire...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aside-content">
-                        <div class="row">
-                            <div class="col-3 aside avatar d-flex align-items-center">
-                                <img src="{{ asset('images/logo.jpg') }}" alt="">
-                            </div>
-                            <div class="col-9 aside">
-                                <h6>Présentation nouveau jeu</h6>
-                                <p>Bonjour, je vous presente ce nouveau...</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aside-content">
-                        <div class="row">
-                            <div class="col-3 aside avatar d-flex align-items-center">
-                                <img src="{{ asset('images/logo.jpg') }}" alt="">
-                            </div>
-                            <div class="col-9 aside">
-                                <h6>Titre de caractères 15</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aside-content">
-                        <div class="row">
-                            <div class="col-3 aside avatar d-flex align-items-center">
-                                <img src="{{ asset('images/logo.jpg') }}" alt="">
-                            </div>
-                            <div class="col-9 aside">
-                                <h6>Titre de caractères 15</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="aside-content">
-                        <div class="row">
-                            <div class="col-3 aside avatar d-flex align-items-center">
-                                <img src="{{ asset('images/logo.jpg') }}" alt="">
-                            </div>
-                            <div class="col-9 aside">
-                                <h6>Titre de caractères 15</h6>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut, rerum?</p>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

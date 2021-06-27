@@ -52,7 +52,7 @@ class MainController extends AbstractController
             ]];
         }
         $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
-        $lastComments = $commentRepo->findBy([], ['publicationDate' => 'DESC'], 5);
+        $lastComments = $commentRepo->findBy([], ['publicationDate' => 'DESC'], 4);
         $userRepo->findConnectedAdmins();
 
         // Récupération des 2 derniers Event
@@ -64,7 +64,7 @@ class MainController extends AbstractController
             'categories' => $categories->findAll(),
             'rss' => $rss,
             'events' => $events,
-            'Comments' => $lastComments
+            'comments' => $lastComments
         ]);
     }
 

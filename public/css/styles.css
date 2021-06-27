@@ -95,7 +95,10 @@ a{
 /* Page d'accueil */
 .sticky-aside{
     position: sticky;
-    top: 100px;
+    top: 30px;
+}
+.comment-content > *{
+    font-size: larger;
 }
 /* Fil d'ariane */
 .ariane a{
