@@ -20,6 +20,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\CategoryRepository;
 use App\Repository\SubCategoryRepository;
 use App\Repository\ForumRepository;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 use App\Form\CreateCommentFormType;
 use App\Form\SubCategoryFormType;
@@ -331,7 +332,7 @@ class ForumController extends AbstractController
         // Vérification que le token est valide
         if(!$this->isCsrfTokenValid('comment_delete' . $comment->getId(), $tokenCSRF ))
         {
-            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+            $this->addFlash('error', 'Token sécurité invalide, veuillez réessayer.');
         } else {
 
             // Suppression du commentaire
@@ -351,7 +352,7 @@ class ForumController extends AbstractController
      * Page moderation permettant de modifier un commentaire existant
      *
      * @Route("/forum/modifier-commentaire/{id}/", name="comment_edit")
-     * @Security("is_granted('ROLE_MODERATOR')")
+     * @Security("is_granted('ROLE_USER')")
      */
     public function commentEdit( Comment $comment, Request $request): Response
     {
@@ -362,21 +363,36 @@ class ForumController extends AbstractController
         // Liaison des données POST avec le formulaire
         $form->handleRequest($request);
 
-        // Si le formulaire est envoyé et n'a pas d'erreur
-        if($form->isSubmitted() && $form->isValid()){
+        $user = $this->getUser();
 
-            // Sauvegarde des changements dans la BDD
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+        if($user == $comment->getAuthor() || $user->getRoles() ){
 
-            // Message flash de succès
-            $this->addFlash('success', 'Sujet modifié avec succès !');
+            // Création du formulaire de modification
+            $form = $this->createForm(CreateCommentFormType::class, $comment);
 
-            // Redirection vers la page de l'article modifié
-            return $this->redirectToRoute('forum', [
-                'slug' => $comment->getForum()->getSlug(),
-            ]);
+            // Liaison des données POST avec le formulaire
+            $form->handleRequest($request);
 
+                // Si le formulaire est envoyé et n'a pas d'erreur
+                if ($form->isSubmitted() && $form->isValid()) {
+
+                    // Sauvegarde des changements dans la BDD
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+
+                    // Message flash de succès
+                    $this->addFlash('success', 'Sujet modifié avec succès !');
+
+                    // Redirection vers la page de l'article modifié
+                    return $this->redirectToRoute('forum', [
+                        'slug' => $comment->getForum()->getSlug(),
+                    ]);
+
+                }
+
+        } else {
+
+            throw new AccessDeniedHttpException();
         }
 
         // Appel de la vue en envoyant le formulaire à afficher
@@ -499,8 +515,7 @@ class ForumController extends AbstractController
     {
         $commentRepo = $this->getDoctrine()->getRepository(Comment::class);
 
-        $comments = $commentRepo->findBy([], ['publicationDate' => 'DESC']);
-
+        $comments = $user->getComments();
 
         return $this->render('forum/profilForum.html.twig', [
             'comments' => $comments,
@@ -538,7 +553,7 @@ class ForumController extends AbstractController
 
             $this->addFlash('success', 'Catégorie supprimée avec succès !');
         } else {
-            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+            $this->addFlash('error', 'Token sécurité invalide, veuillez réessayer.');
         }
 
         return $this->redirectToRoute('home');
@@ -600,7 +615,7 @@ class ForumController extends AbstractController
 
             $this->addFlash('success', 'Catégorie supprimée avec succès !');
         } else {
-            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+            $this->addFlash('error', 'Token sécurité invalide, veuillez réessayer.');
         }
 
         return $this->redirectToRoute('home');
@@ -628,7 +643,7 @@ class ForumController extends AbstractController
 
             $this->addFlash('success', 'Forum supprimé avec succès !');
         } else {
-            $this->addFlash('error', 'Token sécurité invalide, veuillez ré-essayer.');
+            $this->addFlash('error', 'Token sécurité invalide, veuillez réessayer.');
         }
 
         return $this->redirectToRoute('forumList.html.twig');

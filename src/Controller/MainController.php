@@ -151,8 +151,6 @@ class MainController extends AbstractController
 
             $connectedUser = $this->getUser();
 
-            dump($formPass->get('pass')->getData());
-
             // Si les deux champs sont correct+
             if($formPass->get('pass')->getData() == $formPass->get('confirm-pass')->getData()){
 
@@ -183,29 +181,51 @@ class MainController extends AbstractController
         // Si le formulaire a été envoyé et il n'y a aucune erreur
         if($formEmail->isSubmitted() && $formEmail->isValid()){
 
+            // Récupérer toute les adresses mail de la bdd
+            $allEmail = $this->getDoctrine()->getRepository(User::class);
+
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $query = $entityManager->createQuery(
+                'SELECT u.email
+                FROM App\Entity\User u
+                WHERE u.email = :email'
+            )->setParameter('email', $formEmail->get('mail')->getData());
+
             dump($formEmail->get('mail')->getData());
 
-            if($formEmail->get('mail')->getData() == $formEmail->get('confirm-mail')->getData()){
+            if( !empty($query->getResult()) ) {
 
-                $em = $this->getDoctrine()->getManager();
-
-                $connectedUser = $this->getUser();
-
-                $connectedUser->setEmail($formEmail->get('mail')->getData());
-
-                //$connectedUser->setIsVerified()
-
-                $em->flush();
-
-                $this->addFlash('success', 'Email modifié avec succès !');
-
-                return $this->redirectToRoute('main_profil');
-
+                $this->addFlash('error', 'L\'adresse mail est déjà utilisée , veuillez ré-essayer.');
 
             } else {
 
-                $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez ré-essayer.');
+                if($formEmail->get('mail')->getData() == $formEmail->get('confirm-mail')->getData()){
+
+                    $em = $this->getDoctrine()->getManager();
+    
+                    $connectedUser = $this->getUser();
+    
+                    $connectedUser->setEmail($formEmail->get('mail')->getData());
+    
+                    //$connectedUser->setIsVerified()
+    
+                    $em->flush();
+    
+                    $this->addFlash('success', 'Mail modifié avec succès !');
+    
+                    return $this->redirectToRoute('main_profil');
+    
+    
+                } else {
+    
+                    $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez ré-essayer.');
+                }
+
+
             }
+
+            
         }
 
         //Modification de la description

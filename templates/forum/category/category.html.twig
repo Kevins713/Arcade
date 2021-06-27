@@ -20,11 +20,11 @@
 
     {# image sous-catégorie + titre #}
     <div class="row">
-        <div class="col-12 d-flex flex-row mb-5">
-            <div class="col-3">
+        <div class="col-12 d-flex flex-row mb-5 flexNone">
+            <div class="imgcenter">
                 <img src="{{ asset('images/categories/' ~ category.image)|imagine_filter('category') }}" alt="image de la categorie">
             </div>
-            <div class="col-8 offset-1 align-self-center text-center">
+            <div class="col-md-8 offset-md-1 align-self-center text-center margintop">
                 <h1 class ="text-dark fw-bold fs-1 text-center text-capitalize ">{{ category.title }}</h1>
             </div>
         </div>
@@ -88,4 +88,30 @@
 
 
 
+{% endblock %}
+
+{% block css %}
+    <style>
+        .imgcenter{
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @media (max-width: 640px) {
+            .flexNone{
+                display:unset  !important ;
+            }
+
+        .imgcenter{
+            text-align: center;
+        }
+
+        .margintop{
+            margin-top: 2%;
+        }
+
+
+
+        }
+    </style>
 {% endblock %}

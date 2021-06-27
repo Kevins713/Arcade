@@ -140,7 +140,7 @@
                             <div class="p-2 ">
                                 <a onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette discussion ?')"
                                    class=" btn btn-darkblue "
-                                   href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}" title="Supprimer le message"><i class="fas fa-trash-alt">
+                                   href="{{ path('comment_delete', { id : comment.id, csrf_token : csrf_token('comment_delete' ~ comment.id ) }) }}" title="Supprimer le message"><i class="fas fa-trash-alt"></i>
                                 </a>
                             </div>
                             {% endif %}
