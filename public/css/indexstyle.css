@@ -13,7 +13,7 @@
     }
 }
 @media (min-width: 1200px){
-    .annonce + section{
+    .annonce + div{
         margin-left: 0 !important;
     }
 }

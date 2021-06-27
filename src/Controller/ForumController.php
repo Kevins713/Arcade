@@ -337,6 +337,11 @@ class ForumController extends AbstractController
             // Suppression du commentaire
             $em = $this->getDoctrine()->getManager();
             $em->remove($comment);
+
+            //On retire un message a l'utilisateur
+            $user = $comment->getAuthor();
+            $user->setMessage(($user->getMessage() - 1 ));
+
             $em->flush();
 
             $this->addFlash('success', 'Le commentaire a été supprimé avec succès !');
