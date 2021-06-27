@@ -31,7 +31,6 @@ use App\Entity\Forum;
 use App\Entity\User;
 
 
-
 class MainController extends AbstractController
 {
     /**
