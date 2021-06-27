@@ -287,7 +287,7 @@ class MainController extends AbstractController
             $em->persist($event);
             $em->flush();
 
-            $this->addFlash('success', 'Annonce créee avec succès !');
+            $this->addFlash('success', 'Annonce créée avec succès !');
             return $this->redirectToRoute('home');
         }
 
