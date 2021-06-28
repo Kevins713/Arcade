@@ -63,7 +63,7 @@ class MainController extends AbstractController
             'categories' => $categories->findAll(),
             'rss' => $rss,
             'events' => $events,
-            'Comments' => $lastComments
+            'comments' => $lastComments
         ]);
     }
 

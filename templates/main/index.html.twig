@@ -171,8 +171,17 @@
                         {% for comment in comments %}
                             <div class="row">
                                 <div class="col-4 avatar d-flex align-items-center">
-                                    <img style="height: 60px; width: 60px;" class="img-avatar" src="{{ asset('images/usersAvatar/' ~ comment.author.avatar) }}"
-                                         alt="avatar">
+                                    {% if comment.author.avatar is null %}
+                                        <img class="img-avatar"
+                                             src="{{ asset('images/profil_default.jpg') }}"
+                                             alt="avatar">
+                                    {% else %}
+                                        <img class="img-avatar"
+                                             src="{{ asset('images/usersAvatar/' ~ comment.author.avatar) }}"
+                                             alt="avatar">
+                                    {% endif %}
+{#                                    <img style="height: 60px; width: 60px;" class="img-avatar" src="{{ asset('images/usersAvatar/' ~ comment.author.avatar) }}"#}
+{#                                         alt="avatar">#}
                                 </div>
                                 <div class="col-8 aside">
                                     <h6 class="m-0 p-0"><a class="text-dark" href="{{ path('forum', {slug: comment.forum.slug}) }}">{{ comment.forum.title
