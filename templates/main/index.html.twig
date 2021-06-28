@@ -45,7 +45,7 @@
                             <p class="text-break">{{ event.content|slice(0,300) }}</p>
                         </article>
                         <div class="d-grid gap-2 mt-2 d-flex flex-column align-items-center justify-content-center align-items-center">
-                            <a class="text-center btn btn-darkblue" href="{{ path('view_event', {_fragment: 'event-' ~ event.id}) }}">Voir
+                            <a class="text-center btn btn-darkblue mb-3" href="{{ path('view_event', {_fragment: 'event-' ~ event.id}) }}">Voir
                                     plus</a>
                             {% if is_granted('ROLE_MODERATOR') %}
                                 <div class="mt-3 text-center d-flex justify-content-start">
