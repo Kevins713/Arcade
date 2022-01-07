@@ -19,6 +19,8 @@
 }
 .img-avatar{
     object-fit: contain;
+    height: 60px;
+    width: 60px;
 }
 @media (min-width: 992px) and (max-width: 1200px){
     .img-avatar{
@@ -29,6 +31,7 @@
 a {
     color: #eaeaea;
     font-weight: bolder;
+    text-decoration: underline;
 }
 
 /* Aside */
