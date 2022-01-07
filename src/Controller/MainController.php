@@ -29,7 +29,7 @@ use App\Form\EditEmailType;
 use App\Entity\Comment;
 use App\Entity\Forum;
 use App\Entity\User;
-
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class MainController extends AbstractController
 {
@@ -63,7 +63,7 @@ class MainController extends AbstractController
             'categories' => $categories->findAll(),
             'rss' => $rss,
             'events' => $events,
-            'Comments' => $lastComments
+            'comments' => $lastComments
         ]);
     }
 
@@ -151,7 +151,7 @@ class MainController extends AbstractController
 
             $connectedUser = $this->getUser();
 
-            // Si les deux champs sont correct+
+            // Si les deux champs sont correct
             if($formPass->get('pass')->getData() == $formPass->get('confirm-pass')->getData()){
 
                 $hashOfNewPassword = $encoder->encodePassword($connectedUser, $formPass->get('pass')->getData());
@@ -203,29 +203,29 @@ class MainController extends AbstractController
                 if($formEmail->get('mail')->getData() == $formEmail->get('confirm-mail')->getData()){
 
                     $em = $this->getDoctrine()->getManager();
-    
+
                     $connectedUser = $this->getUser();
-    
+
                     $connectedUser->setEmail($formEmail->get('mail')->getData());
-    
+
                     //$connectedUser->setIsVerified()
-    
+
                     $em->flush();
-    
+
                     $this->addFlash('success', 'Mail modifié avec succès !');
-    
+
                     return $this->redirectToRoute('main_profil');
-    
-    
+
+
                 } else {
-    
+
                     $this->addFlash('error', 'Les emails ne sont pas identiques, veuillez réessayer.');
                 }
 
 
             }
 
-            
+
         }
 
         //Modification de la description
